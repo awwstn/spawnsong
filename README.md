@@ -12,10 +12,12 @@ Setup process
 ```
 export APPNAME=realappname
 find . -iname '*.py' | xargs gsed -i "s/MYAPPNAME/$APPNAME/"
-mv MYAPPNAME $APPNAME
+git mv MYAPPNAME $APPNAME
+git commit -am "Replace placeholder name with actual project name"
 mkvirtualenv ~/envs/$APPNAME
 workon $APPNAME
 pip install -r requirements.txt
-python manage.py syncdb --migrate
-heroku pps:create $APPNAME
+heroku apps:create $APPNAME
+git push heroku master
+heroku run 'python manage.py syncdb --migrate'
 ```
