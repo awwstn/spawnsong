@@ -21,3 +21,5 @@ heroku apps:create $APPNAME
 git push heroku master
 heroku run 'python manage.py syncdb --migrate'
 ```
+
+If you add AWS credentials to the settings.py and set up the correct bucket names etc you can run `python manage collectstatic` to upload your static files to S3.
