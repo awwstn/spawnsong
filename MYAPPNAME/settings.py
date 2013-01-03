@@ -129,9 +129,10 @@ FACEBOOK_API_SECRET = '72ed8c52f04f21bbf83e7dd7ad17da84'
 
 FACEBOOK_EXTENDED_PERMISSIONS = ['publish_stream']
 
-LOGIN_URL          = '/login/facebook/'
+#LOGIN_URL          = '/login/facebook/'
+LOGIN_URL          = '/login/'
 
-LOGIN_REDIRECT_URL = '/code/'
+LOGIN_REDIRECT_URL = '/'
 
 
 AWS_STORAGE_BUCKET_NAME = "MYAPPNAME"
