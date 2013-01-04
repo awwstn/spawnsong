@@ -9,8 +9,13 @@ Setup process
 =============
 
 
+Read these commands before you run them, don't be an idiot :)
+
 ```
 export APPNAME=realappname
+git clone git@github.com:thomasparslowltd/django-heroku-template.git $APPNAME
+cd $APPNAME
+git checkout -b master
 find . -iname '*.py' | xargs gsed -i "s/MYAPPNAME/$APPNAME/"
 git mv MYAPPNAME $APPNAME
 git commit -am "Replace placeholder name with actual project name"
@@ -23,3 +28,4 @@ heroku run 'python manage.py syncdb --migrate'
 ```
 
 If you add AWS credentials to the settings.py and set up the correct bucket names etc you can run `python manage collectstatic` to upload your static files to S3.
+
