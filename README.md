@@ -11,7 +11,7 @@ Setup process
 
 Read these commands before you run them, don't be an idiot :)
 
-Requires `gsed` (`brew install gsed`), `git`, `pip` etc
+Requires `gsed` (`brew install gsed`), `git`, `pip`,`virtualenv`,`virtualenvwrapper`,`heroku` etc
 
 ```
 export APPNAME=realappname
