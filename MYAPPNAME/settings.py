@@ -136,7 +136,7 @@ LOGIN_REDIRECT_URL = '/'
 
 AWS_STORAGE_BUCKET_NAME = "MYAPPNAME"
 
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
