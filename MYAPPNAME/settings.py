@@ -8,6 +8,8 @@ ADMINS = (
     ('Thomas Parslow', 'tom@almostobsolete.net'),
 )
 
+ALLOWED_HOSTS = ["MYAPPNAME.herokuapp.com"]
+
 MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
@@ -138,7 +140,7 @@ AWS_STORAGE_BUCKET_NAME = "MYAPPNAME"
 
 #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 AWS_ACCESS_KEY="TODO"
 AWS_SECRET_ACCESS_KEY="TODO"
