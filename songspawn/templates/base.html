@@ -1,9 +1,10 @@
+{% load less %}
 <!DOCTYPE html>
 <html>
   <head>
     <title></title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}{% less "less/style.less" %}">
   </head>
   <body>
     {% block content %}

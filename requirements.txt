@@ -15,3 +15,4 @@ PIL==1.1.7
 dj-static==0.0.5
 static==0.4
 django-lockdown==1.0
+django-static-precompiler==0.2
