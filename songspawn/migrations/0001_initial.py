@@ -17,4 +17,4 @@ class Migration(SchemaMigration):
         
     }
 
-    complete_apps = ['MYAPPNAME']
+    complete_apps = ['songspawn']

@@ -5,11 +5,11 @@ from django.template import RequestContext
 
 def home(request):
     return render_to_response(
-        "MYAPPNAME/home.html",
+        "songspawn/home.html",
         context_instance=RequestContext(request))
 
 @login_required
 def authed(request):
     return render_to_response(
-        "MYAPPNAME/authed.html",
+        "songspawn/authed.html",
         context_instance=RequestContext(request))

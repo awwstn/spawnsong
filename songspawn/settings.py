@@ -1,4 +1,4 @@
-# Django settings for MYAPPNAME project.
+# Django settings for songspawn project.
 import os,sys
 
 DEBUG = False
@@ -8,7 +8,7 @@ ADMINS = (
     ('Thomas Parslow', 'tom@almostobsolete.net'),
 )
 
-ALLOWED_HOSTS = ["MYAPPNAME.herokuapp.com"]
+ALLOWED_HOSTS = ["songspawn.herokuapp.com"]
 
 MANAGERS = ADMINS
 
@@ -70,7 +70,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'TODO_SECRET_KEY'
+SECRET_KEY = '70aafb9b05c88cdd116adb4779c11849-bb18f1b98a94a805de5ab7d3b79784e6'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -89,10 +89,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'MYAPPNAME.urls'
+ROOT_URLCONF = 'songspawn.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'MYAPPNAME.wsgi.application'
+WSGI_APPLICATION = 'songspawn.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -109,7 +109,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'social_auth',
 #    'social_auth.backends.facebook.FacebookBackend',
-    'MYAPPNAME',
+    'songspawn',
     'storages',
     'south',
     'gunicorn',
@@ -136,7 +136,7 @@ LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 
-AWS_STORAGE_BUCKET_NAME = "MYAPPNAME"
+AWS_STORAGE_BUCKET_NAME = "songspawn"
 
 #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 

@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'MYAPPNAME.views.home', name='home'),
+    url(r'^$', 'songspawn.views.home', name='home'),
 
     # For social auth (facebook, twitter etc) uncomment this line
     #url(r'', include('social_auth.urls')),
