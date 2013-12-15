@@ -9,6 +9,10 @@ ADMINS = (
 )
 
 ALLOWED_HOSTS = ["songspawn.herokuapp.com"]
+if DEBUG:
+    ALLOWED_HOSTS.append("localhost")
+# To lockdown pages set a password here and enable the middleware below
+LOCKDOWN_PASSWORDS = ("demo",)
 
 MANAGERS = ADMINS
 
@@ -85,6 +89,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    # Uncomment the next line to password protect the whole site
+    'lockdown.middleware.LockdownMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -110,6 +116,7 @@ INSTALLED_APPS = (
     'social_auth',
 #    'social_auth.backends.facebook.FacebookBackend',
     'songspawn',
+    'lockdown',
     'storages',
     'south',
     'gunicorn',
