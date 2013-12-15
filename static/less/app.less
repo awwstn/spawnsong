@@ -1,0 +1,96 @@
+@import "bootstrap/bootstrap.less";
+@import "simplex/variables.less";
+@import "simplex/bootswatch.less";
+
+@details-bg: darken(@body-bg, 5%);
+@comments-bg: darken(@body-bg, 10%);
+@timestamp-color: lighten(@gray,50%);
+@icon-font-path:          "../fonts/";
+
+.snippet-view {
+    .make-row();
+
+    overflow: hidden;
+    
+    .player {
+        .make-lg-column(7);
+
+        video {
+            width: 100%;
+        }
+    }
+    
+
+    .details {
+        .make-lg-column(5);
+        height: 654px; // TEMPORARY HACK! Match the height of the player
+        
+        background-color: @details-bg;
+
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+
+            .timestamp {
+                color: @timestamp-color;
+                position: absolute;
+                top: 5px;
+                right: 15px;
+            }
+            
+            .pre-order {
+                .btn();
+                .btn-primary();
+            }
+        }
+
+        .comments {
+            .make-row();
+            height: 100%;
+            background-color: @comments-bg;
+
+            & > ul{
+                .list-unstyled();
+                margin: 15px;
+
+                .comment {
+                    clear: left;
+                    margin-bottom: 10px;
+                    
+                    .timestamp {
+                        color: @timestamp-color;
+                        float: right;
+                    }
+                    .avatar {
+                        .glyphicon();
+                        .glyphicon-user();
+                        font-size: 2em;
+                        float: left;
+                        margin-right: 10px;
+                        margin-top: 5px;
+                    }
+                    .username {
+                    }
+                    .text {
+                    }
+                }
+            }
+            
+            .newcomment {
+                position: absolute;
+                bottom: 0px;
+                width: 100%;
+                left: 0px;
+                right: 0px;
+                input {
+                    .form-control();
+                    display: inline;
+                    width: calc(~"100% - 100px");
+                }
+                button {
+                    width: 95px;
+                }
+            }
+        }
+    }
+}
