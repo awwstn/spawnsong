@@ -115,6 +115,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.comments',
     'social_auth',
 #    'social_auth.backends.facebook.FacebookBackend',
     'songspawn',
@@ -196,6 +197,8 @@ LOGGING = {
     }
 }
 
+SONG_PRICE = 500
+
 try:
     from local_settings import *
 except ImportError:
@@ -206,3 +209,5 @@ except ImportError:
     # Get database settings from DATABASE_URL enviroment, this may be overidden in the local settings
     import dj_database_url
     DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
+
+    

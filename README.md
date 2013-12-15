@@ -2,6 +2,13 @@ SongSpawn.com
 =============
 
 
+Components
+----------
+
+ - Upload storage on S3
+ - File conversion using ffmpeg running on Heroku (use the Linux 64 binary) and run in another process via Celery
+ - Echonest for beat locations
+ 
 Deploy Notes
 ------------
 
