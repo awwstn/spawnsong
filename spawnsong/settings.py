@@ -111,8 +111,8 @@ PIPELINE_MIMETYPES = (
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
-PIPELINE_ENABLED = False
-PIPELINE_DISABLE_WRAPPER = True
+# PIPELINE_ENABLED = False
+# PIPELINE_DISABLE_WRAPPER = True
 
 # If we are on heroku we want to re-define the location of the less binary.
 HEROKU_LESSC = os.path.join(PATH_TO_HERE, '/app/.heroku/python/bin/lessc')
