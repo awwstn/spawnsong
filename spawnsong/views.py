@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
+from django.http import HttpResponseRedirect
 import models
+import forms
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -31,7 +33,28 @@ def snippet(request, snippet_id):
         models.Comment.objects.create(user=request.user, snippet=snippet, content=comment, ip_address=get_client_ip(request))
     return render_to_response(
         "spawnsong/snippet.html",
-        {"snippet": snippet},
+        {
+            "snippet": snippet,
+            "editable": request.user.is_authenticated() and snippet.song.artist.user == request.user,
+            "order_count": snippet.order_count()
+        },
+        context_instance=RequestContext(request))
+
+@login_required
+def upload(request):
+    form = forms.UploadSnippetForm()
+    if request.method == 'POST':
+        form = forms.UploadSnippetForm(request.POST, request.FILES)
+        if form.is_valid():
+            snippet = form.save(request.user)
+            return HttpResponseRedirect(snippet.get_absolute_url())
+    else:
+        form = forms.UploadSnippetForm()
+    return render_to_response(
+        "spawnsong/upload.html",
+        {
+           "form": form 
+        },
         context_instance=RequestContext(request))
 
 def user(request, username):

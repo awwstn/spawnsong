@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+  <div class="upload-view" id="uploadContainer">
+    <div class="upload">
+      <div class="panel-heading">
+        <h1>Upload new Song Snippet</h1>
+      </div>
+      <div class="panel-body">
+        {% crispy form %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

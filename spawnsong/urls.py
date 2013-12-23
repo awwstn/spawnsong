@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     
     url(r'^s/([^/]+)/$', 'spawnsong.views.snippet',name="snippet"),
     url(r'^u/([^/]+)/$', 'spawnsong.views.user',name="user"),
+    url(r'^upload/$', 'spawnsong.views.upload',name="upload"),
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

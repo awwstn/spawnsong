@@ -16,6 +16,7 @@
         <h2 class="username artist">by <a href="{{ snippet.song.artist.get_absolute_url }}">{{ snippet.song.artist.get_display_name }}</a></h2>
         <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
         <button class="{% if snippet.is_complete %}pre-order{% else %}order{% endif %}" id="order">{% if not snippet.is_complete%}Pre {% endif %}Order</button>
+        {% if order_count > 0 %}<div class="order-count">{{ order_count }} {% if not snippet.is_complete%}Pre {% endif %}Order</div>{% endif %}
         
       </div>
       <div class="comments" id="comments">

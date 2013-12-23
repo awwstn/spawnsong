@@ -125,6 +125,9 @@ INSTALLED_APPS = (
     'storages',
     'south',
     'gunicorn',
+    'crispy_forms',
+    'djcelery',
+    'kombu.transport.django',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -148,15 +151,11 @@ LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 
-AWS_STORAGE_BUCKET_NAME = "spawnsong"
+AWS_STORAGE_BUCKET_NAME = "spawnsong-test"
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-
-AWS_ACCESS_KEY="TODO"
-AWS_SECRET_ACCESS_KEY="TODO"
-AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -200,6 +199,12 @@ LOGGING = {
 
 SONG_PRICE = 500
 
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+
+BROKER_URL = 'django://'
+
 try:
     from local_settings import *
 except ImportError:
@@ -211,4 +216,7 @@ except ImportError:
     import dj_database_url
     DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
 
+    AWS_ACCESS_KEY=os.getenv("AWS_ACCESS_KEY")
+    AWS_SECRET_ACCESS_KEY=os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
     
