@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 import models
 import forms
 
@@ -20,9 +20,10 @@ def authed(request):
         context_instance=RequestContext(request))
 
 def frontpage(request):
-    return render_to_response(
-        "spawnsong/home.html",
-        context_instance=RequestContext(request))
+    return HttpResponse("frontpage")
+    # return render_to_response(
+    #     "spawnsong/home.html",
+    #     context_instance=RequestContext(request))
 
 
 def snippet(request, snippet_id):
