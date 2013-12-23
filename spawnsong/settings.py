@@ -93,10 +93,9 @@ PIPELINE_CSS = {
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
 # If we are on heroku we want to re-define the location of the less binary.
-HEROKU_LESSC = os.path.join(PATH_TO_HERE, 'lib/node_modules/less/bin/lessc')
-HEROKU_NODE = os.path.join(PATH_TO_HERE, 'bin/node')
+HEROKU_LESSC = os.path.join(PATH_TO_HERE, '/app/.heroku/python/bin/lessc')
 if os.path.exists(HEROKU_LESSC):
-    PIPELINE_LESS_BINARY = "{0} {1}".format(HEROKU_NODE, HEROKU_LESSC)
+    PIPELINE_LESS_BINARY = HEROKU_LESSC
  
 
 # Make this unique, and don't share it with anybody.
