@@ -1,2 +1,1 @@
-web: python manage.py runserver 0.0.0.0:$PORT
-celeryd: python manage.py celeryd
+web: honcho -f ProcfileHoncho start
