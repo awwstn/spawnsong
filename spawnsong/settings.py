@@ -90,6 +90,17 @@ PIPELINE_CSS = {
     },
 }
 
+PIPELINE_JS = {
+    'scripts': {
+        'source_filenames': (
+          'js/vendor/jquery.js',
+          'mediaelement/mediaelement-and-player.min.js',
+          'js/app.js',
+        ),
+        'output_filename': 'js/scripts.js',
+    },
+}
+
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
 # If we are on heroku we want to re-define the location of the less binary.
