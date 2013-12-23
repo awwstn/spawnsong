@@ -90,15 +90,15 @@ PIPELINE_CSS = {
     },
 }
 
-PIPELINE_JS = {
-    'scripts': {
-        'source_filenames': (
-          'js/vendor/jquery.js',
-          'js/app.js',
-          'mediaelement/mediaelement-and-player.js',
-        ),
-        'output_filename': 'js/compiled/site.js',
-    },
+# PIPELINE_JS = {
+#     'scripts': {
+#         'source_filenames': (
+#           'js/vendor/jquery.js',
+#           'js/app.js',
+#           'mediaelement/mediaelement-and-player.js',
+#         ),
+#         'output_filename': 'js/compiled/site.js',
+#     },
 }
 
 PIPELINE_MIMETYPES = (
