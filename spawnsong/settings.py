@@ -111,7 +111,7 @@ PIPELINE_MIMETYPES = (
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
-PIPELINE_ENABLED = True
+PIPELINE_ENABLED = False
 PIPELINE_DISABLE_WRAPPER = True
 
 # If we are on heroku we want to re-define the location of the less binary.
