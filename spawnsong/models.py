@@ -5,9 +5,20 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.conf import settings
 import datetime
+from jsonfield import JSONField
+from django.db.models import Q
 
 class Artist(models.Model):
-    artist = models.OneToOneField(Artist)
+    user = models.OneToOneField(User)
+
+    def get_absolute_url(self):
+        return reverse("user", args=(self.user.username,))
+
+    def get_display_name(self):
+        return self.user.username
+
+    def __unicode__(self):
+        return unicode(self.user)
     
 class Song(models.Model):
     """
@@ -22,8 +33,18 @@ class Song(models.Model):
     
     # TODO: Needs to be uploaded to a protected location. Maybe just
     # use a CharField with an S3 location in it?
-    complete_audio = models.FieldField(null=True)
-    completed_at = models.DateTimeField(null=True, help_text="The time at which the completed audio file was uploaded")
+    complete_audio = models.FileField(null=True, upload_to="songs/complete", blank=True)
+    completed_at = models.DateTimeField(null=True, help_text="The time at which the completed audio file was uploaded", blank=True)
+
+    def __unicode__(self):
+        return u"Song id %d by %s" % (self.id, self.artist)
+
+class SnippetManager(models.Manager):
+    def visible_to(self, user):
+        q = Q(state="published")
+        if user and user.is_authenticated():
+           q = q | Q(song__artist__user=user)
+        return self.filter(q)
     
 class Snippet(models.Model):
     """
@@ -31,15 +52,21 @@ class Snippet(models.Model):
     """
     song = models.ForeignKey(Song)
     title = models.CharField(max_length=255)
+    slug = models.SlugField()
     state = models.CharField(max_length=20, choices=(("processing", "Processing"), ("ready", "Ready"), ("published", "Published")), default="processing")
 
     created_at = models.DateTimeField(default=datetime.datetime.now)
 
     image = models.ImageField(upload_to="snippets/images")
-    audio = models.FieldField(upload_to="snippets/audio", null=True)
-    echonest_data = models.JSONField(blank=True, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
+    audio = models.FileField(upload_to="snippets/audio", null=True)
+    echonest_data = JSONField(blank=True, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
 
     visualisation_effect = models.CharField(max_length=20, choices=(("pulsate", "Pulsate"), ("none", "None")), default="pulsate")
+
+    objects = SnippetManager()
+
+    def is_complete(self):
+        return self.song.completed_at is not None
     
     def markReady(self, commit=True):
        assert self.state == "processing" 
@@ -57,6 +84,9 @@ class Snippet(models.Model):
     @property
     def price(self):
         return settings.SONG_PRICE
+
+    def __unicode__(self):
+        return self.title
     
 class Order(models.Model):
     "A pre-order or order for a song"
@@ -70,12 +100,18 @@ class Order(models.Model):
 
     stripe_transaction_id = models.CharField(max_length=255)
 
+    def __unicode__(self):
+        return "Order for %s by %s" % (self.song, self.purchaser)
+
 class ArtistPayment(models.Model):
     "A payment that the system caluclated is owed to an artist"
     arist = models.ForeignKey(Artist)
     orders = models.ManyToManyField(Order)
     created_at = models.DateTimeField(default=datetime.datetime.now)
     paid = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return "Payment to %s" % (self.artist,)
 
 class Comment(models.Model):
     """
@@ -85,7 +121,13 @@ class Comment(models.Model):
     snippet = models.ForeignKey(Snippet)
     created_at = models.DateTimeField(default=datetime.datetime.now)
     content = models.TextField()
-    ip_address = models.GenericIPAddressField(_('IP address'), unpack_ipv4=True, blank=True, null=True)
+    ip_address = models.GenericIPAddressField(('IP address'), unpack_ipv4=True, blank=True, null=True)
 
     is_displayed = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ("created_at",)
+        
+    def __unicode__(self):
+        return u"%s: %s" % (self.user, self.content)
     

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+  <div class="snippet-view" id="snippetContainer">
+    <div class="player" id="playerContainer">
+      <video controls>
+        <source src="http://distilleryvesper1-1.ak.instagram.com/28d33b4c5cc711e3a4d80a6a9f72504c_101.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="details" id="detailsContainer">
+      <div class="header">
+        <h1 class="snippet-title">{{ snippet.title }}</h1>
+        <h2 class="username artist">by <a href="{{ snippet.song.artist.get_absolute_url }}">{{ snippet.song.artist.get_display_name }}</a></h2>
+        <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
+        <button class="{% if snippet.is_complete %}pre-order{% else %}order{% endif %}" id="order">{% if not snippet.is_complete%}Pre {% endif %}Order</button>
+        
+      </div>
+      <div class="comments" id="comments">
+        <ul>
+          {% for comment in snippet.comment_set.all %}
+          <li class="comment">
+            <span class="avatar"></span>
+            <div class="timestamp">{{ comment.created_at|naturaltime }}</div>
+            <div class="username">{{ comment.user.username }}</div>
+            <div class="text">{{ comment.content }}</div>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="newcomment">
+          <span class="avatar"></span>
+          <form action="." method="post" onsubmit="spawnsong.snippet.post_comment(); return false">
+            {% csrf_token %}
+            <!-- Honey-pot: --> <input class="badger" name="badger" placeholder="Don't type anything in this field.">
+            <input id="commentText" name="comment"> <button class="btn" id="addcomment">Comment</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

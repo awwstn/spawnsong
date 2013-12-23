@@ -6,14 +6,17 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'spawnsong.views.home', name='home'),
+    url(r'^$', 'spawnsong.views.frontpage', name='frontpage'),
 
     # For social auth (facebook, twitter etc) uncomment this line
-    #url(r'', include('social_auth.urls')),
+    url(r'', include('social_auth.urls')),
 
     # Overwise use these lines for username/password auth
     url(r'^login/$', 'django.contrib.auth.views.login',name="login"),
     url(r'^logout/$', 'django.contrib.auth.views.logout',name="logout"),
+    
+    url(r'^s/([^/]+)/$', 'spawnsong.views.snippet',name="snippet"),
+    url(r'^u/([^/]+)/$', 'spawnsong.views.user',name="user"),
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

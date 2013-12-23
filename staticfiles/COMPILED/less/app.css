@@ -6051,6 +6051,9 @@ td.visible-print {
 .pagination .active > a:hover {
   border-color: #ddd;
 }
+.badger {
+  display: none !important;
+}
 .snippet-view {
   margin-left: -15px;
   margin-right: -15px;
@@ -6092,7 +6095,6 @@ td.visible-print {
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
-  height: 654px;
   background-color: #eaeaea;
 }
 @media (min-width: 1200px) {
@@ -6111,7 +6113,8 @@ td.visible-print {
   top: 5px;
   right: 15px;
 }
-.snippet-view .details .header .pre-order {
+.snippet-view .details .header .pre-order,
+.snippet-view .details .header .order {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -6141,26 +6144,34 @@ td.visible-print {
   filter: none;
   border: 1px solid #a91b0c;
 }
-.snippet-view .details .header .pre-order:focus {
+.snippet-view .details .header .pre-order:focus,
+.snippet-view .details .header .order:focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
 .snippet-view .details .header .pre-order:hover,
-.snippet-view .details .header .pre-order:focus {
+.snippet-view .details .header .order:hover,
+.snippet-view .details .header .pre-order:focus,
+.snippet-view .details .header .order:focus {
   color: #ffffff;
   text-decoration: none;
 }
 .snippet-view .details .header .pre-order:active,
-.snippet-view .details .header .pre-order.active {
+.snippet-view .details .header .order:active,
+.snippet-view .details .header .pre-order.active,
+.snippet-view .details .header .order.active {
   outline: 0;
   background-image: none;
   -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
 }
 .snippet-view .details .header .pre-order.disabled,
+.snippet-view .details .header .order.disabled,
 .snippet-view .details .header .pre-order[disabled],
-fieldset[disabled] .snippet-view .details .header .pre-order {
+.snippet-view .details .header .order[disabled],
+fieldset[disabled] .snippet-view .details .header .pre-order,
+fieldset[disabled] .snippet-view .details .header .order {
   cursor: not-allowed;
   pointer-events: none;
   opacity: 0.65;
@@ -6169,38 +6180,62 @@ fieldset[disabled] .snippet-view .details .header .pre-order {
   box-shadow: none;
 }
 .snippet-view .details .header .pre-order:hover,
+.snippet-view .details .header .order:hover,
 .snippet-view .details .header .pre-order:focus,
+.snippet-view .details .header .order:focus,
 .snippet-view .details .header .pre-order:active,
+.snippet-view .details .header .order:active,
 .snippet-view .details .header .pre-order.active,
-.open .dropdown-toggle.snippet-view .details .header .pre-order {
+.snippet-view .details .header .order.active,
+.open .dropdown-toggle.snippet-view .details .header .pre-order,
+.open .dropdown-toggle.snippet-view .details .header .order {
   color: #ffffff;
   background-color: #b31d0c;
   border-color: #a01a0b;
 }
 .snippet-view .details .header .pre-order:active,
+.snippet-view .details .header .order:active,
 .snippet-view .details .header .pre-order.active,
-.open .dropdown-toggle.snippet-view .details .header .pre-order {
+.snippet-view .details .header .order.active,
+.open .dropdown-toggle.snippet-view .details .header .pre-order,
+.open .dropdown-toggle.snippet-view .details .header .order {
   background-image: none;
 }
 .snippet-view .details .header .pre-order.disabled,
+.snippet-view .details .header .order.disabled,
 .snippet-view .details .header .pre-order[disabled],
+.snippet-view .details .header .order[disabled],
 fieldset[disabled] .snippet-view .details .header .pre-order,
+fieldset[disabled] .snippet-view .details .header .order,
 .snippet-view .details .header .pre-order.disabled:hover,
+.snippet-view .details .header .order.disabled:hover,
 .snippet-view .details .header .pre-order[disabled]:hover,
+.snippet-view .details .header .order[disabled]:hover,
 fieldset[disabled] .snippet-view .details .header .pre-order:hover,
+fieldset[disabled] .snippet-view .details .header .order:hover,
 .snippet-view .details .header .pre-order.disabled:focus,
+.snippet-view .details .header .order.disabled:focus,
 .snippet-view .details .header .pre-order[disabled]:focus,
+.snippet-view .details .header .order[disabled]:focus,
 fieldset[disabled] .snippet-view .details .header .pre-order:focus,
+fieldset[disabled] .snippet-view .details .header .order:focus,
 .snippet-view .details .header .pre-order.disabled:active,
+.snippet-view .details .header .order.disabled:active,
 .snippet-view .details .header .pre-order[disabled]:active,
+.snippet-view .details .header .order[disabled]:active,
 fieldset[disabled] .snippet-view .details .header .pre-order:active,
+fieldset[disabled] .snippet-view .details .header .order:active,
 .snippet-view .details .header .pre-order.disabled.active,
+.snippet-view .details .header .order.disabled.active,
 .snippet-view .details .header .pre-order[disabled].active,
-fieldset[disabled] .snippet-view .details .header .pre-order.active {
+.snippet-view .details .header .order[disabled].active,
+fieldset[disabled] .snippet-view .details .header .pre-order.active,
+fieldset[disabled] .snippet-view .details .header .order.active {
   background-color: #d9230f;
   border-color: #d9230f;
 }
-.snippet-view .details .header .pre-order .badge {
+.snippet-view .details .header .pre-order .badge,
+.snippet-view .details .header .order .badge {
   color: #d9230f;
   background-color: #fff;
 }
@@ -6230,6 +6265,9 @@ fieldset[disabled] .snippet-view .details .header .pre-order.active {
   padding-left: 0;
   list-style: none;
   margin: 15px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-bottom: 20px;
 }
 .snippet-view .details .comments > ul .comment {
   clear: left;

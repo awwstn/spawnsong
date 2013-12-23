@@ -7,6 +7,12 @@
 @timestamp-color: lighten(@gray,50%);
 @icon-font-path:          "../fonts/";
 
+// Honey pot to fool bots (probably best not to use the word "honey"
+// in its name or class)
+.badger {
+    display: none !important;
+}
+
 .snippet-view {
     .make-row();
 
@@ -23,7 +29,6 @@
 
     .details {
         .make-lg-column(5);
-        height: 654px; // TEMPORARY HACK! Match the height of the player
         
         background-color: @details-bg;
 
@@ -38,7 +43,7 @@
                 right: 15px;
             }
             
-            .pre-order {
+            .pre-order, .order {
                 .btn();
                 .btn-primary();
             }
@@ -52,6 +57,9 @@
             & > ul{
                 .list-unstyled();
                 margin: 15px;
+                overflow-y: scroll;
+                overflow-x: hidden;
+                margin-bottom: 20px;
 
                 .comment {
                     clear: left;
