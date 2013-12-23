@@ -1,4 +1,4 @@
-# Django settings for songspawn project.
+# Django settings for spawnsong project.
 import os,sys
 
 DEBUG = False
@@ -8,7 +8,7 @@ ADMINS = (
     ('Thomas Parslow', 'tom@almostobsolete.net'),
 )
 
-ALLOWED_HOSTS = ["songspawn.herokuapp.com"]
+ALLOWED_HOSTS = ["spawnsong.herokuapp.com"]
 if DEBUG:
     ALLOWED_HOSTS.append("localhost")
 # To lockdown pages set a password here and enable the middleware below
@@ -97,10 +97,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'songspawn.urls'
+ROOT_URLCONF = 'spawnsong.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'songspawn.wsgi.application'
+WSGI_APPLICATION = 'spawnsong.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -118,7 +118,7 @@ INSTALLED_APPS = (
     'django.contrib.comments',
     'social_auth',
 #    'social_auth.backends.facebook.FacebookBackend',
-    'songspawn',
+    'spawnsong',
     'lockdown',
     'static_precompiler',
     'storages',
@@ -147,7 +147,7 @@ LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 
-AWS_STORAGE_BUCKET_NAME = "songspawn"
+AWS_STORAGE_BUCKET_NAME = "spawnsong"
 
 #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
