@@ -96,6 +96,10 @@ STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 HEROKU_LESSC = os.path.join(PATH_TO_HERE, '/app/.heroku/python/bin/lessc')
 if os.path.exists(HEROKU_LESSC):
     PIPELINE_LESS_BINARY = HEROKU_LESSC
+    
+HEROKU_YUGLIFY = os.path.join(PATH_TO_HERE, '/app/.heroku/python/bin/yuglify')
+if os.path.exists(HEROKU_YUGLIFY):
+    PIPELINE_YUFLIFY_BINARY = HEROKU_YUGLIFY
  
 
 # Make this unique, and don't share it with anybody.
