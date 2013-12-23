@@ -15,7 +15,7 @@ Deploy Notes
 Styles are written in LESS and compiled automatically with django-static-precompiler which requires `lessc` to be available on the path.
 
 
-    heroku config:add BUILDPACK_URL=https://github.com/integricho/heroku-buildpack-python-ffmpeg.git
+    heroku config:add BUILDPACK_URL=https://github.com/almost/heroku-buildpack-python-ffmpeg.git
 
 Accounts
 --------

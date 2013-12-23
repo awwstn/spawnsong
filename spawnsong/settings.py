@@ -4,6 +4,8 @@ import os,sys
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+PATH_TO_HERE = os.getcwd()
+
 ADMINS = (
     ('Thomas Parslow', 'tom@almostobsolete.net'),
 )
@@ -89,6 +91,13 @@ PIPELINE_CSS = {
 }
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+# If we are on heroku we want to re-define the location of the less binary.
+HEROKU_LESSC = os.path.join(PATH_TO_HERE, 'lib/node_modules/less/bin/lessc')
+HEROKU_NODE = os.path.join(PATH_TO_HERE, 'bin/node')
+if os.path.exists(HEROKU_LESSC):
+    PIPELINE_LESS_BINARY = "{0} {1}".format(HEROKU_NODE, HEROKU_LESSC)
+ 
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '70aafb9b05c88cdd116adb4779c11849-bb18f1b98a94a805de5ab7d3b79784e6'
