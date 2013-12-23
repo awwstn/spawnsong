@@ -94,14 +94,25 @@ PIPELINE_JS = {
     'scripts': {
         'source_filenames': (
           'js/vendor/jquery.js',
-          'mediaelement/mediaelement-and-player.min.js',
           'js/app.js',
+          'mediaelement/mediaelement-and-player.js',
         ),
-        'output_filename': 'js/scripts.js',
+        'output_filename': 'js/compiled/site.js',
     },
 }
 
+PIPELINE_MIMETYPES = (
+    ('text/coffeescript', '.coffee'),
+    ('text/less', '.less'),
+    ('text/javascript', '.js'),
+    ('text/x-sass', '.sass'),
+    ('text/x-scss', '.scss')
+    )
+
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
+PIPELINE_ENABLED = True
+PIPELINE_DISABLE_WRAPPER = True
 
 # If we are on heroku we want to re-define the location of the less binary.
 HEROKU_LESSC = os.path.join(PATH_TO_HERE, '/app/.heroku/python/bin/lessc')

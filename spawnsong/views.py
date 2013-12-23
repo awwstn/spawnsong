@@ -20,7 +20,9 @@ def authed(request):
         context_instance=RequestContext(request))
 
 def frontpage(request):
-    return HttpResponse("frontpage")
+    import mimetypes
+    import pdb; pdb.set_trace()
+    return HttpResponse(repr(mimetypes.guess_type("staticfiles/js/vendor/jquery.91515770ce8c.js")))
     # return render_to_response(
     #     "spawnsong/home.html",
     #     context_instance=RequestContext(request))
