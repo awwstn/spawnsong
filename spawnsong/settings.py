@@ -71,9 +71,25 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'static_precompiler.finders.StaticPrecompilerFinder',
+    'compressor.finders.CompressorFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
+
+PIPELINE_COMPILERS = (
+  'pipeline.compilers.less.LessCompiler',
+)
+
+PIPELINE_CSS = {
+    'styles': {
+        'source_filenames': (
+          'less/app.less',
+          'mediaelement/mediaelementplayer.css',
+        ),
+        'output_filename': 'css/style.css',
+    },
+}
+
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '70aafb9b05c88cdd116adb4779c11849-bb18f1b98a94a805de5ab7d3b79784e6'
@@ -121,7 +137,7 @@ INSTALLED_APPS = (
 #    'social_auth.backends.facebook.FacebookBackend',
     'spawnsong',
     'lockdown',
-    'static_precompiler',
+     'pipeline',
     'storages',
     'south',
     'gunicorn',

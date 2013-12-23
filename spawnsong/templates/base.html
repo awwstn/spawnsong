@@ -1,11 +1,10 @@
-{% load less %}
+{% load compressed %}
 <!DOCTYPE html>
 <html>
   <head>
     <title></title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}{% less "less/app.less" %}">
-    <link rel="stylesheet" href="{{ STATIC_URL }}mediaelement/mediaelementplayer.css" /></code>
+    {% compressed_css 'styles' %}
   </head>
   <body>
 
