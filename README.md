@@ -15,13 +15,13 @@ Deploy Notes
 Styles are written in LESS and compiled automatically with django-static-precompiler which requires `lessc` to be available on the path.
 
 
-    heroku config:add BUILDPACK_URL=https://github.com/integricho/heroku-buildpack-python-]
+    heroku config:add BUILDPACK_URL=https://github.com/integricho/heroku-buildpack-python-ffmpeg.git
 
 Accounts
 --------
 
 - S3
 - Heroku
-- Mailgun?
+- Mailgun (have created spawnsong account)
 
 

@@ -205,9 +205,11 @@ CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 BROKER_URL = 'django://'
 
-FFMPEG_EXECUTABLE = "ffmpeg"
+FFMPEG_EXECUTABLE = "vendor/ffmpeg/bin/ffmpeg"
 
 AUDIO_BITRATE = "128k"
+
+EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 
 
 
@@ -226,3 +228,5 @@ except ImportError:
     AWS_SECRET_ACCESS_KEY=os.getenv("AWS_SECRET_ACCESS_KEY")
     AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
     
+    MAILGUN_ACCESS_KEY = os.getenv("MAILGUN_ACCESS_KEY")
+    MAILGUN_SERVER_NAME = os.getenv("MAILGUN_SERVER_NAME")
