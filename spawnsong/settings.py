@@ -99,7 +99,7 @@ PIPELINE_CSS = {
 #         ),
 #         'output_filename': 'js/compiled/site.js',
 #     },
-}
+# }
 
 PIPELINE_MIMETYPES = (
     ('text/coffeescript', '.coffee'),
