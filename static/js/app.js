@@ -29,6 +29,9 @@
 
   $(document).ready(function () {
     spawnsong.snippet.setHeights();
+    setTimeout(function () {
+      spawnsong.snippet.setHeights();
+    }, 500);
 
     $('audio').mediaelementplayer({
       videoHeight: 0,
