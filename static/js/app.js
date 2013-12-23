@@ -23,8 +23,16 @@
       var playerHeight = $('#playerContainer').height();
       $('#detailsContainer').css({height: playerHeight + 'px'});
       $('#comments ul').css({height: playerHeight-$('#comments ul').position().top-50});
-    }
+    },
+
   };
 
-  $(document).ready(spawnsong.snippet.setHeights);
+  $(document).ready(function () {
+    spawnsong.snippet.setHeights();
+
+    $('audio').mediaelementplayer({
+      videoHeight: 0,
+      features: ['playpause','progress','current','duration', 'volume']
+    });
+  });
 })(window.spawnsong = {});

@@ -177,7 +177,7 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'console':{
-            'level':'ERROR',
+            'level':'DEBUG',
             'class':'logging.StreamHandler',
             'stream': sys.stdout,
             # 'formatter': 'standard'
@@ -191,7 +191,7 @@ LOGGING = {
         },
         '': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
             'propagate': False
         },
     }
@@ -204,6 +204,12 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 BROKER_URL = 'django://'
+
+FFMPEG_EXECUTABLE = "ffmpeg"
+
+AUDIO_BITRATE = "128k"
+
+
 
 try:
     from local_settings import *

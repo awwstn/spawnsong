@@ -5,10 +5,20 @@
 <div class="container">
   <div class="snippet-view" id="snippetContainer">
     <div class="player" id="playerContainer">
-      <video controls>
-        <source src="http://distilleryvesper1-1.ak.instagram.com/28d33b4c5cc711e3a4d80a6a9f72504c_101.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+      <img src="{{ snippet.image.url }}" class="img-responsive">
+      {% if snippet.audio_ready %}
+      <audio width="653" height="30" controls="controls" preload="none">
+        <source type="audio/mp3" src="{{ snippet.audio_mp3.url }}" />
+        <object width="320" height="240" type="application/x-shockwave-flash" data="{{ STATIC_URL }}mediaelement/flashmediaelement.swf">
+          <param name="movie" value="{{ STATIC_URL }}mediaelement/flashmediaelement.swf" />
+          <param name="flashvars" value="controls=true&file={{ snippet.audio_mp3.url }}" />
+          <!-- Image as a last resort -->
+          Sorry, audio playback is not support on your browser.
+        </object>
+      </audio>
+      {% else %}
+      Processing...
+      {% endif %}
     </div>
     <div class="details" id="detailsContainer">
       <div class="header">

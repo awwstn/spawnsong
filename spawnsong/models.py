@@ -61,15 +61,16 @@ class Snippet(models.Model):
     """
     song = models.ForeignKey(Song)
     title = models.CharField(max_length=255)
-    slug = models.SlugField()
     state = models.CharField(max_length=20, choices=(("processing", "Processing"), ("ready", "Ready"), ("published", "Published")), default="processing")
 
     created_at = models.DateTimeField(default=datetime.datetime.now)
 
     image = models.ImageField(upload_to=upload_to("snippets/images"))
-    uploaded_audio = models.FileField(upload_to=upload_to("snippets/original-audio"), null=True, help_text="Original audio file as uploaded by user")
-    audio = models.FileField(upload_to=upload_to("snippets/audio"), null=True, help_text="Transcoded audio for streaming")
-    echonest_data = JSONField(blank=True, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
+    uploaded_audio = models.FileField(upload_to=upload_to("snippets/audio/uploaded"), null=True, help_text="Original audio file as uploaded by user")
+    
+    audio_mp3 = models.FileField(upload_to=upload_to("snippets/audio/mp3"), null=True, help_text="Transcoded audio for streaming (mp3 format)")
+    
+    echonest_data = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
 
     visualisation_effect = models.CharField(max_length=20, choices=(("pulsate", "Pulsate"), ("none", "None")), default="pulsate")
 
@@ -80,10 +81,13 @@ class Snippet(models.Model):
 
     def order_count(self):
         return self.song.order_set.count()
+
+    def audio_ready(self):
+        return bool(self.audio_mp3)
     
     def mark_ready(self, commit=True):
        assert self.state == "processing" 
-       assert self.audio is not None, "Audio should be present before the snippet is marked as ready"
+       assert self.audio_mp3, "Audio should be present before the snippet is marked as ready"
        assert self.echonest_data is not None, "Echonest data should be present before snippet is marked as ready"
        self.state = "ready"
        
