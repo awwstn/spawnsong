@@ -70,7 +70,8 @@ class Snippet(models.Model):
     
     audio_mp3 = models.FileField(upload_to=upload_to("snippets/audio/mp3"), null=True, help_text="Transcoded audio for streaming (mp3 format)")
     
-    echonest_data = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
+    echonest_track_profile = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
+    echonest_track_analysis = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
 
     visualisation_effect = models.CharField(max_length=20, choices=(("pulsate", "Pulsate"), ("none", "None")), default="pulsate")
 
@@ -84,11 +85,18 @@ class Snippet(models.Model):
 
     def audio_ready(self):
         return bool(self.audio_mp3)
+
+    def maybe_ready(self):
+        "Move to ready state if the needed info has been retrieved"
+        assert self.state == "processing" 
+        if self.audio_mp3 and self.echonest_track_analysis:
+            self.mark_ready()
+       
     
     def mark_ready(self, commit=True):
        assert self.state == "processing" 
        assert self.audio_mp3, "Audio should be present before the snippet is marked as ready"
-       assert self.echonest_data is not None, "Echonest data should be present before snippet is marked as ready"
+       assert self.echonest_track_analysis is not None, "Echonest data should be present before snippet is marked as ready"
        self.state = "ready"
        
        if commit:
@@ -102,7 +110,7 @@ class Snippet(models.Model):
 
     def process_uploaded_audio(self):
         tasks.transcode_snippet_audio.delay(self.id)
-        tasks.retireve_echonest_data.delay(self.id)
+        tasks.request_echonest_data.delay(self.id)
 
     @property
     def price(self):
