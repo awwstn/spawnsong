@@ -16,14 +16,8 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
-@login_required
-def authed(request):
-    return render_to_response(
-        "spawnsong/authed.html",
-        context_instance=RequestContext(request))
-
 def frontpage(request):
-    snippets = models.Snippet.objects.all()
+    snippets = models.Snippet.objects.visible_to(request.user)
     return render_to_response(
         "spawnsong/frontpage.html",
         {
@@ -67,7 +61,7 @@ def upload(request):
 
 def user(request, username):
     artist = get_object_or_404(models.Artist, user__username=username)
-    snippets = models.Snippet.objects.filter(song__artist=artist).select_related('song')
+    snippets = models.Snippet.objects.visible_to(request.user).filter(song__artist=artist).select_related('song')
     return render_to_response(
         "spawnsong/user.html",
         {

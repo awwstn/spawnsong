@@ -19,9 +19,17 @@
           </button>
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
+          
+          <ul class="nav navbar-nav">
+            <li><a href="/upload/" >Upload a Song Snippet</a></li>
+          </ul>
 
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" target="_blank">Log In/Sign Up</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="/logout/?next=/" >{{ user.username }} (Log Out)</a></li>
+            {% else %}
+            <li><a href="/login/" >Log In/Sign Up</a></li>
+            {% endif %}
           </ul>
 
         </div>

@@ -167,11 +167,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.comments',
     'django.contrib.humanize',
+    'registration',
     'social_auth',
-#    'social_auth.backends.facebook.FacebookBackend',
-    'spawnsong',
     'lockdown',
-     'pipeline',
+    'pipeline',
     'storages',
     'south',
     'gunicorn',
@@ -180,10 +179,11 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'pagination',
     'kombu.transport.django',
-    # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'spawnsong',
+    # Uncomment the next line to enable the admin:
+    'django.contrib.admin',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -206,8 +206,10 @@ else:
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.twitter.TwitterBackend',
 )
+
+ACCOUNT_ACTIVATION_DAYS = 7
 
 FACEBOOK_APP_ID = 'TODO'
 FACEBOOK_API_SECRET = 'TODO'
@@ -305,3 +307,6 @@ except ImportError:
     MAILGUN_SERVER_NAME = os.getenv("MAILGUN_SERVER_NAME")
     
     ECHONEST_API_KEY = os.getenv("ECHONEST_API_KEY")
+    
+    TWITTER_CONSUMER_KEY         = os.getenv("TWITTER_CONSUMER_KEY")
+    TWITTER_CONSUMER_SECRET      = os.getenv("TWITTER_CONSUMER_SECRET")

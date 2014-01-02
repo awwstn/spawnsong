@@ -1,22 +1,41 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title></title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="//MYAPPNAME.s3.amazonaws.com/css/style.css">
-  </head>
-  <body>
-    <form action="/login/" method="post">
-      {% csrf_token %}
-      {% if next %}
-      <input type="hidden" name="next" value="{{ next }}" />
-      {% endif %}
-      username:
-      <input type="text" name="username" value="{{ username}}" /><br />
-      password:
-      <input type="password" name="password" value="" /><br />
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
 
-      <input type="submit" value="Log In" />
-    </form>
-  </body>
-</html>
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="accounts-view">
+
+    <div class="accounts-form">
+      <!-- <div class="panel-heading"> -->
+      <!--   <h1>Sign in with Twitter</h1> -->
+      <!-- </div> -->
+      <div class="panel-body">
+        <a class="twitter" href="/login/twitter/?next={{next}}"><img src="{{ STATIC_URL }}images/twitter-login-button.png" width="158" height="28"></a>
+      </div>
+    </div>
+
+    <div class="or">OR</div>
+    
+    <div class="accounts-form">
+      <div class="panel-heading">
+        <h1>Sign in with a username and password</h1>
+        <a href="/accounts/register/">Register for an account</a> | 
+        <a href="/password/reset/">Forgotten your password?</a>
+      </div>
+      <div class="panel-body">
+        <form class="form-horizontal" method="post" action="/login/">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+  </div>
+</div>
+{% endblock %}

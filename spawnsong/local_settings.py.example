@@ -16,3 +16,17 @@ DATABASES = {
         'NAME': os.path.join(PROJECT_PATH, 'development_database.sqlite'),
     }
 }
+
+TWITTER_CONSUMER_KEY         = ''
+TWITTER_CONSUMER_SECRET      = ''
+
+# spawnsong user
+AWS_ACCESS_KEY=""
+AWS_SECRET_ACCESS_KEY="+cmbMcguKf67nGRx51N4r"
+
+MAILGUN_ACCESS_KEY = ""
+MAILGUN_SERVER_NAME = ""
+
+ECHONEST_API_KEY = ""
+
+FFMPEG_EXECUTABLE = ""
