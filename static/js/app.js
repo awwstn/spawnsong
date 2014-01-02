@@ -35,7 +35,26 @@
 
     $('audio').mediaelementplayer({
       videoHeight: 0,
-      features: ['playpause','progress','current','duration', 'volume']
+      features: ['playpause','progress','current','duration', 'volume'],
+      success: function (mediaElement, domObject) { 
+        
+        // add event listener
+        mediaElement.addEventListener('timeupdate', function(e) {
+          
+          console.log(mediaElement.currentTime);
+          $('#playerImage').show();
+          SONGSPAWN_BEAT_LOCATIONS.forEach(function (location) {
+            if (Math.abs(mediaElement.currentTime-location) < 0.15) {
+              console.log('BEAT', Math.abs(mediaElement.currentTime-location));
+              $('#playerImage').hide();
+            }
+          });
+          // document.getElementById('current-time').innerHTML = mediaElement.currentTime;
+          
+        }, false);
+        
+        
+      },
     });
   });
 })(window.spawnsong = {});

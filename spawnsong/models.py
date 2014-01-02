@@ -86,6 +86,9 @@ class Snippet(models.Model):
     def audio_ready(self):
         return bool(self.audio_mp3)
 
+    def beat_locations(self):
+        return self.echonest_track_analysis and [x["start"] for x in self.echonest_track_analysis["beats"]]
+
     def maybe_ready(self):
         "Move to ready state if the needed info has been retrieved"
         assert self.state == "processing" 

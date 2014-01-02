@@ -2,12 +2,17 @@
 {% load humanize %}
 
 {% block content %}
+
+<script>
+  var SONGSPAWN_BEAT_LOCATIONS = {{beats_json}};
+</script>
+
 <div class="container">
   <div class="snippet-view" id="snippetContainer">
     <div class="player" id="playerContainer">
-      <img src="{{ snippet.image.url }}" class="img-responsive">
+      <img src="{{ snippet.image.url }}" class="img-responsive" id="playerImage">
       {% if snippet.audio_ready %}
-      <audio width="653" height="30" controls="controls" preload="none">
+      <audio id="audioPlayer" width="653" height="30" controls="controls" preload="none">
         <source type="audio/mp3" src="{{ snippet.audio_mp3.url }}" />
         <object width="320" height="240" type="application/x-shockwave-flash" data="{{ STATIC_URL }}mediaelement/flashmediaelement.swf">
           <param name="movie" value="{{ STATIC_URL }}mediaelement/flashmediaelement.swf" />

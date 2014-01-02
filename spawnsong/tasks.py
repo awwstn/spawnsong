@@ -9,7 +9,7 @@ import os
 from django.core.files import File
 import requests
 
-logger = logging.getLogger("tasks")
+logger = logging.getLogger("spawnsong.tasks")
 
 @app.task
 def transcode_snippet_audio(snippet_id):
@@ -46,7 +46,7 @@ def transcode_snippet_audio(snippet_id):
     finally:
         logger.debug("Cleaing up temporary directory")
         shutil.rmtree(tmpdir)
-    print "Done"
+    print "Done transcoding"
     logger.debug("Done")
     snippet.maybe_ready()
     

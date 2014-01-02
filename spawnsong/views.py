@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 import models
 import forms
+import json
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -35,6 +36,7 @@ def snippet(request, snippet_id):
     return render_to_response(
         "spawnsong/snippet.html",
         {
+            "beats_json": json.dumps(snippet.beat_locations()),
             "snippet": snippet,
             "editable": request.user.is_authenticated() and snippet.song.artist.user == request.user,
             "order_count": snippet.order_count()
