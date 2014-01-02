@@ -9,6 +9,7 @@ from jsonfield import JSONField
 from django.db.models import Q
 import uuid
 import tasks
+from sorl.thumbnail import ImageField
 
 def upload_to(prefix="uploads"):
     def get_file_path(instance, filename):
@@ -65,7 +66,7 @@ class Snippet(models.Model):
 
     created_at = models.DateTimeField(default=datetime.datetime.now)
 
-    image = models.ImageField(upload_to=upload_to("snippets/images"))
+    image = ImageField(upload_to=upload_to("snippets/images"))
     uploaded_audio = models.FileField(upload_to=upload_to("snippets/audio/uploaded"), null=True, help_text="Original audio file as uploaded by user")
     
     audio_mp3 = models.FileField(upload_to=upload_to("snippets/audio/mp3"), null=True, help_text="Transcoded audio for streaming (mp3 format)")
@@ -82,6 +83,9 @@ class Snippet(models.Model):
 
     def order_count(self):
         return self.song.order_set.count()
+        
+    def comment_count(self):
+        return self.comment_set.count()
 
     def audio_ready(self):
         return bool(self.audio_mp3)
@@ -124,6 +128,9 @@ class Snippet(models.Model):
 
     def get_absolute_url(self):
         return reverse("snippet", args=(self.id,))
+
+    class Meta:
+        ordering = ("-created_at", )
     
 class Order(models.Model):
     "A pre-order or order for a song"

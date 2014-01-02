@@ -176,6 +176,7 @@ INSTALLED_APPS = (
     'gunicorn',
     'crispy_forms',
     'djcelery',
+    'sorl.thumbnail',
     'kombu.transport.django',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -183,6 +184,12 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+try:
+    from memcacheify import memcacheify
+except ImportError:
+    print "Failed to import memacheify, no cache configuration will be set!"
+else:
+    CACHES = memcacheify()
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',

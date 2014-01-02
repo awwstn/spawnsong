@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
@@ -61,7 +62,16 @@ def upload(request):
         context_instance=RequestContext(request))
 
 def user(request, username):
-    pass
+    artist = get_object_or_404(models.Artist, user__username=username)
+    snippets = models.Snippet.objects.filter(song__artist=artist).select_related('song')
+    return render_to_response(
+        "spawnsong/user.html",
+        {
+           "artist": artist,
+           "user": artist.user,
+           "snippets": snippets
+        },
+        context_instance=RequestContext(request))
 
 
     

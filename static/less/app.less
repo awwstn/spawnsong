@@ -13,6 +13,20 @@
     display: none !important;
 }
 
+.content {
+    min-height: calc(~"100% - 80px");
+}
+
+.footer {
+    .container();
+    color: @gray-light;
+}
+
+html, body {
+    height: 100%;
+}
+
+
 .snippet-view {
     .make-row();
 
@@ -116,5 +130,33 @@
         .make-md-column(6);
         .make-md-column-offset(3);
         .panel();
+    }
+}
+
+// Used on user view and on the homepage
+.snippet-list {
+    .make-row();
+
+    .snippet {
+        .make-sm-column(6);
+        .make-md-column(4);
+
+        .thumbnail {
+            // From bootstrap
+            .caption {
+                // From bootstrap
+                .counts {
+                    font-size: 80%;
+                    color: @gray;
+                }
+            }
+
+            .view-snippet {
+                .btn-default();
+                display: block;
+            }
+        }
+
+        
     }
 }
