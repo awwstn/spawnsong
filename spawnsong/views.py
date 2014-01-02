@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
+from django.db.models import Count
 import models
 import forms
 import json
@@ -22,10 +23,13 @@ def authed(request):
         context_instance=RequestContext(request))
 
 def frontpage(request):
-    return HttpResponse("frontpage")
-    # return render_to_response(
-    #     "spawnsong/home.html",
-    #     context_instance=RequestContext(request))
+    snippets = models.Snippet.objects.all()
+    return render_to_response(
+        "spawnsong/frontpage.html",
+        {
+           "snippets": snippets
+        },
+        context_instance=RequestContext(request))
 
 
 def snippet(request, snippet_id):

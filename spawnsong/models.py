@@ -76,7 +76,13 @@ class Snippet(models.Model):
 
     visualisation_effect = models.CharField(max_length=20, choices=(("pulsate", "Pulsate"), ("none", "None")), default="pulsate")
 
+    ordering_score = models.IntegerField(default=0, help_text="Score used to order snippets on front page, calcualted from number of orders at the moment")
+
     objects = SnippetManager()
+
+    def update_ordering_score(self):
+        self.ordering_score = self.song.order_set.count()
+        self.save()
 
     def is_complete(self):
         return self.song.completed_at is not None
@@ -130,7 +136,7 @@ class Snippet(models.Model):
         return reverse("snippet", args=(self.id,))
 
     class Meta:
-        ordering = ("-created_at", )
+        ordering = ("ordering_score","-created_at", )
     
 class Order(models.Model):
     "A pre-order or order for a song"
