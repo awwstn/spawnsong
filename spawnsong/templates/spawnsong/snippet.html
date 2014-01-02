@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load thumbnail %}
 {% load humanize %}
 
 {% block title %}{{ snippet.title }} by {{ user.username }} | Spawnsong{% endblock %}
@@ -12,7 +13,9 @@
 <div class="container">
   <div class="snippet-view" id="snippetContainer">
     <div class="player" id="playerContainer">
-      <img src="{{ snippet.image.url }}" class="img-responsive" id="playerImage">
+      {% thumbnail snippet.image "652" crop="center" as im %}
+      <img src="{{ im.url }}" class="img-responsive" id="playerImage">
+      {% endthumbnail %}
       {% if snippet.audio_ready %}
       <audio id="audioPlayer" width="653" height="30" controls="controls" preload="none">
         <source type="audio/mp3" src="{{ snippet.audio_mp3.url }}" />
