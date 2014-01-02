@@ -1,7 +1,46 @@
 (function (spawnsong) {
   "use strict";
-  
-  spawnsong.snippet = {
+
+  function SnippetView(el) {
+    this.beatLocations = window.SONGSPAWN_BEAT_LOCATIONS;
+    this.ready();
+  }
+
+  SnippetView.prototype = {
+    ready: function () {
+      var _this = this;
+      this.setHeights();
+      setTimeout(function () {
+        _this.setHeights();
+      }, 500);
+      this.setupMediaElementPlayer();
+    },
+    setupMediaElementPlayer: function ( ) {
+      var _this = this;
+      $('audio').mediaelementplayer({
+        videoHeight: 0,
+        features: ['playpause','progress','current','duration', 'volume'],
+        success: function (mediaElement, domObject) { 
+          
+          // add event listener
+          mediaElement.addEventListener('timeupdate', function(e) {
+            
+            console.log(mediaElement.currentTime);
+            $('#playerImage').show();
+            _this.beatLocations.forEach(function (location) {
+              if (Math.abs(mediaElement.currentTime-location) < 0.15) {
+                console.log('BEAT', Math.abs(mediaElement.currentTime-location));
+                $('#playerImage').hide();
+              }
+            });
+            // document.getElementById('current-time').innerHTML = mediaElement.currentTime;
+            
+          }, false);
+          
+          
+        },
+      });
+    },
     // AJAXify the comment posting (progressively enhanced)
     postComment: function () {
       var text = $('#commentText').val().trim();
@@ -27,34 +66,17 @@
 
   };
 
-  $(document).ready(function () {
-    spawnsong.snippet.setHeights();
-    setTimeout(function () {
-      spawnsong.snippet.setHeights();
-    }, 500);
+  var views = {
+    '#snippetView': SnippetView
+  };
 
-    $('audio').mediaelementplayer({
-      videoHeight: 0,
-      features: ['playpause','progress','current','duration', 'volume'],
-      success: function (mediaElement, domObject) { 
-        
-        // add event listener
-        mediaElement.addEventListener('timeupdate', function(e) {
-          
-          console.log(mediaElement.currentTime);
-          $('#playerImage').show();
-          SONGSPAWN_BEAT_LOCATIONS.forEach(function (location) {
-            if (Math.abs(mediaElement.currentTime-location) < 0.15) {
-              console.log('BEAT', Math.abs(mediaElement.currentTime-location));
-              $('#playerImage').hide();
-            }
-          });
-          // document.getElementById('current-time').innerHTML = mediaElement.currentTime;
-          
-        }, false);
-        
-        
-      },
-    });
+  $(document).ready(function () {
+    for (var selector in views) {
+      var el = $(selector);
+      if (el.length) {
+        new views[selector](el);
+      }
+    }
   });
+  
 })(window.spawnsong = {});
