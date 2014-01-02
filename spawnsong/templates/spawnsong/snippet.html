@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load humanize %}
 
+{% block title %}{{ snippet.title }} by {{ user.username }} | Spawnsong{% endblock %}
+
 {% block content %}
 
 <script>
