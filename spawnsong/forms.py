@@ -3,6 +3,16 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 import models
 
+
+class EditSnippetForm(forms.ModelForm):
+    title = forms.CharField(max_length=100)
+    image = forms.ImageField(label="Change Image", widget=forms.widgets.FileInput)
+    visualisation_effect = forms.ChoiceField(choices=(("pulsate", "Pulsate"), ("none", "None")))
+
+    class Meta:
+        model = models.Snippet
+        fields = ("title", "image", "visualisation_effect")
+
 class UploadSnippetForm(forms.Form):
     title = forms.CharField(max_length=100)
     audio = forms.FileField()

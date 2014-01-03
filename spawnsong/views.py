@@ -48,15 +48,38 @@ def snippet(request, snippet_id):
                 "snippet": snippet
             },
             context_instance=RequestContext(request))
-    if request.method == "POST" and request.POST["badger"] == "":
-        comment = request.POST["comment"]
-        models.Comment.objects.create(user=request.user, snippet=snippet, content=comment, ip_address=get_client_ip(request))
+        
+    editable = request.user.is_authenticated() and snippet.song.artist.user == request.user,
+    edit_mode = editable and ("edit" in request.GET or snippet.state == "ready")
+    print editable, edit_mode
+    if edit_mode:
+        if request.method == "POST":
+            form = forms.EditSnippetForm(request.POST, request.FILES, instance=snippet)
+            if form.is_valid():
+                form.save()
+                if "publish" in request.POST:
+                    snippet.publish()
+                elif "delete" in request.POST:
+                    snippet.delete()
+                    return HttpResponseRedirect("/")
+                return HttpResponseRedirect(snippet.get_absolute_url())
+        else:
+            form = forms.EditSnippetForm(instance=snippet)
+    else:
+        form = None
+        # Has a comment been posted?
+        if request.method == "POST" and request.POST["badger"] == "":
+            comment = request.POST["comment"]
+            models.Comment.objects.create(user=request.user, snippet=snippet, content=comment, ip_address=get_client_ip(request))
+                                    
     return render_to_response(
         "spawnsong/snippet.html",
         {
             "beats_json": json.dumps(snippet.beat_locations()),
             "snippet": snippet,
-            "editable": request.user.is_authenticated() and snippet.song.artist.user == request.user,
+            "editable": editable,
+            "edit_mode": edit_mode,
+            "edit_form": form,
             "order_count": snippet.order_count()
         },
         context_instance=RequestContext(request))
