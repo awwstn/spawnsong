@@ -80,6 +80,8 @@ PIPELINE_COMPILERS = (
   'pipeline.compilers.less.LessCompiler',
 )
 
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.jsmin.JSMinCompressor'
+
 PIPELINE_CSS = {
     'styles': {
         'source_filenames': (
@@ -93,11 +95,11 @@ PIPELINE_CSS = {
 PIPELINE_JS = {
     'scripts': {
         'source_filenames': (
-          'mediaelement/mediaelement-and-player.js',
           'js/vendor/jquery.js',
           'js/vendor/jquery.form.js',
           'js/vendor/underscore.js',
           'js/app.js',
+          'mediaelement/mediaelement-and-player.js',
         ),
         'output_filename': 'js/compiled/site.js',
     },
@@ -121,10 +123,6 @@ HEROKU_LESSC = os.path.join(PATH_TO_HERE, '/app/.heroku/python/bin/lessc')
 if os.path.exists(HEROKU_LESSC):
     PIPELINE_LESS_BINARY = HEROKU_LESSC
     
-HEROKU_YUGLIFY = os.path.join(PATH_TO_HERE, '/app/.heroku/python/bin/yuglify')
-if os.path.exists(HEROKU_YUGLIFY):
-    PIPELINE_YUFLIFY_BINARY = HEROKU_YUGLIFY
- 
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '70aafb9b05c88cdd116adb4779c11849-bb18f1b98a94a805de5ab7d3b79784e6'
