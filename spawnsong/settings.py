@@ -170,6 +170,7 @@ INSTALLED_APPS = (
     'django.contrib.comments',
     'django.contrib.humanize',
     'registration',
+    'settings_context_processor',
     'social_auth',
     'lockdown',
     'pipeline',
@@ -197,7 +198,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
+    "settings_context_processor.context_processors.settings",
 )
+
+TEMPLATE_VISIBLE_SETTINGS = (
+    'STRIPE_PUBLIC_KEY',
+    )
 
 try:
     from memcacheify import memcacheify

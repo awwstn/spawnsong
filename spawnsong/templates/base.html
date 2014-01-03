@@ -45,6 +45,10 @@
 
     <footer class="footer">&copy; 2013-{% now "Y" %} Spawnsong.com</footer>
     
+    <script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
+    <script>
+      var STRIPE_PUBLIC_KEY = "{{ STRIPE_PUBLIC_KEY }}";
+    </script>
     {% compressed_js 'scripts' %}
   </body>
 </html>

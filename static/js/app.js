@@ -1,9 +1,46 @@
 (function (spawnsong) {
   "use strict";
+  
+  ////
+  // Orders
+  ////
 
+  function SnippetOrders(el) {
+    this.orderEl = el;
+    this.stripePublicKeys = window.STRIPE_PUBLIC_KEY; // set in base.html
+    this.price = window.SONGSPAWN_SNIPPET_DETAILS.price;
+    this.title = window.SONGSPAWN_SNIPPET_DETAILS.title;
+  }
+
+  SnippetOrders.prototype = {
+    ready: function () {
+      this.orderEl.click(_.bind(this.showCheckout, this));
+    },
+    showCheckout: function () {
+      var handler = window.StripeCheckout.configure({
+        key: this.stripePublicKeys,
+        token: function(token, args) {
+          this.orderEl.attr('disabled', true);
+          this.orderEl.text("Processing...");
+          // Use the token to create the charge with a server-side script.
+          alert(token);
+        }
+      });
+
+      handler.open({
+        name: 'Songspawn',
+        description: 'Pre Order "' + this.title + '"',
+        amount: this.price
+      });
+    }
+  };
+
+  ////
+  // Player
+  ////
   
   function SnippetPlayer(el) {
-    this.beatLocations = window.SONGSPAWN_BEAT_LOCATIONS;
+    this.beatLocations = window.SONGSPAWN_SNIPPET_DETAILS.beats;
   }
 
   SnippetPlayer.prototype = {
@@ -46,6 +83,10 @@
       window.requestAnimationFrame(update);
     }
   };
+
+  ////
+  // Comments
+  ////
   
   function SnippetComments(el) {
   }
@@ -77,6 +118,10 @@
   };
     
 
+  ////
+  // CSS Fixes
+  ////
+  
   function SnippetViewCSS(el) {
   }
 
@@ -88,9 +133,6 @@
         _this.setHeights();
       }, 500);
     },
-    /////
-    // CSS Fixes
-    ////
     // Fix up the heights of the page alements after page load
     setHeights: function () {
       var playerHeight = $('#playerContainer').height();
@@ -99,6 +141,10 @@
     },
 
   };
+  
+  /////
+  // Uploads
+  ////
   
   function UploadView(el) {
   }
@@ -149,6 +195,7 @@
   };
 
   var views = {
+    '#order': SnippetOrders,
     '#playerContainer': SnippetPlayer,
     '#comments': SnippetComments,
     '#snippetView': SnippetViewCSS,
@@ -159,7 +206,7 @@
     for (var selector in views) {
       var el = $(selector);
       if (el.length) {
-        new views[selector](el).ready();
+        new views[selector](el).ready(el);
       }
     }
   });

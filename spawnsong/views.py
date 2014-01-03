@@ -8,6 +8,7 @@ import models
 import forms
 import json
 from django.db.models import Q
+import simplejson
 
 class JsonResponse(HttpResponse):
     """
@@ -72,11 +73,17 @@ def snippet(request, snippet_id):
         if request.method == "POST" and request.POST["badger"] == "":
             comment = request.POST["comment"]
             models.Comment.objects.create(user=request.user, snippet=snippet, content=comment, ip_address=get_client_ip(request))
+
+    snippet_details = {
+        "beats": snippet.beat_locations(),
+        "title": snippet.title,
+        "price": snippet.price 
+    };
                                     
     return render_to_response(
         "spawnsong/snippet.html",
         {
-            "beats_json": json.dumps(snippet.beat_locations()),
+            "snippet_details_json": simplejson.dumps(snippet_details, cls=simplejson.encoder.JSONEncoderForHTML), # json will be inserted into the HTML template, so need the special encode to get rid of "</script>" in strings
             "snippet": snippet,
             "editable": editable,
             "edit_mode": edit_mode,
