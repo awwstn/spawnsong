@@ -41,6 +41,13 @@ def frontpage(request):
 def snippet(request, snippet_id):
     snippet = get_object_or_404(
         models.Snippet.objects.visible_to(request.user), pk=snippet_id)
+    if snippet.state == "processing" or snippet.state == "processing_error":
+        return render_to_response(
+            "spawnsong/processing_upload.html",
+            {
+                "snippet": snippet
+            },
+            context_instance=RequestContext(request))
     if request.method == "POST" and request.POST["badger"] == "":
         comment = request.POST["comment"]
         models.Comment.objects.create(user=request.user, snippet=snippet, content=comment, ip_address=get_client_ip(request))

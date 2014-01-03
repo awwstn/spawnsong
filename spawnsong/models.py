@@ -8,7 +8,6 @@ import datetime
 from jsonfield import JSONField
 from django.db.models import Q
 import uuid
-import tasks
 from sorl.thumbnail import ImageField
 
 def upload_to(prefix="uploads"):
@@ -62,7 +61,14 @@ class Snippet(models.Model):
     """
     song = models.ForeignKey(Song)
     title = models.CharField(max_length=255)
-    state = models.CharField(max_length=20, choices=(("processing", "Processing"), ("ready", "Ready"), ("published", "Published")), default="processing")
+    state = models.CharField(
+        max_length=20,
+        choices=(
+            ("processing"        , "Processing"),
+            ("processing_failed" , "Processing Failed"),
+            ("ready"             , "Ready"),
+            ("published"         , "Published")),
+        default="processing")
 
     created_at = models.DateTimeField(default=datetime.datetime.now)
 
@@ -78,6 +84,9 @@ class Snippet(models.Model):
 
     ordering_score = models.IntegerField(default=0, help_text="Score used to order snippets on front page, calcualted from number of orders at the moment")
 
+
+    processing_error = models.CharField(max_length=255, null=True, help_text="Error message to display to user if we're in processing_error state")
+    
     objects = SnippetManager()
 
     def update_ordering_score(self):
@@ -99,12 +108,18 @@ class Snippet(models.Model):
     def beat_locations(self):
         return self.echonest_track_analysis and [x["start"] for x in self.echonest_track_analysis["beats"]]
 
-    def maybe_ready(self):
+    def maybe_ready(self, commit=True):
         "Move to ready state if the needed info has been retrieved"
         assert self.state == "processing" 
         if self.audio_mp3 and self.echonest_track_analysis:
-            self.mark_ready()
-       
+            self.mark_ready(commit=commit)
+
+    def set_processing_error(self, error="Failed to process audio, it may be in an unsupported format", commit=True):
+        assert self.state =="processing"
+        self.state = "processing_error"
+        self.processing_error = error
+        if commit:
+            self.save()
     
     def mark_ready(self, commit=True):
        assert self.state == "processing" 
@@ -122,6 +137,7 @@ class Snippet(models.Model):
            self.save()
 
     def process_uploaded_audio(self):
+        import tasks
         tasks.transcode_snippet_audio.delay(self.id)
         tasks.request_echonest_data.delay(self.id)
 

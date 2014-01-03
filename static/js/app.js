@@ -92,6 +92,12 @@
             .attr('aria-valuenow',percentComplete)
             .css({width: percentComplete + '%'})
             .find('.sr-only').text(percentComplete + '% complete');
+          if (percentComplete > 99.9) {
+            // Once we get to 100% upload it might still take a while
+            // on the server, so add animated stripes to the progress
+            // bar so that the user doesn't think it has stalled
+            $('#uploadStatus .progress').addClass('progress-striped').addClass('active');
+          }
         },
         error: function () {
           alert("Upload failed!");
