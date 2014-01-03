@@ -11,6 +11,7 @@
     this.price = window.SONGSPAWN_SNIPPET_DETAILS.price;
     this.title = window.SONGSPAWN_SNIPPET_DETAILS.title;
     this.userEmail = window.LOGGED_IN_USER_EMAIL;
+    this.snippetId = window.SONGSPAWN_SNIPPET_DETAILS.id;
   }
 
   SnippetOrders.prototype = {
@@ -24,8 +25,9 @@
         token: function(token, args) {
           _this.orderEl.attr('disabled', true);
           _this.orderEl.text("Processing...");
-          console.log(token);
-          $.post('/purchase', {token: token.id, email: token.email});
+          $('#orderForm [name=email]').val(token.email);
+          $('#orderForm [name=token]').val(token.id);
+          $('#orderForm').submit();
           // Use the token to create the charge with a server-side script.
         }
       });

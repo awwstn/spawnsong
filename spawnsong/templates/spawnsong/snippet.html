@@ -11,7 +11,25 @@
   var SONGSPAWN_SNIPPET_DETAILS = {{snippet_details_json|safe}};
 </script>
 
+
 <div class="container">
+  {% if paymentsuccess %}
+  <div class="alert alert-success">
+    <b>{% if snippet.is_complete %}Order{% else %}Pre Order{% endif %} Successful!</b>
+    {% if snippet.is_complete %}
+    Thanks for your order, the song will be emailed to you soon!
+    {% else %}
+    Thanks for your pre-order, the finished song will be sent to you when it's ready!
+    {% endif %}
+  </div>
+  {% endif %}
+  {% if paymenterror %}
+  <div class="alert alert-danger">
+    <b>{% if snippet.is_complete %}Order{% else %}Pre Order{% endif %} failed</b> {{ paymenterror }}
+  </div>
+  {% endif %}
+  
+  
   <div class="snippet-view" id="snippetView">
     <div class="player" id="playerContainer">
       <div class="image-container">
@@ -42,6 +60,12 @@
         {% endif %}
         <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
         <button {% if edit_mode %}disabled{% endif %} class="{% if snippet.is_complete %}pre-order{% else %}order{% endif %}" id="order">{% if not snippet.is_complete%}Pre {% endif %}Order</button>
+        <form id="orderForm" style="display: none" method="post" action="/purchase/">
+          {% csrf_token %}
+          <input name="email">
+          <input name="token">
+          <input name="snippet_id" value="{{ snippet.id }}">
+        </form>
         {% if order_count > 0 %}<div class="order-count">{{ order_count }} {% if not snippet.is_complete%}Pre {% endif %}Order</div>{% endif %}
         
       </div>

@@ -279,6 +279,7 @@ LOGGING = {
 }
 
 SONG_PRICE = 500
+CURRENCY = "USD"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -319,3 +320,6 @@ except ImportError:
 
     STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")
     STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+
+import stripe
+stripe.api_key = STRIPE_SECRET_KEY

@@ -35,3 +35,4 @@ django-registration==1.0
 django-settings-context-processor==0.2
 simplejson==3.3.1
 jsmin==2.0.8
+stripe==1.11.0

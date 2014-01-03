@@ -157,7 +157,8 @@ class Snippet(models.Model):
 class Order(models.Model):
     "A pre-order or order for a song"
     song = models.ForeignKey(Song)
-    purchaser = models.ForeignKey(User)
+    purchaser = models.ForeignKey(User, null=True, blank=True)
+    purchaser_email = models.EmailField()
     price = models.IntegerField(help_text="Purchase price in cents")
     refunded = models.BooleanField(default=False)
     delivered = models.BooleanField(default=False)
@@ -165,6 +166,10 @@ class Order(models.Model):
     created_at = models.DateTimeField(default=datetime.datetime.now)
 
     stripe_transaction_id = models.CharField(max_length=255)
+
+    def maybe_queue_delivery(self):
+        # TODO: Queue delivery if the song has already been uploaded
+        pass
 
     def __unicode__(self):
         return "Order for %s by %s" % (self.song, self.purchaser)
