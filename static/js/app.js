@@ -9,7 +9,7 @@
     ready: function () {
       var _this = this;
       this.setHeights();
-      setTimeout(function () {
+      setInterval(function () {
         _this.setHeights();
       }, 500);
       this.setupMediaElementPlayer();

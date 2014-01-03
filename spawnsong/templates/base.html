@@ -25,11 +25,12 @@
             <li><a href="/upload/" >Upload a Song Snippet</a></li>
           </ul>
 
-          <ul class="nav navbar-nav navbar-right">
+          <p class="navbar-text navbar-right">
             {% if user.is_authenticated %}
-            <li><a href="/logout/?next=/" >{{ user.username }} (Log Out)</a></li>
+            {% if user.artist %}<a class="navbar-link" href="{{ user.artist.get_absolute_url }}">{{ user.username }}</a>{% else %}{{ user.username }}{% endif %}
+            <a class="navbar-link" href="/logout/?next=/" >(log out)</a>
             {% else %}
-            <li><a href="/login/" >Log In/Sign Up</a></li>
+            <a href="/login/" class="navbar-link">Log In/Sign Up</a>
             {% endif %}
           </ul>
 
