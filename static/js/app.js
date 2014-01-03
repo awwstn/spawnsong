@@ -135,10 +135,10 @@
   SnippetViewCSS.prototype = {
     ready: function () {
       var _this = this;
-      this.setHeights();
       setInterval(function () {
         _this.setHeights();
       }, 500);
+      this.setHeights();
     },
     // Fix up the heights of the page alements after page load
     setHeights: function () {
