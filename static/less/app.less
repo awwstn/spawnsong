@@ -1,11 +1,19 @@
-@import "bootstrap/bootstrap.less";
-@import "simplex/variables.less";
-@import "simplex/bootswatch.less";
+@import "lib/bootstrap/bootstrap.less";
+@import "lib/simplex/variables.less";
+@import "lib/simplex/bootswatch.less";
+@import "lib/prefixer.less";
 
 @details-bg: darken(@body-bg, 5%);
 @comments-bg: darken(@body-bg, 10%);
 @timestamp-color: lighten(@gray,50%);
 @icon-font-path:          "../fonts/";
+
+.transition-transform (@transformArguments, @anotherProperty) {
+    -webkit-transition: -webkit-transform @transformArguments, @anotherProperty;
+    -moz-transition: -moz-transform @transformArguments, @anotherProperty;
+    -ms-transition: -ms-transform @transformArguments, @anotherProperty;
+    -o-transition: -o-transform @transformArguments, @anotherProperty;
+}
 
 // Honey pot to fool bots (probably best not to use the word "honey"
 // in its name or class)
@@ -35,8 +43,20 @@ html, body {
     .player {
         .make-lg-column(7);
 
+        .image-container {
+            width: 100%;
+            overflow: hidden;
+        }
+
         img {
             width: 100%;
+            .transition-transform(0.5s);
+            .transform(scale(1));
+            
+            &.beat {
+                .transition-transform(0.1s);
+                .transform(scale(1.5));
+            }
         }
 
         audio {

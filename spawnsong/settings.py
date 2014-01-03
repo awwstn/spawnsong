@@ -95,6 +95,7 @@ PIPELINE_JS = {
         'source_filenames': (
           'js/vendor/jquery.js',
           'js/vendor/jquery.form.js',
+          'js/vendor/underscore.js',
           'js/app.js',
           'mediaelement/mediaelement-and-player.js',
         ),

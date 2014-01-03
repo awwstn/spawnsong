@@ -21,25 +21,58 @@
         features: ['playpause','progress','current','duration', 'volume'],
         success: function (mediaElement, domObject) { 
           
-          // add event listener
-          mediaElement.addEventListener('timeupdate', function(e) {
+          mediaElement.addEventListener('playing', function(e) {
+            _this.runVisualisation(mediaElement);
+          });
+          
+          // // add event listener
+          // mediaElement.addEventListener('timeupdate', function(e) {
             
-            console.log(mediaElement.currentTime);
-            $('#playerImage').show();
-            _this.beatLocations.forEach(function (location) {
-              if (Math.abs(mediaElement.currentTime-location) < 0.15) {
-                console.log('BEAT', Math.abs(mediaElement.currentTime-location));
-                $('#playerImage').hide();
-              }
-            });
-            // document.getElementById('current-time').innerHTML = mediaElement.currentTime;
+          //   console.log(mediaElement.currentTime);
+          //   $('#playerImage').show();
+          //   _this.beatLocations.forEach(function (location) {
+          //     if (Math.abs(mediaElement.currentTime-location) < 0.15) {
+          //       console.log('BEAT', Math.abs(mediaElement.currentTime-location));
+          //       $('#playerImage').hide();
+          //     }
+          //   });
+          //   // document.getElementById('current-time').innerHTML = mediaElement.currentTime;
             
-          }, false);
+          // }, false);
           
           
         },
       });
     },
+
+    runVisualisation: function (mediaElement) {
+      var _this = this;
+      var beats = _.clone(this.beatLocations);
+      function update() {
+        var beat;
+        if (mediaElement.paused || mediaElement.ended) return;
+        while(beats[0] < mediaElement.currentTime) {
+          beat = beats.shift();
+        }
+        if (beats[0] && beats[0]-mediaElement.currentTime < 0.1) {
+          $('#playerImage').addClass('beat');
+        } else {
+          $('#playerImage').removeClass('beat');
+        }
+        // if (beat) {
+        //   console.log('BEAT!', Math.abs(mediaElement.currentTime-beat));
+        //   $('#playerImage').addClass('beat');
+        // } else {
+        //   $('#playerImage').removeClass('beat');
+        // }
+        // document.getElementById('current-time').innerHTML = mediaElement.currentTime;
+        // _.defer(update);
+        window.requestAnimationFrame(update);
+      }
+      // _.defer(update);
+      window.requestAnimationFrame(update);
+    },
+    
     // AJAXify the comment posting (progressively enhanced)
     postComment: function () {
       var text = $('#commentText').val().trim();

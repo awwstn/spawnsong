@@ -14,9 +14,11 @@
 <div class="container">
   <div class="snippet-view" id="snippetView">
     <div class="player" id="playerContainer">
-      {% thumbnail snippet.image "652" crop="center" as im %}
-      <img src="{{ im.url }}" class="img-responsive" id="playerImage">
-      {% endthumbnail %}
+      <div class="image-container">
+        {% thumbnail snippet.image "652" crop="center" as im %}
+        <img src="{{ im.url }}" class="img-responsive" id="playerImage">
+        {% endthumbnail %}
+      </div>
       {% if snippet.audio_ready %}
       <audio id="audioPlayer" width="653" height="30" controls="controls" preload="none">
         <source type="audio/mp3" src="{{ snippet.audio_mp3.url }}" />
