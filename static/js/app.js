@@ -144,7 +144,9 @@
     setHeights: function () {
       var playerHeight = $('#playerContainer').height();
       $('#detailsContainer').css({height: playerHeight + 'px'});
-      $('#comments ul').css({height: playerHeight-$('#comments ul').position().top-50});
+      if ($('#comments ul').length) {
+        $('#comments ul').css({height: playerHeight-$('#comments ul').position().top-50});
+      }
     },
 
   };
