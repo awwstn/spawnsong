@@ -43,8 +43,6 @@
 
     <footer class="footer">&copy; 2013-{% now "Y" %} Spawnsong.com</footer>
     
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="{{ STATIC_URL }}mediaelement/mediaelement-and-player.min.js"></script>
-    <script src="{{ STATIC_URL }}js/app.js"></script>
+    {% compressed_js 'scripts' %}
   </body>
 </html>

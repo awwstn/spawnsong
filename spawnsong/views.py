@@ -1,12 +1,24 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, get_object_or_404
-from django.template import RequestContext
+from django.template import loader, RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import Count
 import models
 import forms
 import json
+
+class JsonResponse(HttpResponse):
+    """
+    JSON response
+    """
+    def __init__(self, content, mimetype='application/json', status=None, content_type=None):
+        super(JsonResponse, self).__init__(
+            content=json.dumps(content),
+            mimetype=mimetype,
+            status=status,
+            content_type=content_type,
+        )
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -44,20 +56,31 @@ def snippet(request, snippet_id):
 
 @login_required
 def upload(request):
+    # Requests are sometimes the result of a normal form post and
+    # sometimes the result of a XHR request
     form = forms.UploadSnippetForm()
+    is_xhr = 'xhr' in request.POST
     if request.method == 'POST':
+        print (request.POST, request.FILES)
         form = forms.UploadSnippetForm(request.POST, request.FILES)
         if form.is_valid():
             snippet = form.save(request.user)
-            return HttpResponseRedirect(snippet.get_absolute_url())
+            if is_xhr:
+                return JsonResponse({"redirectTo": snippet.get_absolute_url()})
+            else:
+                return HttpResponseRedirect(snippet.get_absolute_url())
     else:
         form = forms.UploadSnippetForm()
-    return render_to_response(
+    html = loader.render_to_string(
         "spawnsong/upload.html",
         {
            "form": form 
         },
         context_instance=RequestContext(request))
+    if is_xhr:
+        return JsonResponse({"html": html})
+    else:
+        return HttpResponse(html)
 
 def user(request, username):
     artist = get_object_or_404(models.Artist, user__username=username)

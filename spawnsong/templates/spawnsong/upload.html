@@ -6,13 +6,29 @@
 
 {% block content %}
 <div class="container">
-  <div class="upload-view" id="uploadContainer">
+  <div class="upload-view" id="uploadView">
     <div class="upload">
       <div class="panel-heading">
         <h1>Upload new Song Snippet</h1>
       </div>
       <div class="panel-body">
-        {% crispy form %}
+        <form class="form-horizontal" method="post" action="" id="uploadForm">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="form-actions-with-progress">
+            <button type="submit" class="action">Upload</button>
+            <div class="status" id="uploadStatus">
+              <div class="text">
+                Uploading...
+              </div>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="">
+                  <span class="sr-only">Not yet started</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>

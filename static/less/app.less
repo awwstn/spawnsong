@@ -186,3 +186,32 @@ html, body {
         
     }
 }
+
+// A button and a progress bar at the bottom of a form
+.form-actions-with-progress {
+    .make-row();
+    .action {
+        .btn();
+        .btn-primary();
+        .make-xs-column(12);
+        .make-sm-column(3);
+    }
+
+    .status {
+        display: none;
+        margin-top: 10px;
+        .make-xs-column(12);
+        .make-sm-column(9);
+
+        .text {
+            float: left;
+        }
+
+        .progress {
+            margin-left: 80px;
+        }
+
+        
+    }
+
+}

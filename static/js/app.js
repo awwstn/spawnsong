@@ -3,7 +3,6 @@
 
   function SnippetView(el) {
     this.beatLocations = window.SONGSPAWN_BEAT_LOCATIONS;
-    this.ready();
   }
 
   SnippetView.prototype = {
@@ -65,16 +64,59 @@
     },
 
   };
+  
+  function UploadView(el) {
+  }
+
+  UploadView.prototype = {
+    ready: function () {
+      if (!(new XMLHttpRequest().upload)) {
+        // Browser doesn't support XHR2, fall back to standard HTML form
+        return;
+      }
+      $('#uploadForm').ajaxForm({
+        dataType: 'json',
+        data: {xhr: true},
+        beforeSubmit: function (arr, $form, option) {
+          $('#uploadStatus').fadeIn();
+          $('#uploadForm button').attr('disabled', true);
+          // Disabling the inputs here breaks jquery.form, so disable
+          // them in a ms
+          setTimeout(function () {
+            $('#uploadForm :input').attr('disabled', true);
+          }, 1);
+          // TOOD: Check file type
+        },
+        uploadProgress: function (evt, position, total, percentComplete) {
+          $('#uploadStatus .progress-bar')
+            .attr('aria-valuenow',percentComplete)
+            .css({width: percentComplete + '%'})
+            .find('.sr-only').text(percentComplete + '% complete');
+        },
+        error: function () {
+          alert("Upload failed!");
+        },
+        success: function (response) {
+          if (response.redirectTo) {
+            document.location.href = response.redirectTo;
+          } else {
+            $('#uploadForm').html($('#uploadForm', response.html).html());
+          }
+        }
+      });
+    }
+  };
 
   var views = {
-    '#snippetView': SnippetView
+    '#snippetView': SnippetView,
+    '#uploadView': UploadView
   };
 
   $(document).ready(function () {
     for (var selector in views) {
       var el = $(selector);
       if (el.length) {
-        new views[selector](el);
+        new views[selector](el).ready();
       }
     }
   });
