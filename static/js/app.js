@@ -1,17 +1,13 @@
 (function (spawnsong) {
   "use strict";
 
-  function SnippetView(el) {
+  
+  function SnippetPlayer(el) {
     this.beatLocations = window.SONGSPAWN_BEAT_LOCATIONS;
   }
 
-  SnippetView.prototype = {
+  SnippetPlayer.prototype = {
     ready: function () {
-      var _this = this;
-      this.setHeights();
-      setInterval(function () {
-        _this.setHeights();
-      }, 500);
       this.setupMediaElementPlayer();
     },
     setupMediaElementPlayer: function ( ) {
@@ -20,27 +16,9 @@
         videoHeight: 0,
         features: ['playpause','progress','current','duration', 'volume'],
         success: function (mediaElement, domObject) { 
-          
           mediaElement.addEventListener('playing', function(e) {
             _this.runVisualisation(mediaElement);
           });
-          
-          // // add event listener
-          // mediaElement.addEventListener('timeupdate', function(e) {
-            
-          //   console.log(mediaElement.currentTime);
-          //   $('#playerImage').show();
-          //   _this.beatLocations.forEach(function (location) {
-          //     if (Math.abs(mediaElement.currentTime-location) < 0.15) {
-          //       console.log('BEAT', Math.abs(mediaElement.currentTime-location));
-          //       $('#playerImage').hide();
-          //     }
-          //   });
-          //   // document.getElementById('current-time').innerHTML = mediaElement.currentTime;
-            
-          // }, false);
-          
-          
         },
       });
     },
@@ -54,24 +32,32 @@
         while(beats[0] < mediaElement.currentTime) {
           beat = beats.shift();
         }
+        // 0.1 seconds before the beat we add the class, the
+        // css transition time is set to 0.1 so it will reach its peak at
+        // the same time as the beat.
         if (beats[0] && beats[0]-mediaElement.currentTime < 0.1) {
           $('#playerImage').addClass('beat');
         } else {
           $('#playerImage').removeClass('beat');
         }
-        // if (beat) {
-        //   console.log('BEAT!', Math.abs(mediaElement.currentTime-beat));
-        //   $('#playerImage').addClass('beat');
-        // } else {
-        //   $('#playerImage').removeClass('beat');
-        // }
-        // document.getElementById('current-time').innerHTML = mediaElement.currentTime;
-        // _.defer(update);
         window.requestAnimationFrame(update);
       }
       // _.defer(update);
       window.requestAnimationFrame(update);
+    }
+  };
+  
+  function SnippetComments(el) {
+  }
+
+  SnippetComments.prototype = {
+    ready: function () {
+      $('#addcomment').click(_.bind(this.postComment, this));
     },
+
+    /////
+    // Comments
+    ////
     
     // AJAXify the comment posting (progressively enhanced)
     postComment: function () {
@@ -88,7 +74,23 @@
         }
       });
     },
+  };
     
+
+  function SnippetViewCSS(el) {
+  }
+
+  SnippetViewCSS.prototype = {
+    ready: function () {
+      var _this = this;
+      this.setHeights();
+      setInterval(function () {
+        _this.setHeights();
+      }, 500);
+    },
+    /////
+    // CSS Fixes
+    ////
     // Fix up the heights of the page alements after page load
     setHeights: function () {
       var playerHeight = $('#playerContainer').height();
@@ -147,7 +149,9 @@
   };
 
   var views = {
-    '#snippetView': SnippetView,
+    '#playerContainer': SnippetPlayer,
+    '#comments': SnippetComments,
+    '#snippetView': SnippetViewCSS,
     '#uploadView': UploadView
   };
 

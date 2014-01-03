@@ -30,5 +30,6 @@ Accounts
 - S3
 - Heroku
 - Mailgun (have created spawnsong account)
+- Stripe
 
 
