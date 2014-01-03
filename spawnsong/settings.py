@@ -111,7 +111,7 @@ PIPELINE_MIMETYPES = (
     ('text/x-scss', '.scss')
     )
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 
 # PIPELINE_ENABLED = False
 # PIPELINE_DISABLE_WRAPPER = True

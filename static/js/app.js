@@ -17,11 +17,14 @@
       this.orderEl.click(_.bind(this.showCheckout, this));
     },
     showCheckout: function () {
+      var _this = this;
       var handler = window.StripeCheckout.configure({
         key: this.stripePublicKeys,
         token: function(token, args) {
-          this.orderEl.attr('disabled', true);
-          this.orderEl.text("Processing...");
+          _this.orderEl.attr('disabled', true);
+          _this.orderEl.text("Processing...");
+          console.log(token);
+          // $.post('/purchase', {token: 
           // Use the token to create the charge with a server-side script.
           alert(token);
         }
