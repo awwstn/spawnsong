@@ -93,11 +93,11 @@ PIPELINE_CSS = {
 PIPELINE_JS = {
     'scripts': {
         'source_filenames': (
+          'mediaelement/mediaelement-and-player.js',
           'js/vendor/jquery.js',
           'js/vendor/jquery.form.js',
           'js/vendor/underscore.js',
           'js/app.js',
-          'mediaelement/mediaelement-and-player.js',
         ),
         'output_filename': 'js/compiled/site.js',
     },

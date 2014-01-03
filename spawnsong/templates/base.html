@@ -48,6 +48,7 @@
     <script type="text/javascript" src="https://checkout.stripe.com/checkout.js"></script>
     <script>
       var STRIPE_PUBLIC_KEY = "{{ STRIPE_PUBLIC_KEY }}";
+      var LOGGED_IN_USER_EMAIL = {% if user.email %}"{{ user.email|escapejs }}"{% else %}null{% endif %}
     </script>
     {% compressed_js 'scripts' %}
   </body>

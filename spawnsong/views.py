@@ -77,7 +77,8 @@ def snippet(request, snippet_id):
     snippet_details = {
         "beats": snippet.beat_locations(),
         "title": snippet.title,
-        "price": snippet.price 
+        "price": snippet.price,
+        "visualisation_effect": snippet.visualisation_effect,
     };
                                     
     return render_to_response(

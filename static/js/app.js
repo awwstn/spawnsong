@@ -10,6 +10,7 @@
     this.stripePublicKeys = window.STRIPE_PUBLIC_KEY; // set in base.html
     this.price = window.SONGSPAWN_SNIPPET_DETAILS.price;
     this.title = window.SONGSPAWN_SNIPPET_DETAILS.title;
+    this.userEmail = window.LOGGED_IN_USER_EMAIL;
   }
 
   SnippetOrders.prototype = {
@@ -24,15 +25,15 @@
           _this.orderEl.attr('disabled', true);
           _this.orderEl.text("Processing...");
           console.log(token);
-          // $.post('/purchase', {token: 
+          $.post('/purchase', {token: token.id, email: token.email});
           // Use the token to create the charge with a server-side script.
-          alert(token);
         }
       });
 
       handler.open({
         name: 'Songspawn',
         description: 'Pre Order "' + this.title + '"',
+        email: this.userEmail,
         amount: this.price
       });
     }
@@ -44,6 +45,7 @@
   
   function SnippetPlayer(el) {
     this.beatLocations = window.SONGSPAWN_SNIPPET_DETAILS.beats;
+    this.visualisation = window.SONGSPAWN_SNIPPET_DETAILS.visualisation_effect;
   }
 
   SnippetPlayer.prototype = {
@@ -57,7 +59,9 @@
         features: ['playpause','progress','current','duration', 'volume'],
         success: function (mediaElement, domObject) { 
           mediaElement.addEventListener('playing', function(e) {
-            _this.runVisualisation(mediaElement);
+            if (_this.visualisation === "pulsate") {
+              _this.runVisualisation(mediaElement);
+            }
           });
         },
       });
