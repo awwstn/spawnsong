@@ -139,12 +139,18 @@ html, body {
                 width: 100%;
                 left: 0px;
                 right: 0px;
-                input {
+                background: white;
+                height: 36px;
+                input, .cantcomment{
                     .form-control();
-                    display: inline;
+                    display: inline-block;
                     width: calc(~"100% - 100px");
                 }
-                button {
+                .cantcomment{
+                    color: @gray-light;
+                }
+                .btn {
+                    display: inline-block;
                     width: 95px;
                 }
             }

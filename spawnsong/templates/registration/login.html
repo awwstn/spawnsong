@@ -26,7 +26,7 @@
         <a href="/password/reset/">Forgotten your password?</a>
       </div>
       <div class="panel-body">
-        <form class="form-horizontal" method="post" action="/login/">
+        <form class="form-horizontal" method="post" action="/login/?next={{next}}">
           {% csrf_token %}
           {{ form|crispy }}
           <div class="form-actions">

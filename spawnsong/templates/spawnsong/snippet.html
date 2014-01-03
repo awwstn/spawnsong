@@ -76,11 +76,16 @@
         </ul>
         <div class="newcomment">
           <span class="avatar"></span>
+          {% if user.is_authenticated %}
           <form action="." method="post" onsubmit="spawnsong.snippet.post_comment(); return false">
             {% csrf_token %}
             <!-- Honey-pot: --> <input class="badger" name="badger" placeholder="Don't type anything in this field.">
             <input id="commentText" name="comment"> <button class="btn" id="addcomment">Comment</button>
           </form>
+          {% else %}
+          
+          <div class="cantcomment">Please login to make a comment</div> <a href="/login/?next={{ snippet.get_absolute_url }}" class="btn btn-default">Log In</a>
+          {% endif %}
         </div>
       </div>
       {% endif %}
