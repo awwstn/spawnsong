@@ -7,6 +7,7 @@ from django.db.models import Count
 import models
 import forms
 import json
+from django.db.models import Q
 
 class JsonResponse(HttpResponse):
     """
@@ -29,7 +30,7 @@ def get_client_ip(request):
     return ip
 
 def frontpage(request):
-    snippets = models.Snippet.objects.visible_to(request.user)
+    snippets = models.Snippet.objects.visible_to(request.user).filter(state="published")
     return render_to_response(
         "spawnsong/frontpage.html",
         {
@@ -114,7 +115,7 @@ def upload(request):
 
 def user(request, username):
     artist = get_object_or_404(models.Artist, user__username=username)
-    snippets = models.Snippet.objects.visible_to(request.user).filter(song__artist=artist).select_related('song')
+    snippets = models.Snippet.objects.visible_to(request.user).filter(song__artist=artist).select_related('song').filter(Q(state="published") | Q(state="ready"))
     return render_to_response(
         "spawnsong/user.html",
         {
