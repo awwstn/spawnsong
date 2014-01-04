@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from . import views
 
 admin.autodiscover()
 
@@ -32,7 +33,12 @@ urlpatterns = patterns('',
                   auth_views.password_reset_confirm,
                   name='password_reset_confirm'),
                   
-    (r'^accounts/', include('registration.backends.simple.urls')),
+    
+    url(r'^accounts/register/$',
+        views.RegistrationView.as_view(),
+        name='registration_register'),
+        
+    (r'^accounts/', include('registration.auth_urls')),
                     
     # Overwise use these lines for username/password auth
     url(r'^login/$', 'django.contrib.auth.views.login',name="login"),

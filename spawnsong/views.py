@@ -14,6 +14,7 @@ import stripe
 import urllib
 import logging
 from django.conf import settings
+from registration.backends.simple.views import RegistrationView as SimpleRegistrationView
 
 logger = logging.getLogger(__name__)
 
@@ -183,3 +184,7 @@ def purchase(request):
     except:
         logger.exception("Failed to capture charge")
         return HttpResponseRedirect(snippet.get_absolute_url() + "?paymenterror=" + urllib.quote("Sorry, there was an error processing your card"))
+
+class RegistrationView(SimpleRegistrationView):
+    def get_success_url(self, request, user):
+        return ('/', (), {})
