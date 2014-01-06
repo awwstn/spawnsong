@@ -187,6 +187,10 @@ def purchase(request):
     snippet_id = request.POST["snippet_id"]
     snippet = get_object_or_404(models.Snippet, pk=snippet_id)
 
+    if models.Order.objects.filter(purchaser_email=email, song=snippet.song).exists():
+        return HttpResponseRedirect(snippet.get_absolute_url() + "?paymenterror=" + urllib.quote("You have already purchased this song!"))
+        
+
     # First authorize the charge on the card with stripe
     try:
         charge = stripe.Charge.create(
