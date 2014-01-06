@@ -61,9 +61,14 @@
         features: ['playpause','progress','current','duration', 'volume'],
         success: function (mediaElement, domObject) { 
           mediaElement.addEventListener('playing', function(e) {
+            $('#playButtonOverlay').fadeOut();
             if (_this.visualisation === "pulsate") {
               _this.runVisualisation(mediaElement);
             }
+          });
+
+          $('#playerContainer').click(function () {
+            mediaElement.play();
           });
         },
       });

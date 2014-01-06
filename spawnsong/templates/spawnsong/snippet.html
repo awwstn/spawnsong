@@ -33,8 +33,9 @@
   <div class="snippet-view" id="snippetView">
     <div class="player" id="playerContainer">
       <div class="image-container">
+        <div class="overlay" id="playButtonOverlay">&nbsp;</div>
         {% thumbnail snippet.image "652" crop="center" as im %}
-        <img src="{{ im.url }}" class="img-responsive" id="playerImage">
+        <img src="{{ im.url }}" id="playerImage">
         {% endthumbnail %}
       </div>
       {% if snippet.audio_ready %}
