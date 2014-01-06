@@ -39,7 +39,7 @@
         {% endthumbnail %}
       </div>
       {% if snippet.audio_ready %}
-      <audio id="audioPlayer" width="653" height="30" controls="controls" preload="none">
+      <audio id="audioPlayer" width="653" height="30" controls="controls" preload="auto">
         <source type="audio/mp3" src="{{ snippet.audio_mp3.url }}" />
         <object width="320" height="240" type="application/x-shockwave-flash" data="{{ STATIC_URL }}mediaelement/flashmediaelement.swf">
           <param name="movie" value="{{ STATIC_URL }}mediaelement/flashmediaelement.swf" />
