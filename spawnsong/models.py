@@ -9,6 +9,8 @@ from jsonfield import JSONField
 from django.db.models import Q
 import uuid
 from sorl.thumbnail import ImageField
+import storages
+from storages.backends import s3boto
 
 def upload_to(prefix="uploads"):
     def get_file_path(instance, filename):
@@ -16,6 +18,12 @@ def upload_to(prefix="uploads"):
         filename = "%s.%s" % (uuid.uuid4(), ext)
         return "%s/%s" % (prefix, filename)
     return get_file_path
+
+protected_storage = s3boto.S3BotoStorage(
+  acl='private',
+  querystring_auth=True,
+  querystring_expire=600, # 10 minutes, try to ensure people won't/can't share
+)
 
 class Artist(models.Model):
     user = models.OneToOneField(User)
@@ -40,10 +48,13 @@ class Song(models.Model):
     
     created_at = models.DateTimeField(default=datetime.datetime.now)
     
-    # TODO: Needs to be uploaded to a protected location. Maybe just
-    # use a CharField with an S3 location in it?
-    complete_audio = models.FileField(null=True, upload_to=upload_to("songs/complete"), blank=True)
+    complete_audio = models.FileField(null=True, upload_to=upload_to("songs/complete"), storage=protected_storage, blank=True)
     completed_at = models.DateTimeField(null=True, help_text="The time at which the completed audio file was uploaded", blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.complete_audio and not self.completed_at:
+            self.completed_at = datetime.datetime.now()
+        return super(Song, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return u"Song id %d by %s" % (self.id, self.artist)

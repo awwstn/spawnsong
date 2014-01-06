@@ -2,7 +2,39 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 import models
+from mutagen.mp3 import MP3, HeaderNotFoundError, InvalidMPEGHeader
+from django.conf import settings
+import os
 
+# Based on http://stackoverflow.com/a/5785711/65130
+class MP3FileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        self.max_file_size = kwargs.pop('max_file_size', None)
+        self.max_audio_length = kwargs.pop('max_audio_length', None)
+        self.max_audio_length_display = kwargs.pop('max_audio_length_display', self.max_audio_length)
+        super(MP3FileField, self).__init__(*args, **kwargs)
+    
+    def clean(self, tmp_file, initial=None):
+        super(MP3FileField, self).clean(tmp_file, initial)
+
+        if self.max_file_size and tmp_file.size > self.max_file_size:
+            raise forms.ValidationError("File is too large.")
+
+        file_path = os.path.join(settings.FILE_UPLOAD_TEMP_DIR,tmp_file.name)
+        try:
+            with open(file_path, 'wb+') as destination:
+                for chunk in tmp_file.chunks():
+                    destination.write(chunk)
+            audio = MP3(file_path)
+            
+            if self.max_audio_length and audio.info.length > self.max_audio_length:
+                raise forms.ValidationError("Maximum length for audio is %d seconds (%d seconds uploaded)" % (self.max_audio_length_display,audio.info.length))
+        except (HeaderNotFoundError, InvalidMPEGHeader):
+            raise forms.ValidationError("File is not valid MP3 CBR/VBR format.")
+        finally:
+            if os.path.exists(file_path): os.remove(file_path)
+            tmp_file.seek(0)
+        return tmp_file
 
 class EditSnippetForm(forms.ModelForm):
     title = forms.CharField(max_length=100)
@@ -13,9 +45,16 @@ class EditSnippetForm(forms.ModelForm):
         model = models.Snippet
         fields = ("title", "image", "visualisation_effect")
 
+class UploadCompleteSongForm(forms.ModelForm):
+    complete_audio = MP3FileField(label="Upload Complete Song", widget=forms.widgets.FileInput, max_file_size=settings.FULL_SONG_FILESIZE_LIMIT)
+
+    class Meta:
+        model = models.Song
+        fields = ("complete_audio",)
+        
 class UploadSnippetForm(forms.Form):
     title = forms.CharField(max_length=100)
-    audio = forms.FileField()
+    audio = MP3FileField(label="Upload %ss Snippet" % (settings.SNIPPET_LENGTH_LIMIT,), widget=forms.widgets.FileInput, max_audio_length=settings.SNIPPET_LENGTH_LIMIT+1, max_audio_length_display=settings.SNIPPET_LENGTH_LIMIT)
     image = forms.ImageField()
     visualisation_effect = forms.ChoiceField(choices=(("pulsate", "Pulsate"), ("none", "None")))
     

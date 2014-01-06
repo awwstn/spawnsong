@@ -60,7 +60,13 @@
         <a href="?edit" class="edit-link">edit</a>
         {% endif %}
         <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
+        {% block orderButton %}
         <button {% if edit_mode %}disabled{% endif %} class="{% if snippet.is_complete %}pre-order{% else %}order{% endif %}" id="order">{% if not snippet.is_complete%}Pre {% endif %}Order</button>
+        {% if snippet.is_complete %}
+        {% else %}
+        <div><a href="{{ snippet.get_absolute_url }}upload-full/" class="upload-full-link">(upload full song)</a></div>
+        {% endif %}
+        {% endblock %}
         <form id="orderForm" style="display: none" method="post" action="/purchase/">
           {% csrf_token %}
           <input name="email">
@@ -70,50 +76,52 @@
         {% if order_count > 0 %}<div class="order-count">{{ order_count }} {% if not snippet.is_complete%}Pre {% endif %}Order</div>{% endif %}
         
       </div>
-      {% if edit_mode %}
-      <div class="edit">
-        <form method="POST" action="" enctype="multipart/form-data">
-          {% csrf_token %}
-          {{ edit_form|crispy }}
-          <div class="form-actions">
-            {% if snippet.state == "ready" %}
-            <input type="submit" name="publish" class="btn btn-primary" value="Publish">
-            <input type="submit" name="update" class="btn" value="Update">
-            {% else %}
-            <input type="submit" name="update" class="btn btn-primary" value="Save">
-            {% endif %}
-            <input type="submit" name="delete" class="btn" value="Delete" onclick='return confirm("Are you sure you want to delete this song snippet?")'>
-          </div>
-        </form>
-      </div>
-      {% else %}
-      
-      <div class="comments" id="comments">
-        <ul>
-          {% for comment in snippet.comment_set.all %}
-          <li class="comment {% if comment.user == snippet.song.artist.user %}artist-comment{% endif %}">
-            <span class="avatar"></span>
-            <div class="timestamp">{{ comment.created_at|naturaltime }}</div>
-            <div class="username">{{ comment.user.username }}</div>
-            <div class="text">{{ comment.content }}</div>
-          </li>
-          {% endfor %}
-        </ul>
-        <div class="newcomment">
-          <span class="avatar"></span>
-          {% if user.is_authenticated %}
-          <form action="." method="post" onsubmit="spawnsong.snippet.post_comment(); return false">
+      {% block commentsArea %}
+        {% if edit_mode %}
+        <div class="edit">
+          <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
-            <!-- Honey-pot: --> <input class="badger" name="badger" placeholder="Don't type anything in this field.">
-            <input id="commentText" name="comment"> <button class="btn" id="addcomment">Comment</button>
+            {{ edit_form|crispy }}
+            <div class="form-actions">
+              {% if snippet.state == "ready" %}
+              <input type="submit" name="publish" class="btn btn-primary" value="Publish">
+              <input type="submit" name="update" class="btn" value="Update">
+              {% else %}
+              <input type="submit" name="update" class="btn btn-primary" value="Save">
+              {% endif %}
+              <input type="submit" name="delete" class="btn" value="Delete" onclick='return confirm("Are you sure you want to delete this song snippet?")'>
+            </div>
           </form>
-          {% else %}
-          
-          <div class="cantcomment">Please login to make a comment</div> <a href="/login/?next={{ snippet.get_absolute_url }}" class="btn btn-default">Log In</a>
-          {% endif %}
         </div>
-      </div>
-      {% endif %}
+        {% else %}
+        
+        <div class="comments" id="comments">
+          <ul>
+            {% for comment in snippet.comment_set.all %}
+            <li class="comment {% if comment.user == snippet.song.artist.user %}artist-comment{% endif %}">
+              <span class="avatar"></span>
+              <div class="timestamp">{{ comment.created_at|naturaltime }}</div>
+              <div class="username">{{ comment.user.username }}</div>
+              <div class="text">{{ comment.content }}</div>
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="newcomment">
+            <span class="avatar"></span>
+            {% if user.is_authenticated %}
+            <form action="." method="post" onsubmit="spawnsong.snippet.post_comment(); return false">
+              {% csrf_token %}
+              <!-- Honey-pot: --> <input class="badger" name="badger" placeholder="Don't type anything in this field.">
+              <input id="commentText" name="comment"> <button class="btn" id="addcomment">Comment</button>
+            </form>
+            {% else %}
+            
+            <div class="cantcomment">Please login to make a comment</div> <a href="/login/?next={{ snippet.get_absolute_url }}" class="btn btn-default">Log In</a>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      {% endblock commentsArea %}
     </div>
   </div>
 </div>

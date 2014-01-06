@@ -68,7 +68,11 @@
           });
 
           $('#playerContainer').click(function () {
-            mediaElement.play();
+            if (mediaElement.paused || mediaElement.ended) {
+              mediaElement.play();
+            } else {
+              mediaElement.pause();
+            }
           });
         },
       });

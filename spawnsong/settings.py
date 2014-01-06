@@ -294,7 +294,11 @@ AUDIO_BITRATE = "128k"
 
 EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 
+FULL_SONG_FILESIZE_LIMIT = 25 * 1024 * 1024
 
+SNIPPET_LENGTH_LIMIT = 35
+
+FILE_UPLOAD_TEMP_DIR = "/tmp"
 
 try:
     from local_settings import *

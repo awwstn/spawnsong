@@ -45,6 +45,7 @@ urlpatterns = patterns('',
     url(r'^logout/$', 'django.contrib.auth.views.logout',name="logout"),
     
     url(r'^s/([^/]+)/$', 'spawnsong.views.snippet',name="snippet"),
+    url(r'^s/([^/]+)/upload-full/$', 'spawnsong.views.upload_full',name="snippet-upload-full"),
     url(r'^u/([^/]+)/$', 'spawnsong.views.user',name="user"),
     url(r'^upload/$', 'spawnsong.views.upload',name="upload"),
     url(r'^purchase/$', 'spawnsong.views.purchase',name="purchase"),

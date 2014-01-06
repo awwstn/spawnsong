@@ -47,6 +47,19 @@ def frontpage(request):
         },
         context_instance=RequestContext(request))
 
+def _snippet_details_json(snippet):
+    snippet_details = {
+        "beats": snippet.beat_locations(),
+        "title": snippet.title,
+        "price": snippet.price,
+        "visualisation_effect": snippet.visualisation_effect,
+    };
+    # JSON will be inserted into the HTML template, so need the
+    # special encode to get rid of "</script>" in strings
+    return simplejson.dumps(
+        snippet_details,
+        cls=simplejson.encoder.JSONEncoderForHTML)
+    
 
 def snippet(request, snippet_id):
     snippet = get_object_or_404(
@@ -60,6 +73,7 @@ def snippet(request, snippet_id):
             context_instance=RequestContext(request))
         
     editable = request.user.is_authenticated() and snippet.song.artist.user == request.user,
+    # edit mode is for editing the metadata
     edit_mode = editable and ("edit" in request.GET or snippet.state == "ready")
     print editable, edit_mode
     if edit_mode:
@@ -82,17 +96,11 @@ def snippet(request, snippet_id):
             comment = request.POST["comment"]
             models.Comment.objects.create(user=request.user, snippet=snippet, content=comment, ip_address=get_client_ip(request))
 
-    snippet_details = {
-        "beats": snippet.beat_locations(),
-        "title": snippet.title,
-        "price": snippet.price,
-        "visualisation_effect": snippet.visualisation_effect,
-    };
                                     
     return render_to_response(
         "spawnsong/snippet.html",
         {
-            "snippet_details_json": simplejson.dumps(snippet_details, cls=simplejson.encoder.JSONEncoderForHTML), # json will be inserted into the HTML template, so need the special encode to get rid of "</script>" in strings
+            "snippet_details_json": _snippet_details_json(snippet),
             "snippet": snippet,
             "editable": editable,
             "edit_mode": edit_mode,
@@ -100,6 +108,30 @@ def snippet(request, snippet_id):
             "order_count": snippet.order_count(),
             "paymentsuccess": "paymentsuccess" in request.GET,
             "paymenterror": request.GET.get("paymenterror", None)
+        },
+        context_instance=RequestContext(request))
+
+@login_required
+def upload_full(request, snippet_id):
+    snippet = get_object_or_404(
+        models.Snippet.objects.visible_to(request.user), pk=snippet_id, song__artist__user=request.user)
+    song = snippet.song
+    uploaded = snippet.is_complete()
+    if request.method == "POST":
+        form = forms.UploadCompleteSongForm(request.POST, request.FILES, instance=song)
+        if form.is_valid():
+            form.save()
+            uploaded = True
+    else:
+        form = forms.UploadCompleteSongForm(instance=song)
+
+    return render_to_response(
+        "spawnsong/upload_full.html",
+        {
+            "uploaded": uploaded,
+            "snippet_details_json": _snippet_details_json(snippet),
+            "snippet": snippet,
+            "form": form
         },
         context_instance=RequestContext(request))
 
