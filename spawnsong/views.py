@@ -139,7 +139,6 @@ def upload_full(request, snippet_id):
             "form": form
         },
         context_instance=RequestContext(request))
-    print "XHR", is_xhr
     if is_xhr:
         return JsonResponse({"html": html})
     else:
@@ -231,11 +230,21 @@ def purchase(request):
 
             # Capture the charge (actually charge the user)
             charge = charge.capture(amount=snippet.price)
-            
-            return HttpResponseRedirect(snippet.get_absolute_url() + "?paymentsuccess")
     except:
         logger.exception("Failed to capture charge")
         return HttpResponseRedirect(snippet.get_absolute_url() + "?paymenterror=" + urllib.quote("Sorry, there was an error processing your card"))
+    
+    # Send email to purchaser
+    message = EmailMessage('spawnsong/email/order-song.tpl', {'order': order, 'song': snippet.song, 'is_preorder': not snippet.is_complete()}, to=[order.purchaser_email])
+    message.send()
+    
+    # Send email to artist
+    message = EmailMessage('spawnsong/email/song-purchased.tpl', {'order': order, 'song': snippet.song, 'is_preorder': not snippet.is_complete()}, to=[snippet.song.artist.user.email])
+    message.send()
+
+    snippet.update_ordering_score()
+    
+    return HttpResponseRedirect(snippet.get_absolute_url() + "?paymentsuccess")
 
 class RegistrationView(SimpleRegistrationView):
     def get_success_url(self, request, user):

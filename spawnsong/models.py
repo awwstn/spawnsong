@@ -74,6 +74,7 @@ class Song(models.Model):
 
     def get_download_url(self):
         "Get a download url for the full audio, the url will expire after 10 minutes. It will also force a download (not play in browser)"
+        #print "Get download url"
         return self.complete_audio.storage.url(self.complete_audio.name, slugify(self.title) + ".mp3")
     
 
