@@ -17,7 +17,7 @@
     You can upload the completed song here. It will be sent to anyone
     who has pre-ordered and to anyone who orders it in the future.
   </p>
-  <form method="POST" action="" enctype="multipart/form-data">
+  <form method="POST" action="" enctype="multipart/form-data" id="uploadForm">
     {% csrf_token %}
     {{ form|crispy }}
     <div class="form-actions-with-progress">

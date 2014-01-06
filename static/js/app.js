@@ -163,13 +163,13 @@
   };
   
   /////
-  // Uploads
+  // Uploads (used for both snippet and full song upload)
   ////
   
-  function UploadView(el) {
+  function UploadForm(el) {
   }
 
-  UploadView.prototype = {
+  UploadForm.prototype = {
     ready: function () {
       if (!(new XMLHttpRequest().upload)) {
         // Browser doesn't support XHR2, fall back to standard HTML form
@@ -219,7 +219,7 @@
     '#playerContainer': SnippetPlayer,
     '#comments': SnippetComments,
     '#snippetView': SnippetViewCSS,
-    '#uploadView': UploadView
+    '#uploadForm': UploadForm
   };
 
   $(document).ready(function () {

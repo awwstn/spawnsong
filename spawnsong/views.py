@@ -114,6 +114,7 @@ def snippet(request, snippet_id):
 
 @login_required
 def upload_full(request, snippet_id):
+    is_xhr = 'xhr' in request.POST
     snippet = get_object_or_404(
         models.Snippet.objects.visible_to(request.user), pk=snippet_id, song__artist__user=request.user)
     song = snippet.song
@@ -124,10 +125,12 @@ def upload_full(request, snippet_id):
             form.save()
             song.queue_delivery()
             uploaded = True
+            if is_xhr:
+                return JsonResponse({"redirectTo": request.path})
     else:
         form = forms.UploadCompleteSongForm(instance=song)
 
-    return render_to_response(
+    html = loader.render_to_string(
         "spawnsong/upload_full.html",
         {
             "uploaded": uploaded,
@@ -136,6 +139,12 @@ def upload_full(request, snippet_id):
             "form": form
         },
         context_instance=RequestContext(request))
+    print "XHR", is_xhr
+    if is_xhr:
+        return JsonResponse({"html": html})
+    else:
+        return HttpResponse(html)
+    
 
 def download_full(request, order_id, email, token):
     order = get_object_or_404(models.Order, pk=order_id, purchaser_email=email, security_token=token)
