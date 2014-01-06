@@ -3,6 +3,8 @@ from models import *
 from sorl.thumbnail.admin import AdminImageMixin
 from django.contrib import auth
 from django.contrib.auth import admin as auth_admin
+from django.db.models import Sum
+from decimal import Decimal
 
 site = admin.AdminSite()
 
@@ -98,6 +100,56 @@ class OrderAdmin(admin.ModelAdmin):
            'fields': ('stripe_transaction_id',)
        }),
     )
+
+class OrderInline(admin.StackedInline):
+    model = Order
+    extra = 0
+    
+    readonly_fields = ("delivered", "refunded")
+    
+    def has_add_permission(self, request):
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
+    
+    fieldsets = (
+       (None, {
+           'fields': ('song', 'price', 'created_at')
+       }),
+       ('Purchasher', {
+           'fields': ('purchaser', 'purchaser_email')
+       }),
+       ('Order Status', {
+           'fields': ('delivered', 'refunded')
+       }),
+       ('Transaction', {
+           'classes': ('collapse',),
+           'fields': ('stripe_transaction_id',)
+       }),
+    )
+
+class ArtistPaymentAdmin(admin.ModelAdmin):
+    date_hierarchy = "created_at"
+    search_fields = ("artist__user__username", "artist__user__email")
+    list_display = ("artist", "created_at", "order_count", "total_amount", "paid", "paid_at")
+    list_filter = ("paid",)
+    list_editable = ("paid",)
+    readonly_fields = ("paid_at",)
+    ordering = ("-created_at",)
+    inlines = [OrderInline]
+    
+    def order_count(self, obj):
+        return obj.order_set.count()
+    
+    def total_amount(self, obj):
+        return "$%0.2f" % (obj.order_set.aggregate(Sum('price'))["price__sum"]/Decimal("100"))
+
+    def has_add_permission(self, request):
+        return False
+    
+    def has_delete_permission(self, request, obj=None):
+        return False
     
 class UserAdmin(auth_admin.UserAdmin):
     pass
@@ -105,7 +157,7 @@ class UserAdmin(auth_admin.UserAdmin):
 for _site in [site]:
     _site.register(Song, SongAdmin)
     _site.register(Order, OrderAdmin)
-    _site.register(ArtistPayment)
+    _site.register(ArtistPayment, ArtistPaymentAdmin)
     _site.register(Comment, CommentAdmin)
     
 site.register(auth.models.User, UserAdmin)

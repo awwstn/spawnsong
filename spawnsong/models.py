@@ -215,8 +215,25 @@ class Snippet(models.Model):
     class Meta:
         ordering = ("ordering_score","-created_at", )
     
+
+class ArtistPayment(models.Model):
+    "A payment that the system caluclated is owed to an artist"
+    artist = models.ForeignKey(Artist)
+    created_at = models.DateTimeField(default=datetime.datetime.now)
+    paid = models.BooleanField(default=False)
+    paid_at = models.DateTimeField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.paid and not self.paid_at:
+            self.paid_at = datetime.datetime.now()
+        return super(ArtistPayment, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return "Payment to %s" % (self.artist,)
+
 class Order(models.Model):
     "A pre-order or order for a song"
+    artist_payment = models.ForeignKey(ArtistPayment)
     song = models.ForeignKey(Song)
     purchaser = models.ForeignKey(User, null=True, blank=True)
     purchaser_email = models.EmailField()
@@ -247,16 +264,6 @@ class Order(models.Model):
             
     def __unicode__(self):
         return "Order for %s by %s" % (self.song, self.purchaser)
-
-class ArtistPayment(models.Model):
-    "A payment that the system caluclated is owed to an artist"
-    arist = models.ForeignKey(Artist)
-    orders = models.ManyToManyField(Order)
-    created_at = models.DateTimeField(default=datetime.datetime.now)
-    paid = models.BooleanField(default=False)
-
-    def __unicode__(self):
-        return "Payment to %s" % (self.artist,)
 
 class Comment(models.Model):
     """

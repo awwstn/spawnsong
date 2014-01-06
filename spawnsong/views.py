@@ -16,6 +16,7 @@ import logging
 from django.conf import settings
 from registration.backends.simple.views import RegistrationView as SimpleRegistrationView
 from mail_templated import EmailMessage
+from django.core.exceptions import MultipleObjectsReturned
 
 logger = logging.getLogger(__name__)
 
@@ -219,9 +220,21 @@ def purchase(request):
 
     try:
         with transaction.atomic():
+            try:
+                artistpayment, created =  models.ArtistPayment.objects.select_for_update().get_or_create(
+                    artist=snippet.song.artist, paid=False)
+            except MultipleObjectsReturned:
+                # Because the admin can said paid status it is
+                # possible to get multiple paid objects, this needs to
+                # be handled
+                artistpayment =  models.ArtistPayment.objects.select_for_update().order_by("-created_at").filter(
+                    artist=snippet.song.artist, paid=False).first()
+                
+            
             # Next create the order object in our db
             order = models.Order.objects.create(
                 song=snippet.song, 
+                artist_payment=artistpayment,
                 purchaser=request.user if request.user.is_authenticated() else None,
                 purchaser_email=email,
                 price=snippet.price,
