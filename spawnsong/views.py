@@ -75,17 +75,17 @@ def snippet(request, snippet_id):
     editable = request.user.is_authenticated() and snippet.song.artist.user == request.user,
     # edit mode is for editing the metadata
     edit_mode = editable and ("edit" in request.GET or snippet.state == "ready")
-    print editable, edit_mode
+    deleteable = not models.Order.objects.filter(song=snippet.song).exists()
     if edit_mode:
         if request.method == "POST":
+            if "delete" in request.POST and not deleteable:
+                snippet.delete()
+                return HttpResponseRedirect("/")
             form = forms.EditSnippetForm(request.POST, request.FILES, instance=snippet)
             if form.is_valid():
                 form.save()
                 if "publish" in request.POST:
                     snippet.publish()
-                elif "delete" in request.POST:
-                    snippet.delete()
-                    return HttpResponseRedirect("/")
                 return HttpResponseRedirect(snippet.get_absolute_url())
         else:
             form = forms.EditSnippetForm(instance=snippet)
@@ -103,6 +103,7 @@ def snippet(request, snippet_id):
             "snippet_details_json": _snippet_details_json(snippet),
             "snippet": snippet,
             "editable": editable,
+            "deleteable": deleteable,
             "edit_mode": edit_mode,
             "edit_form": form,
             "order_count": snippet.order_count(),

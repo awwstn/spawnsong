@@ -54,7 +54,7 @@
     </div>
     <div class="details" id="detailsContainer">
       <div class="header">
-        <h1 class="snippet-title">{{ snippet.title }}</h1>
+        <h1 class="snippet-title"><a href="{{snippet.get_absolute_url }}">{{ snippet.title }}</a></h1>
         <h2 class="username artist">by <a href="{{ snippet.song.artist.get_absolute_url }}">{{ snippet.song.artist.get_display_name }}</a></h2>
         {% if editable and not edit_mode %}
         <a href="?edit" class="edit-link">edit</a>
@@ -88,7 +88,9 @@
               {% else %}
               <input type="submit" name="update" class="btn btn-primary" value="Save">
               {% endif %}
+              {% if deleteable %}
               <input type="submit" name="delete" class="btn" value="Delete" onclick='return confirm("Are you sure you want to delete this song snippet?")'>
+              {% endif %}
             </div>
           </form>
         </div>
