@@ -7,6 +7,7 @@
 
 @details-bg: darken(@body-bg, 5%);
 @comments-bg: darken(@body-bg, 10%);
+@artist-comment-bg: lighten(@comments-bg, 20%);
 @timestamp-color: lighten(@gray,50%);
 @icon-font-path:          "../fonts/";
 
@@ -115,6 +116,13 @@ html, body {
                 .comment {
                     clear: left;
                     margin-bottom: 10px;
+
+                    &.artist-comment {
+                        background-color: @artist-comment-bg;
+                        .username {
+                            font-weight: bold;
+                        }
+                    }
                     
                     .timestamp {
                         color: @timestamp-color;

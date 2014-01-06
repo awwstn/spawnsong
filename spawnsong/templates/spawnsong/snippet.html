@@ -90,7 +90,7 @@
       <div class="comments" id="comments">
         <ul>
           {% for comment in snippet.comment_set.all %}
-          <li class="comment">
+          <li class="comment {% if comment.user == snippet.song.artist.user %}artist-comment{% endif %}">
             <span class="avatar"></span>
             <div class="timestamp">{{ comment.created_at|naturaltime }}</div>
             <div class="username">{{ comment.user.username }}</div>
