@@ -11,6 +11,8 @@ import uuid
 from sorl.thumbnail import ImageField
 import storages
 from storages.backends import s3boto
+import uuid
+from django.template.defaultfilters import slugify
 
 def upload_to(prefix="uploads"):
     def get_file_path(instance, filename):
@@ -19,11 +21,30 @@ def upload_to(prefix="uploads"):
         return "%s/%s" % (prefix, filename)
     return get_file_path
 
-protected_storage = s3boto.S3BotoStorage(
-  acl='private',
-  querystring_auth=True,
-  querystring_expire=600, # 10 minutes, try to ensure people won't/can't share
-)
+class PrivateDownloadStorage(s3boto.S3BotoStorage):
+    def __init__(self, *args, **kwargs):
+        kwargs.update(dict(
+            acl='private',
+            querystring_auth=True,
+            querystring_expire=600, # 10 minutes, try to ensure people won't/can't share
+            ))
+        super(PrivateDownloadStorage, self).__init__(*args, **kwargs)
+        
+    
+    def url(self, name, download_file_name=None):
+        name = self._normalize_name(self._clean_name(name))
+        if self.custom_domain:
+            return "%s://%s/%s" % ('https' if self.secure_urls else 'http',
+                                   self.custom_domain, name)
+        headers = {}
+        if download_file_name:
+            headers["response-content-disposition"] = "attachment; filename=%s" % (download_file_name,)
+        return self.connection.generate_url(self.querystring_expire,
+            method='GET', bucket=self.bucket.name, key=self._encode_name(name),
+            response_headers=headers,
+            query_auth=self.querystring_auth, force_http=not self.secure_urls)
+
+protected_storage = PrivateDownloadStorage()
 
 class Artist(models.Model):
     user = models.OneToOneField(User)
@@ -51,13 +72,34 @@ class Song(models.Model):
     complete_audio = models.FileField(null=True, upload_to=upload_to("songs/complete"), storage=protected_storage, blank=True)
     completed_at = models.DateTimeField(null=True, help_text="The time at which the completed audio file was uploaded", blank=True)
 
+    def get_download_url(self):
+        "Get a download url for the full audio, the url will expire after 10 minutes. It will also force a download (not play in browser)"
+        return self.complete_audio.storage.url(self.complete_audio.name, slugify(self.title) + ".mp3")
+    
+
     def save(self, *args, **kwargs):
         if self.complete_audio and not self.completed_at:
             self.completed_at = datetime.datetime.now()
         return super(Song, self).save(*args, **kwargs)
 
+    def queue_delivery(self):
+        import tasks
+        if self.is_complete():
+            tasks.deliver_full_song.delay(self.id)
+
+    @property
+    def title(self):
+        snippet = self.snippet_set.first()
+        if not snippet: return "<NO TITLE>"
+        return snippet.title
+
+        
+    def is_complete(self):
+        return self.completed_at is not None
+
     def __unicode__(self):
-        return u"Song id %d by %s" % (self.id, self.artist)
+        return self.title
+        # return u"Song id %d by %s" % (self.id, self.artist)
 
 class SnippetManager(models.Manager):
     def visible_to(self, user):
@@ -105,7 +147,7 @@ class Snippet(models.Model):
         self.save()
 
     def is_complete(self):
-        return self.song.completed_at is not None
+        return self.song.is_complete()
 
     def order_count(self):
         return self.song.order_set.count()
@@ -178,10 +220,16 @@ class Order(models.Model):
 
     stripe_transaction_id = models.CharField(max_length=255)
 
-    def maybe_queue_delivery(self):
-        # TODO: Queue delivery if the song has already been uploaded
-        pass
+    security_token = models.CharField(max_length=16, default=lambda : uuid.uuid4().hex[:16])
 
+    def download_link(self):
+        return settings.BASE_URL + reverse("snippet-download-full", args=(self.id, self.purchaser_email, self.security_token))
+
+    def maybe_queue_delivery(self):
+        import tasks
+        if self.song.is_complete():
+            tasks.deliver_full_song_to_order.delay(self.id)
+            
     def __unicode__(self):
         return "Order for %s by %s" % (self.song, self.purchaser)
 

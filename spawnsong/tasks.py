@@ -11,6 +11,7 @@ import time
 from django.db import transaction
 from celery.utils.log import get_task_logger
 from celery.utils import gen_task_name
+from mail_templated import EmailMessage
 
 from .celery import app
 from . import models
@@ -135,3 +136,44 @@ def check_echonest_response(snippet, echonest_id):
             snippet.maybe_ready(commit=False)
             snippet.save()
             # print "Have saved after echonest %r, %r, %r" % (snippet.state, snippet.audio_mp3, snippet.echonest_track_analysis is None)
+
+            
+@app.task
+def deliver_full_song(song_id):
+    "Deliver the full version of a song to anyone who has ordered it but hasn't received it already"
+    song = models.Song.objects.select_for_update().get(pk=song_id)
+    if not song.is_complete():
+        print song
+        print song.complete_audio
+        print song.completed_at
+        logger.warn("Song #%s is not complete so there is no full song to deliver" % (song.id,))
+        return
+    orders = list(song.order_set.select_for_update().filter(delivered=False, refunded=False))
+    if len(orders) == 0:
+        logger.debug("No orders to be delivered from song #%s" % (song.id,))
+        return
+    logger.info("Delivering full version of song #%s to %d users" % (song.id, len(orders)))
+    for order in orders:
+        deliver_full_song_to_order.apply_async(args=[order.id, False])
+        
+@app.task
+def deliver_full_song_to_order(order_id, redeliver=False):
+    logger.debug("Deliver order #%s" % (order_id,))
+    with transaction.atomic():
+        order_qs = models.Order.objects.select_for_update().filter(refunded=False, pk=order_id)
+        if not redeliver:
+            order_qs = order_qs.filter(delivered=False)
+        order = order_qs.get()
+        song = order.song
+        if not song.is_complete():
+            logger.warn("Song #%s is not complete so there is no full song to deliver to order #%s" % (song.id, order_id))
+            return
+        
+        logger.info("Delivering song #%s to order #%s" % (song.id, order_id))
+        message = EmailMessage('spawnsong/email/full-song-delivery.tpl', {'order': order, 'song': order.song}, to=[order.purchaser_email])
+        message.send()
+
+        logger.info("Marking as delivered for song #%s to order #%s" % (song.id, order_id))
+        order.delivered = True
+        order.save()
+    

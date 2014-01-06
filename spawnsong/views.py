@@ -121,6 +121,7 @@ def upload_full(request, snippet_id):
         form = forms.UploadCompleteSongForm(request.POST, request.FILES, instance=song)
         if form.is_valid():
             form.save()
+            song.queue_delivery()
             uploaded = True
     else:
         form = forms.UploadCompleteSongForm(instance=song)
@@ -134,6 +135,11 @@ def upload_full(request, snippet_id):
             "form": form
         },
         context_instance=RequestContext(request))
+
+def download_full(request, order_id, email, token):
+    order = get_object_or_404(models.Order, pk=order_id, purchaser_email=email, security_token=token)
+    # print "Going to get dowload url", order.song.get_download_url()
+    return HttpResponseRedirect(order.song.get_download_url())
 
 @login_required
 def upload(request):

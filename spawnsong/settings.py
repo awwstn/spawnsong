@@ -16,6 +16,8 @@ if DEBUG:
 # To lockdown pages set a password here and enable the middleware below
 LOCKDOWN_PASSWORDS = ("demo",)
 
+BASE_URL = "http://songspawn.herokuapp.com"
+
 MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
@@ -299,6 +301,8 @@ FULL_SONG_FILESIZE_LIMIT = 25 * 1024 * 1024
 SNIPPET_LENGTH_LIMIT = 35
 
 FILE_UPLOAD_TEMP_DIR = "/tmp"
+
+DEFAULT_FROM_EMAIL = "no-reply@spawnsong.com"
 
 try:
     from local_settings import *

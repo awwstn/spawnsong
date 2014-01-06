@@ -62,8 +62,7 @@
         <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
         {% block orderButton %}
         <button {% if edit_mode %}disabled{% endif %} class="{% if snippet.is_complete %}pre-order{% else %}order{% endif %}" id="order">{% if not snippet.is_complete%}Pre {% endif %}Order</button>
-        {% if snippet.is_complete %}
-        {% else %}
+        {% if not snippet.is_complete and editable %}
         <div><a href="{{ snippet.get_absolute_url }}upload-full/" class="upload-full-link">(upload full song)</a></div>
         {% endif %}
         {% endblock %}
