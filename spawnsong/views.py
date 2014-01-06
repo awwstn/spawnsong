@@ -15,6 +15,7 @@ import urllib
 import logging
 from django.conf import settings
 from registration.backends.simple.views import RegistrationView as SimpleRegistrationView
+from mail_templated import EmailMessage
 
 logger = logging.getLogger(__name__)
 
