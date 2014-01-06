@@ -13,6 +13,7 @@ import storages
 from storages.backends import s3boto
 import uuid
 from django.template.defaultfilters import slugify
+import stripe
 
 def upload_to(prefix="uploads"):
     def get_file_path(instance, filename):
@@ -101,6 +102,12 @@ class Song(models.Model):
     def __unicode__(self):
         return self.title
         # return u"Song id %d by %s" % (self.id, self.artist)
+
+    def get_absolute_url(self):
+        snippet = self.snippet_set.first()
+        if not snippet: return None
+        return snippet.get_absolute_url()
+        
 
 class SnippetManager(models.Manager):
     def visible_to(self, user):
@@ -230,6 +237,13 @@ class Order(models.Model):
         import tasks
         if self.song.is_complete():
             tasks.deliver_full_song_to_order.delay(self.id)
+
+    def refund(self):
+        ch = stripe.Charge.retrieve(self.stripe_transaction_id)
+        if not ch.refunded:
+            ch.refund()
+        self.refunded = True
+        self.save()
             
     def __unicode__(self):
         return "Order for %s by %s" % (self.song, self.purchaser)
