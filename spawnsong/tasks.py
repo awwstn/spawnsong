@@ -12,6 +12,8 @@ from django.db import transaction
 from celery.utils.log import get_task_logger
 from celery.utils import gen_task_name
 from mail_templated import EmailMessage
+import datetime
+import itertools
 
 from .celery import app
 from . import models
@@ -177,3 +179,37 @@ def deliver_full_song_to_order(order_id, redeliver=False):
         order.delivered = True
         order.save()
     
+        
+@app.task
+def send_artist_sales_emails():
+    """Send out the daily email to artists with details for the previous
+    day's sales"""
+    # Find all artists with sales made yesterday
+    logger.info("Preparing daily artist sales emails")
+    yesterday = datetime.date.today() - datetime.timedelta(1)
+    artists = models.Artist.objects.filter(
+        song__order__created_at__range= (datetime.datetime.combine(yesterday, datetime.time.min),
+                                         datetime.datetime.combine(yesterday, datetime.time.max))).distinct()
+    for (artist_id,) in artists.values_list("id"):
+       logger.debug("Queueing artist sales email send for Artist #%s" % (artist_id,))
+       send_artist_sales_emails_for_arist.apply_async(args=(artist_id,))
+    
+@app.task
+def send_artist_sales_emails_for_arist(artist_id):
+    yesterday = datetime.date.today() - datetime.timedelta(1)
+    artist = models.Artist.objects.get(id=artist_id)
+    orders = models.Order.objects.filter(
+        song__artist=artist,
+        created_at__range=(datetime.datetime.combine(yesterday, datetime.time.min),
+                           datetime.datetime.combine(yesterday, datetime.time.max))).order_by("song")
+    grouped = list((x,list(y)) for (x,y) in itertools.groupby(orders, lambda o: o.song))
+    for song,song_orders in grouped:
+        song_orders = list(song_orders)
+        song.order_count = len(list(song_orders))
+    
+    logger.debug("Send artist sales email send for Artist #%s (%s songs)" % (artist_id,len(grouped)))
+    message = EmailMessage(
+        'spawnsong/email/artist-daily-report.tpl',
+        {'songs': [song for (song,song_orders) in grouped]},
+        to=[artist.user.email])
+    message.send()

@@ -252,9 +252,9 @@ def purchase(request):
     message = EmailMessage('spawnsong/email/order-song.tpl', {'order': order, 'song': snippet.song, 'is_preorder': not snippet.is_complete()}, to=[order.purchaser_email])
     message.send()
     
-    # Send email to artist
-    message = EmailMessage('spawnsong/email/song-purchased.tpl', {'order': order, 'song': snippet.song, 'is_preorder': not snippet.is_complete()}, to=[snippet.song.artist.user.email])
-    message.send()
+    # # Send email to artist
+    # message = EmailMessage('spawnsong/email/song-purchased.tpl', {'order': order, 'song': snippet.song, 'is_preorder': not snippet.is_complete()}, to=[snippet.song.artist.user.email])
+    # message.send()
 
     snippet.update_ordering_score()
     

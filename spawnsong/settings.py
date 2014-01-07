@@ -1,5 +1,7 @@
 # Django settings for spawnsong project.
+from __future__ import absolute_import
 import os,sys
+from celery.schedules import crontab
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -281,6 +283,14 @@ LOGGING = {
     }
 }
 
+CELERYBEAT_SCHEDULE = {
+    # Executes every Monday morning at 7:30 A.M
+    'send-artist-sales-emails': {
+        'task': 'tasks.send_artist_sales_emails',
+        'schedule': crontab(hour=1, minute=0) # Daily at 1am
+    },
+}
+
 SONG_PRICE = 500
 CURRENCY = "USD"
 
@@ -305,7 +315,8 @@ FILE_UPLOAD_TEMP_DIR = "/tmp"
 DEFAULT_FROM_EMAIL = "no-reply@spawnsong.com"
 
 try:
-    from local_settings import *
+    from .local_settings import *
+    print "Imported local_settings.py"
 except ImportError:
     # Heroku setup
     
