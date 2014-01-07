@@ -108,6 +108,9 @@
             {% endfor %}
           </ul>
           <div class="newcomment">
+            {% if prompt_first_artist_comment %}
+            <div class="artist-comment-prompt">Why not add a comment to let people know when the song will be ready?</div>
+            {% endif %}
             <span class="avatar"></span>
             {% if user.is_authenticated %}
             <form action="." method="post" onsubmit="spawnsong.snippet.post_comment(); return false">

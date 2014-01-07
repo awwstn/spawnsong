@@ -105,6 +105,7 @@ def snippet(request, snippet_id):
             "snippet_details_json": _snippet_details_json(snippet),
             "snippet": snippet,
             "editable": editable,
+            "prompt_first_artist_comment": editable and not snippet.comment_set.exists(),
             "deleteable": deleteable,
             "edit_mode": edit_mode,
             "edit_form": form,

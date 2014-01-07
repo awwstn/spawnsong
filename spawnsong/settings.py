@@ -232,7 +232,7 @@ LOGIN_URL          = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 
-AWS_STORAGE_BUCKET_NAME = "spawnsong-test"
+AWS_STORAGE_BUCKET_NAME = "static.spawnsong.com"
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_QUERYSTRING_AUTH = False
 
