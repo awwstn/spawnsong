@@ -74,7 +74,7 @@ def snippet(request, snippet_id):
             },
             context_instance=RequestContext(request))
         
-    editable = request.user.is_authenticated() and snippet.song.artist.user == request.user,
+    editable = request.user.is_authenticated() and snippet.song.artist.user == request.user
     # edit mode is for editing the metadata
     edit_mode = editable and ("edit" in request.GET or snippet.state == "ready")
     deleteable = not models.Order.objects.filter(song=snippet.song).exists()
