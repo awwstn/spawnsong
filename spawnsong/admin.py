@@ -5,8 +5,34 @@ from django.contrib import auth
 from django.contrib.auth import admin as auth_admin
 from django.db.models import Sum
 from decimal import Decimal
+from django.contrib.admin.filters import SimpleListFilter
 
 site = admin.AdminSite()
+
+class NullFilterSpec(SimpleListFilter):
+    title = u''
+
+    parameter_name = u''
+
+    value_label = "Has value"
+
+    no_value_label = "None"
+
+    def lookups(self, request, model_admin):
+        return (
+            ('1', self.value_label),
+            ('0', self.no_value_label)
+        )
+
+    def queryset(self, request, queryset):
+        kwargs = {
+        '%s'%self.parameter_name : None,
+        }
+        if self.value() == '0':
+            return queryset.filter(**kwargs)
+        if self.value() == '1':
+            return queryset.exclude(**kwargs)
+        return queryset
 
 class SnippetInline(admin.StackedInline):
     model = Snippet
@@ -31,13 +57,20 @@ class SnippetInline(admin.StackedInline):
 
     def has_delete_permission(self, request, obj=None):
         return False
+        
+
+class CompletedNullFilterSpec(NullFilterSpec):
+    title = u'Completed'
+    parameter_name = u'completed_at'
+    value_label = "Completed"
+    no_value_label = "Not Completed"
 
 class SongAdmin(admin.ModelAdmin):
     inlines = [SnippetInline]
-    list_display = ("title", "state", "artist")
+    list_display = ("title", "state", "artist", "completed")
     date_hierarchy = "created_at"
     search_fields = ("snippet__title", "snippet__state", "artist__user__username")
-    list_filter = ("snippet__state",)
+    list_filter = ("snippet__state", CompletedNullFilterSpec)
 
     
     fieldsets = (
@@ -48,6 +81,10 @@ class SongAdmin(admin.ModelAdmin):
            'fields': ('completed_at', 'complete_audio')
        }),
     )
+
+    def completed(self, obj):
+        return obj.is_complete()
+    completed.boolean = True
     
     def has_add_permission(self, request):
         return False
