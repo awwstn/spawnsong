@@ -67,7 +67,7 @@
             }
           });
 
-          $('#playerContainer').click(function () {
+          $('#playerImageContainer').click(function () {
             if (mediaElement.paused || mediaElement.ended) {
               mediaElement.play();
             } else {

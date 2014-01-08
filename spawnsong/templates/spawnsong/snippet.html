@@ -32,7 +32,7 @@
   
   <div class="snippet-view" id="snippetView">
     <div class="player" id="playerContainer">
-      <div class="image-container">
+      <div class="image-container" id="playerImageContainer">
         <div class="overlay" id="playButtonOverlay">&nbsp;</div>
         {% thumbnail snippet.image "652" crop="center" as im %}
         <img src="{{ im.url }}" id="playerImage">
