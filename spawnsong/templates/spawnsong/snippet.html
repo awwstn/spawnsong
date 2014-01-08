@@ -60,6 +60,7 @@
         <a href="?edit" class="edit-link">edit</a>
         {% endif %}
         <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
+        {% if not edit_mode %}
         {% block orderButton %}
         <button {% if edit_mode %}disabled{% endif %} class="{% if snippet.is_complete %}pre-order{% else %}order{% endif %}" id="order">{% if not snippet.is_complete%}Pre {% endif %}Order</button>
         {% if not snippet.is_complete and editable %}
@@ -73,6 +74,7 @@
           <input name="snippet_id" value="{{ snippet.id }}">
         </form>
         {% if order_count > 0 %}<div class="order-count">{{ order_count }} {% if not snippet.is_complete%}Pre {% endif %}Order</div>{% endif %}
+        {% endif %}
         
       </div>
       {% block commentsArea %}

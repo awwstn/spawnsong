@@ -146,6 +146,7 @@ class Snippet(models.Model):
 
     ordering_score = models.IntegerField(default=0, help_text="Score used to order snippets on front page, calcualted from number of orders at the moment")
 
+    genres = models.CharField(max_length=255, blank=True)
 
     processing_error = models.CharField(max_length=255, null=True, help_text="Error message to display to user if we're in processing_error state")
     
