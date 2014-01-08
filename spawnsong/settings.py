@@ -18,7 +18,7 @@ if DEBUG:
 # To lockdown pages set a password here and enable the middleware below
 LOCKDOWN_PASSWORDS = ("demo",)
 
-BASE_URL = "http://songspawn.herokuapp.com"
+BASE_URL = "http://spawnsong.com"
 
 MANAGERS = ADMINS
 
