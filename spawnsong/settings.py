@@ -12,7 +12,7 @@ ADMINS = (
     ('Thomas Parslow', 'tom@almostobsolete.net'),
 )
 
-ALLOWED_HOSTS = ["songspawn.herokuapp.com"]
+ALLOWED_HOSTS = ["spawnsong.herokuapp.com", "spawnsong.com"]
 if DEBUG:
     ALLOWED_HOSTS.append("localhost")
 # To lockdown pages set a password here and enable the middleware below
