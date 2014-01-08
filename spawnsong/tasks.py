@@ -95,10 +95,10 @@ def request_echonest_data(snippet):
     logger.debug("Transcoding!")
     response = requests.post(
         "http://developer.echonest.com/api/v4/track/upload",
-        data={"url": snippet.uploaded_audio.url, "api_key": settings.ECHONEST_API_KEY}).json()
+        data={"url": snippet.uploaded_audio.url, "api_key": settings.ECHONEST_API_KEY})
     
     try:
-        echonest_id = response["response"]["track"]["id"]
+        echonest_id = response.json()["response"]["track"]["id"]
     except:
         logger.error("Bad response from echonest upoad: %s" % (response.text,))
         raise
