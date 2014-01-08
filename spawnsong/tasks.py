@@ -96,10 +96,16 @@ def request_echonest_data(snippet):
     response = requests.post(
         "http://developer.echonest.com/api/v4/track/upload",
         data={"url": snippet.uploaded_audio.url, "api_key": settings.ECHONEST_API_KEY}).json()
-    response["response"]["track"]["id"]
+    
+    try:
+        echonest_id = response["response"]["track"]["id"]
+    except:
+        logger.error("Bad response from echonest upoad: %s" % (response.text,))
+        raise
+   
 
     # print response
-    check_echonest_response(snippet.pk, response["response"]["track"]["id"])
+    check_echonest_response(snippet.pk, echonest_id)
 
 @snippet_processing_task()
 def check_echonest_response(snippet, echonest_id):
@@ -116,7 +122,11 @@ def check_echonest_response(snippet, echonest_id):
         params={"api_key": settings.ECHONEST_API_KEY, "id": echonest_id, "bucket": "audio_summary"})
 
     # print "Response json", response.json()
-    track = response.json()["response"]["track"]
+    try:
+        track = response.json()["response"]["track"]
+    except:
+        logger.error("Bad response from echonest profile: %s" % (response.text,))
+        raise
     # print "Got track"
     if track["status"] == "pending":
         # Check again in 5 seconds time

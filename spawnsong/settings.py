@@ -271,6 +271,11 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'spawnsong.tasks': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
         'django.db.backends': {
             'handlers': [],
             'propagate': False,
