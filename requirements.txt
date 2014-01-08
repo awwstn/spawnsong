@@ -38,3 +38,4 @@ jsmin==2.0.8
 stripe==1.11.0
 mutagen==1.22
 django-mail-templated==0.2.0
+django-secure==1.0

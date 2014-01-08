@@ -318,6 +318,8 @@ FILE_UPLOAD_TEMP_DIR = "/tmp"
 
 DEFAULT_FROM_EMAIL = "no-reply@spawnsong.com"
 
+SECURE_SSL_REDIRECT = True
+
 try:
     from .local_settings import *
     print "Imported local_settings.py"
