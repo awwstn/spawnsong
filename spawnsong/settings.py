@@ -139,6 +139,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    "djangosecure.middleware.SecurityMiddleware"
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -163,6 +164,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'djangosecure',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
