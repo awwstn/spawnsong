@@ -66,8 +66,8 @@ class CompletedNullFilterSpec(NullFilterSpec):
     no_value_label = "Not Completed"
     
 def retry_processing(modeladmin, request, queryset):
-    for order in queryset.filter(state="processing_error"):
-        order.refund()
+    for snippet in Snippet.objects.filter(state="processing_error", song__in=queryset.all()):
+        snippet.process_uploaded_audio()
 retry_processing.short_description = "Retry (failed) processing"
 
 class SongAdmin(admin.ModelAdmin):

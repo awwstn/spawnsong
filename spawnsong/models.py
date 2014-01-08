@@ -198,12 +198,14 @@ class Snippet(models.Model):
        if commit:
            self.save()
 
-    def process_uploaded_audio(self):
+    def process_uploaded_audio(self, commit=True):
         import tasks
         assert self.state in ["processing_error","initial"]
         self.state = "processing"
         tasks.transcode_snippet_audio.delay(self.id)
         tasks.request_echonest_data.delay(self.id)
+        if commit:
+            self.save()
 
     @property
     def price(self):
