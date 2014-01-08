@@ -66,9 +66,9 @@ class CompletedNullFilterSpec(NullFilterSpec):
     no_value_label = "Not Completed"
     
 def retry_processing(modeladmin, request, queryset):
-    for order in queryset.filter(refunded=False):
+    for order in queryset.filter(state="processing_error"):
         order.refund()
-retry_processing.short_description = "Retry processing"
+retry_processing.short_description = "Retry (failed) processing"
 
 class SongAdmin(admin.ModelAdmin):
     inlines = [SnippetInline]
@@ -76,6 +76,7 @@ class SongAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
     search_fields = ("snippet__title", "snippet__state", "artist__user__username")
     list_filter = ("snippet__state", CompletedNullFilterSpec)
+    actions = [retry_processing]
 
     
     fieldsets = (
