@@ -64,6 +64,11 @@ class CompletedNullFilterSpec(NullFilterSpec):
     parameter_name = u'completed_at'
     value_label = "Completed"
     no_value_label = "Not Completed"
+    
+def retry_processing(modeladmin, request, queryset):
+    for order in queryset.filter(refunded=False):
+        order.refund()
+retry_processing.short_description = "Retry processing"
 
 class SongAdmin(admin.ModelAdmin):
     inlines = [SnippetInline]

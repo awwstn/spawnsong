@@ -125,11 +125,12 @@ class Snippet(models.Model):
     state = models.CharField(
         max_length=20,
         choices=(
+            ("initial"        , "Initial"),
             ("processing"        , "Processing"),
             ("processing_failed" , "Processing Failed"),
             ("ready"             , "Ready"),
             ("published"         , "Published")),
-        default="processing")
+        default="initial")
 
     created_at = models.DateTimeField(default=datetime.datetime.now)
 
@@ -199,6 +200,8 @@ class Snippet(models.Model):
 
     def process_uploaded_audio(self):
         import tasks
+        assert self.state in ["processing_error","initial"]
+        self.state = "processing"
         tasks.transcode_snippet_audio.delay(self.id)
         tasks.request_echonest_data.delay(self.id)
 

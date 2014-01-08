@@ -284,7 +284,6 @@ LOGGING = {
 }
 
 CELERYBEAT_SCHEDULE = {
-    # Executes every Monday morning at 7:30 A.M
     'send-artist-sales-emails': {
         'task': 'tasks.send_artist_sales_emails',
         'schedule': crontab(hour=1, minute=0) # Daily at 1am
