@@ -15,7 +15,7 @@ from mail_templated import EmailMessage
 import datetime
 import itertools
 
-from .celery import app
+from sites.spawnsongsite.celery import app
 from . import models
 
 logger = get_task_logger("spawnsong.tasks")

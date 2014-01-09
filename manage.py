@@ -2,8 +2,11 @@
 import os
 import sys
 
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "apps"))
+
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "spawnsong.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sites.spawnsongsite.settings")
 
     from django.core.management import execute_from_command_line
 

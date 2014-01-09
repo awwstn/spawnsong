@@ -7,7 +7,7 @@ from celery import Celery
 from django.conf import settings
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'spawnsong.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sites.spawnsongsite.settings')
 
 app = Celery('spawnsong')
 
