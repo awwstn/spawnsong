@@ -55,7 +55,9 @@
     <div class="details" id="detailsContainer">
       <div class="header">
         <h1 class="snippet-title"><a href="{{snippet.get_absolute_url }}">{{ snippet.title }}</a></h1>
+        {% if not editable %}
         <h2 class="username artist">by <a href="{{ snippet.song.artist.get_absolute_url }}">{{ snippet.song.artist.get_display_name }}</a></h2>
+        {% endif %}
         {% if editable and not edit_mode %}
         <a href="?edit" class="edit-link">edit</a>
         {% endif %}
