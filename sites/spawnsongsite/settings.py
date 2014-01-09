@@ -331,6 +331,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 AUDIO_PROFILES_DEFAULT = ["128k_mp3", "192k_mp3"]
 
 SNIPPET_AUDIO_PROFILE = "128k_mp3"
+FULL_AUDIO_PROFILE = "192k_mp3"
 
 try:
     from .local_settings import *

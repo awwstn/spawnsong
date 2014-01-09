@@ -72,14 +72,13 @@ class Song(models.Model):
     
     created_at = models.DateTimeField(default=datetime.datetime.now)
     
-    complete_audio = models.FileField(null=True, upload_to=upload_to("songs/complete"), storage=protected_storage, blank=True)
+    complete_audio = models.ForeignKey(Audio, blank=True, null=True)
     completed_at = models.DateTimeField(null=True, help_text="The time at which the completed audio file was uploaded", blank=True)
 
     def get_download_url(self):
         "Get a download url for the full audio, the url will expire after 10 minutes. It will also force a download (not play in browser)"
         #print "Get download url"
-        return self.complete_audio.storage.url(self.complete_audio.name, slugify(self.title) + ".mp3")
-    
+        return self.complete_audio.original.storage.url(self.complete_audio.original.name, slugify(self.title) + ".mp3")
 
     def save(self, *args, **kwargs):
         if self.complete_audio and not self.completed_at:

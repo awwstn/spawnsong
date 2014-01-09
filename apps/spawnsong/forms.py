@@ -54,12 +54,19 @@ class EditSnippetForm(forms.ModelForm):
         model = models.Snippet
         fields = ("title", "image", "genres", "visualisation_effect")
 
-class UploadCompleteSongForm(forms.ModelForm):
+class UploadCompleteSongForm(forms.Form):
     complete_audio = MP3FileField(label="Upload Complete Song", widget=forms.widgets.FileInput, max_file_size=settings.FULL_SONG_FILESIZE_LIMIT)
 
-    class Meta:
-        model = models.Song
-        fields = ("complete_audio",)
+    def __init__(self, *args, **kwargs):
+        self.instance = kwargs.pop("instance")
+        super(UploadCompleteSongForm, self).__init__(*args, **kwargs)
+
+    def save(self):
+        self.instance.complete_audio = media.models.Audio.objects.create(
+            title=self.instance.title + " (complete)", original=self.cleaned_data["complete_audio"])
+        self.instance.save()
+        self.instance.complete_audio.transcode([settings.FULL_AUDIO_PROFILE])
+        return self.instance
         
 class UploadSnippetForm(forms.Form):
     title = forms.CharField(max_length=100)

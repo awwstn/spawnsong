@@ -78,7 +78,7 @@ class SongAdmin(admin.ModelAdmin):
     search_fields = ("snippet__title", "snippet__state", "artist__user__username")
     list_filter = ("snippet__state", CompletedNullFilterSpec)
     actions = [retry_processing]
-
+    raw_id_fields = ("complete_audio",)
     
     fieldsets = (
        (None, {

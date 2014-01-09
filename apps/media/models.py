@@ -45,7 +45,11 @@ class Audio(models.Model):
     created_at = models.DateTimeField(default=datetime.datetime.now)
     original = models.FileField(null=True, upload_to=upload_to("audio/original"), storage=protected_storage)
 
-    def get_url(self, profile):
+    @property
+    def url(self):
+        return self.original.url
+    
+    def format_url(self, profile):
         audioformat = self.get_format(profile)
         if audioformat is None or not audioformat.state == "ready":
             return None
