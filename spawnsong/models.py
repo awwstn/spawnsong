@@ -203,8 +203,10 @@ class Snippet(models.Model):
         import tasks
         assert self.state in ["processing_error","initial"]
         self.state = "processing"
+        
         tasks.transcode_snippet_audio.delay(self.id)
         tasks.request_echonest_data.delay(self.id)
+        
         if commit:
             self.save()
 
