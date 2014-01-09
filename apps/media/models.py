@@ -64,7 +64,7 @@ class Audio(models.Model):
         
     def transcode(self, profiles=settings.AUDIO_PROFILES_DEFAULT):
         "Kick of transcoding tasks"
-        return self.transcode_subtask().delay()
+        return self.transcode_subtask(profiles).delay()
     
     def transcode_subtask(self, profiles=settings.AUDIO_PROFILES_DEFAULT):
         "Create a celery subtask for transcoding and return it so that it can be included in a celery workflow"
