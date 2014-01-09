@@ -250,8 +250,11 @@ def purchase(request):
         return HttpResponseRedirect(snippet.get_absolute_url() + "?paymenterror=" + urllib.quote("Sorry, there was an error processing your card"))
     
     # Send email to purchaser
-    message = EmailMessage('spawnsong/email/order-song.tpl', {'order': order, 'song': snippet.song, 'is_preorder': not snippet.is_complete()}, to=[order.purchaser_email])
-    message.send()
+    try:
+        message = EmailMessage('spawnsong/email/order-song.tpl', {'order': order, 'song': snippet.song, 'is_preorder': not snippet.is_complete()}, to=[order.purchaser_email])
+        message.send()
+    except:
+        logger.exception("Failed to send email receipt")
     
     # # Send email to artist
     # message = EmailMessage('spawnsong/email/song-purchased.tpl', {'order': order, 'song': snippet.song, 'is_preorder': not snippet.is_complete()}, to=[snippet.song.artist.user.email])
@@ -267,7 +270,7 @@ class RegistrationView(SimpleRegistrationView):
 
 @login_required
 def personal_playlist(request):
-    orders = models.Order.objects.filter(purchaser=request.user, refunded=False, delivered=True).select_related("song__snippet").order_by("-created_at")
+    orders = models.Order.objects.filter(purchaser=request.user, refunded=False).select_related("song__snippet").order_by("-created_at")
     songs = [o.song for o in orders]
     if request.is_ajax():
         template = "spawnsong/parts/song-players.html"
