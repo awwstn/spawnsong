@@ -279,6 +279,6 @@ def personal_playlist(request):
     return render_to_response(
         template,
         {
-           "songs": list(songs)*100
+           "songs": songs
         },
         context_instance=RequestContext(request))
