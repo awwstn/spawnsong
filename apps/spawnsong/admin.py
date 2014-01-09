@@ -7,7 +7,7 @@ from django.db.models import Sum
 from decimal import Decimal
 from django.contrib.admin.filters import SimpleListFilter
 
-site = admin.AdminSite()
+from sites.spawnsongsite import admin_site as site
 
 class NullFilterSpec(SimpleListFilter):
     title = u''
@@ -38,13 +38,14 @@ class SnippetInline(admin.StackedInline):
     model = Snippet
     extra = 0
     readonly_fields = ("state",'processing_error')
+    raw_id_fields = ("audio",)
     fieldsets = (
        (None, {
            'fields': ('title', 'state', 'created_at', 'image', 'visualisation_effect','processing_error'),
        }),
        ('Audio Data', {
            'classes': ('collapse',),
-           'fields': ('uploaded_audio','audio_mp3')
+           'fields': ('audio',)
        }),
        ('Echonest', {
            'classes': ('collapse',),

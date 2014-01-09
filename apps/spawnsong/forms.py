@@ -6,6 +6,7 @@ from mutagen.mp3 import MP3, HeaderNotFoundError, InvalidMPEGHeader
 from django.conf import settings
 import os
 import re
+import media.models
 
 # Based on http://stackoverflow.com/a/5785711/65130
 class MP3FileField(forms.FileField):
@@ -82,10 +83,11 @@ class UploadSnippetForm(forms.Form):
     def save(self, user):
         artist, _ignore = models.Artist.objects.get_or_create(user=user)
         song = models.Song.objects.create(artist=artist)
+        audio = media.models.Audio.objects.create(title=self.cleaned_data["title"], original=self.cleaned_data["audio"])
         snippet = models.Snippet.objects.create(
             song=song,
             title=self.cleaned_data["title"],
-            uploaded_audio=self.cleaned_data["audio"],
+            audio=audio,
             genres=self.cleaned_data["genres"],
             image=self.cleaned_data["image"],
             visualisation_effect=self.cleaned_data["visualisation_effect"])

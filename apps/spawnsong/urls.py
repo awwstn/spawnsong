@@ -3,7 +3,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from . import views
-from . import admin as spawnsong_admin
+from sites.spawnsongsite import admin_site 
 
 # admin.autodiscover()
 
@@ -56,7 +56,7 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(spawnsong_admin.site.urls)),
+    url(r'^admin/', include(admin_site.urls)),
 )
 
 urlpatterns += staticfiles_urlpatterns()

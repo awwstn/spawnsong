@@ -14,6 +14,8 @@ from storages.backends import s3boto
 import uuid
 from django.template.defaultfilters import slugify
 import stripe
+from media.models import Audio
+import celery
 
 def upload_to(prefix="uploads"):
     def get_file_path(instance, filename):
@@ -135,9 +137,8 @@ class Snippet(models.Model):
     created_at = models.DateTimeField(default=datetime.datetime.now)
 
     image = ImageField(upload_to=upload_to("snippets/images"))
-    uploaded_audio = models.FileField(upload_to=upload_to("snippets/audio/uploaded"), null=True, help_text="Original audio file as uploaded by user")
-    
-    audio_mp3 = models.FileField(upload_to=upload_to("snippets/audio/mp3"), null=True, help_text="Transcoded audio for streaming (mp3 format)")
+
+    audio = models.ForeignKey(Audio, null=True)
     
     echonest_track_profile = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
     echonest_track_analysis = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
@@ -151,6 +152,11 @@ class Snippet(models.Model):
     processing_error = models.CharField(max_length=255, null=True, help_text="Error message to display to user if we're in processing_error state")
     
     objects = SnippetManager()
+    
+    @property
+    def audio_mp3(self):
+        audio_format = self.audio.get_format(settings.SNIPPET_AUDIO_PROFILE)
+        return audio_format and audio_format.audio_data
 
     def update_ordering_score(self):
         self.ordering_score = self.song.order_set.count()
@@ -204,8 +210,12 @@ class Snippet(models.Model):
         assert self.state in ["processing_error","initial"]
         self.state = "processing"
         
-        tasks.transcode_snippet_audio.delay(self.id)
-        tasks.request_echonest_data.delay(self.id)
+        celery.group([
+            self.audio.transcode_subtask([settings.SNIPPET_AUDIO_PROFILE]),
+            tasks.request_echonest_data.s(self.id)
+            ]).apply_async(
+                link=tasks.complete_snippet_processing.si(self.id),
+                link_error=tasks.fail_snippet_processing.si(self.id))
         
         if commit:
             self.save()

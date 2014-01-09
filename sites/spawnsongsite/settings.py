@@ -188,6 +188,7 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'media',
     'spawnsong',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
@@ -308,8 +309,6 @@ BROKER_URL = 'django://'
 
 FFMPEG_EXECUTABLE = "vendor/ffmpeg/bin/ffmpeg"
 
-AUDIO_BITRATE = "128k"
-
 EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 
 FULL_SONG_FILESIZE_LIMIT = 25 * 1024 * 1024
@@ -327,6 +326,11 @@ SECURE_FRAME_DENY = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
+AUDIO_PROFILES_DEFAULT = ["128k_mp3", "192k_mp3"]
+
+SNIPPET_AUDIO_PROFILE = "128k_mp3"
 
 try:
     from .local_settings import *
@@ -357,3 +361,15 @@ except ImportError:
 
 import stripe
 stripe.api_key = STRIPE_SECRET_KEY
+
+# Down here so that FFMPEG_EXECUTABLE can be replaced in local_settings
+AUDIO_PROFILES = {
+    "128k_mp3": {
+        "extension": "mp3",
+        "command": FFMPEG_EXECUTABLE + " -i {input} -acodec libmp3lame -ab 128k {output}"
+    },
+    "192k_mp3": {
+        "extension": "mp3",
+        "command": FFMPEG_EXECUTABLE + " -i {input} -acodec libmp3lame -ab 192k {output}"
+    }
+}
