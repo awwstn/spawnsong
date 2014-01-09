@@ -86,7 +86,7 @@ class UploadSnippetForm(forms.Form):
             song=song,
             title=self.cleaned_data["title"],
             uploaded_audio=self.cleaned_data["audio"],
-            genre=self.cleaned_data.get("genre",""),
+            genres=self.cleaned_data["genres"],
             image=self.cleaned_data["image"],
             visualisation_effect=self.cleaned_data["visualisation_effect"])
         snippet.process_uploaded_audio()
