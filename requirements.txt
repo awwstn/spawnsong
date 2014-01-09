@@ -14,7 +14,6 @@ django-lockdown==1.0
 django-social-auth==0.7.28
 django-storages==1.1.5
 django-vanilla-views==1.0.2
-gunicorn==0.14.6
 httplib2==0.8
 jsonfield==0.9.20
 kombu==3.0.8
