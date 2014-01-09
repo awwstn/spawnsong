@@ -352,6 +352,7 @@ except ImportError:
     AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
     
     MAILGUN_ACCESS_KEY = os.getenv("MAILGUN_ACCESS_KEY")
+    MAILGUN_SERVER_NAME = os.getenv("MAILGUN_SERVER_NAME")
     
     ECHONEST_API_KEY = os.getenv("ECHONEST_API_KEY")
     
