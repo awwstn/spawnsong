@@ -12,6 +12,19 @@
     this.title = window.SONGSPAWN_SNIPPET_DETAILS.title;
     this.userEmail = window.LOGGED_IN_USER_EMAIL;
     this.snippetId = window.SONGSPAWN_SNIPPET_DETAILS.id;
+
+    var _this = this;
+    this.handler = window.StripeCheckout.configure({
+      key: this.stripePublicKeys,
+      token: function(token, args) {
+        _this.orderEl.attr('disabled', true);
+        _this.orderEl.text("Processing...");
+        $('#orderForm [name=email]').val(token.email);
+        $('#orderForm [name=token]').val(token.id);
+        $('#orderForm').submit();
+        // Use the token to create the charge with a server-side script.
+      }
+    });
   }
 
   SnippetOrders.prototype = {
@@ -20,19 +33,8 @@
     },
     showCheckout: function () {
       var _this = this;
-      var handler = window.StripeCheckout.configure({
-        key: this.stripePublicKeys,
-        token: function(token, args) {
-          _this.orderEl.attr('disabled', true);
-          _this.orderEl.text("Processing...");
-          $('#orderForm [name=email]').val(token.email);
-          $('#orderForm [name=token]').val(token.id);
-          $('#orderForm').submit();
-          // Use the token to create the charge with a server-side script.
-        }
-      });
 
-      handler.open({
+      this.handler.open({
         name: 'Songspawn',
         description: 'Pre Order "' + this.title + '"',
         email: this.userEmail,
