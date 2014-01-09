@@ -1,0 +1,29 @@
+{% load endless %}
+{% load thumbnail %}
+
+{% paginate songs %}
+{% for song in songs %}
+<div class="song">
+  <div class="thumb">
+    {% thumbnail song.snippet_set.first.image "100x100" crop="center" as im %}
+    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+    {% endthumbnail %}
+  </div>
+  <div class="body">
+    <div class="genres">{{ song.genres }}</div>
+    <div class="username artist"><a href="{{ snippet.song.artist.get_absolute_url }}">{{ song.artist.get_display_name }}</a></div>
+    <h2>{{ song.title }}</h2>
+    <audio class="audioPlayer" width="100%" height="30" controls="controls" preload="metadata">
+      <source type="audio/mp3" src="{{ song.complete_audio_mp3.url }}" />
+      <object width="320" height="240" type="application/x-shockwave-flash" data="{{ STATIC_URL }}mediaelement/flashmediaelement.swf">
+        <param name="movie" value="{{ STATIC_URL }}mediaelement/flashmediaelement.swf" />
+        <param name="flashvars" value="controls=true&file={{ song.complete_audio_mp3.url }}" />
+        <!-- Image as a last resort -->
+        Sorry, audio playback is not support on your browser.
+      </object>
+    </audio>
+  </div>
+</div>
+{% endfor %}
+
+{% show_more %}

@@ -75,6 +75,11 @@ class Song(models.Model):
     complete_audio = models.ForeignKey(Audio, blank=True, null=True)
     completed_at = models.DateTimeField(null=True, help_text="The time at which the completed audio file was uploaded", blank=True)
 
+    @property
+    def complete_audio_mp3(self):
+        audioformat =  self.complete_audio.get_format(settings.FULL_AUDIO_PROFILE)
+        return audioformat and audioformat.audio_data
+
     def get_download_url(self):
         "Get a download url for the full audio, the url will expire after 10 minutes. It will also force a download (not play in browser)"
         #print "Get download url"
@@ -96,7 +101,6 @@ class Song(models.Model):
         if not snippet: return "<NO TITLE>"
         return snippet.title
 
-        
     def is_complete(self):
         return self.completed_at is not None
 

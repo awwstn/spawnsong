@@ -291,3 +291,30 @@ html, body {
     }
 
 }
+
+.playlist {
+    .song {
+        .panel();
+        padding: 10px;
+        .thumb {
+            width: 100px;
+            float: left;
+            clear: left;
+        }
+        .body {
+            clear: right;
+            margin-left: 120px;
+            .artist {
+                font-size: 20px;
+            }
+            .genres {
+                float: right;
+                color: @gray;
+            }
+            h2 {
+                margin-bottom: 5px;
+                margin-top: 5px;
+            }
+        }
+    }
+}

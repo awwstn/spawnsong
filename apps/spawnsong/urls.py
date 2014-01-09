@@ -50,6 +50,7 @@ urlpatterns = patterns('',
     url(r'^u/([^/]+)/$', 'spawnsong.views.user',name="user"),
     url(r'^upload/$', 'spawnsong.views.upload',name="upload"),
     url(r'^purchase/$', 'spawnsong.views.purchase',name="purchase"),
+    url(r'^personal-playlist/$', 'spawnsong.views.personal_playlist',name="personal-playlist"),
     url(r'^download/([^/]+)/([^/]+)/([^/]+)/$', 'spawnsong.views.download_full',name="snippet-download-full"),
     
     # Uncomment the admin/doc line below to enable admin documentation:

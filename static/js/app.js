@@ -214,9 +214,52 @@
     }
   };
 
+  ////
+  // Full song player
+  ////
+  
+  function PersonalPlaylist(el) {
+  }
+
+  PersonalPlaylist.prototype = {
+    ready: function () {
+      var _this = this;
+      this.setupMediaElementPlayer();
+      $.endlessPaginate({
+        paginateOnScroll: true,
+        onCompleted: function(data) {
+          _this.setupMediaElementPlayer();
+        } 
+      });
+    },
+    setupMediaElementPlayer: function ( ) {
+      var _this = this;
+      var players = [];
+      $('audio').mediaelementplayer({
+        videoHeight: 0,
+        features: ['playpause','progress','current','duration', 'volume'],
+        success: function (mediaElement, domObject) { 
+          players.push(mediaElement);
+          mediaElement.addEventListener('ended', function(e) {
+            var foundMe = false;
+            var nextPlayer = _.find(players, function (player) {
+              if (player === mediaElement) {
+                foundMe = true;
+              } else {
+                return foundMe;
+              }
+            });
+            if (nextPlayer) nextPlayer.play();
+          });
+        },
+      });
+    }
+  };
+
   var views = {
     '#order': SnippetOrders,
     '#playerContainer': SnippetPlayer,
+    '#personalPlaylistView': PersonalPlaylist,
     '#comments': SnippetComments,
     '#snippetView': SnippetViewCSS,
     '#uploadForm': UploadForm

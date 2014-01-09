@@ -264,3 +264,18 @@ def purchase(request):
 class RegistrationView(SimpleRegistrationView):
     def get_success_url(self, request, user):
         return ('/', (), {})
+
+@login_required
+def personal_playlist(request):
+    orders = models.Order.objects.filter(purchaser=request.user, refunded=False, delivered=True).select_related("song__snippet").order_by("-created_at")
+    songs = [o.song for o in orders]
+    if request.is_ajax():
+        template = "spawnsong/parts/song-players.html"
+    else:
+        template = "spawnsong/personal-playlist.html",
+    return render_to_response(
+        template,
+        {
+           "songs": list(songs)*100
+        },
+        context_instance=RequestContext(request))
