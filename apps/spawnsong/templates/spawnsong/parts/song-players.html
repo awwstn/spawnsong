@@ -12,7 +12,8 @@
   <div class="body">
     <div class="genres">{{ song.genres }}</div>
     <div class="username artist"><a href="{{ snippet.song.artist.get_absolute_url }}">{{ song.artist.get_display_name }}</a></div>
-    <h2>{{ song.title }} <small><a href="{{ song.get_download_url }}">Download</a></small></h2>
+    <div class="download"><a href="{{ song.get_download_url }}">download</a></div>
+    <h2>{{ song.title }} </h2>
     {% if song.is_complete %}
     <audio class="audioPlayer" width="100%" height="30" controls="controls" preload="metadata">
       <source type="audio/mp3" src="{{ song.complete_audio_mp3.url }}" />
