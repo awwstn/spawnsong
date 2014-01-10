@@ -295,7 +295,7 @@ LOGGING = {
 
 CELERYBEAT_SCHEDULE = {
     'send-artist-sales-emails': {
-        'task': 'tasks.send_artist_sales_emails',
+        'task': 'spawnsong.tasks.send_artist_sales_emails',
         'schedule': crontab(hour=1, minute=0) # Daily at 1am
     },
 }
