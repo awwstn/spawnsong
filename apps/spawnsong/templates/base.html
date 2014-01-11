@@ -23,7 +23,13 @@
           
           <ul class="nav navbar-nav">
             <li><a href="/upload/" >Upload a Song Snippet</a></li>
-            <li><a href="/personal-playlist/" >Personal Playlist</a></li>
+            <li>
+              <a href="/personal-playlist/" >Personal Playlist
+              {% if new_songs_count %}
+              <span class="badge">{{ new_songs_count }}</span>
+              {% endif %}
+              </a>
+            </li>
           </ul>
 
           <p class="navbar-text navbar-right">

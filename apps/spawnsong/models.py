@@ -268,6 +268,9 @@ class Order(models.Model):
 
     security_token = models.CharField(max_length=16, default=lambda : uuid.uuid4().hex[:16])
 
+    web_notified = models.BooleanField(default=False)
+    email_notified = models.BooleanField(default=False)
+
     def download_link(self):
         return settings.BASE_URL + reverse("snippet-download-full", args=(self.id, self.purchaser_email, self.security_token))
 
