@@ -299,6 +299,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'spawnsong.tasks.send_artist_sales_emails',
         'schedule': crontab(hour=1, minute=0) # Daily at 1am
     },
+    'send-user-new-songs-emails': {
+        'task': 'spawnsong.tasks.send_new_song_emails_for_user',
+        'schedule': crontab(hour=12, minute=0) # Daily at 12pm
+    },
 }
 
 SONG_PRICE = 500

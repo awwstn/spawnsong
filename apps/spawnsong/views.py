@@ -272,7 +272,7 @@ class RegistrationView(SimpleRegistrationView):
 def personal_playlist(request):
     orders = models.Order.objects.filter(purchaser=request.user, refunded=False).select_related("song__snippet").order_by("-created_at")
     # Remove the new song count, we've seen them now
-    orders.update(web_notified=True)
+    orders.filter(delivered=True).update(web_notified=True)
     songs = [o.song for o in orders]
     if request.is_ajax():
         template = "spawnsong/parts/song-players.html"

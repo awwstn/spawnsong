@@ -252,6 +252,12 @@ class ArtistPayment(models.Model):
     def __unicode__(self):
         return "Payment to %s" % (self.artist,)
 
+
+class OrderManager(models.Manager):
+    def available(self):
+        "All orders that are delivered and not refunded"
+        return self.filter(delivered=True, refunded=False)
+    
 class Order(models.Model):
     "A pre-order or order for a song"
     artist_payment = models.ForeignKey(ArtistPayment)

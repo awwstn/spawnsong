@@ -15,6 +15,8 @@ from mail_templated import EmailMessage
 import datetime
 import itertools
 import time
+from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 from sites.spawnsongsite.celery import app
 from . import models
@@ -141,14 +143,41 @@ def deliver_full_song_to_order(order_id, redeliver=False):
             logger.warn("Song #%s is not complete so there is no full song to deliver to order #%s" % (song.id, order_id))
             return
         
-        logger.info("Delivering song #%s to order #%s" % (song.id, order_id))
-        message = EmailMessage('spawnsong/email/full-song-delivery.tpl', {'order': order, 'song': order.song}, to=[order.purchaser_email])
-        message.send()
+        # logger.info("Delivering song #%s to order #%s" % (song.id, order_id))
+        # message = EmailMessage('spawnsong/email/full-song-delivery.tpl', {'order': order, 'song': order.song}, to=[order.purchaser_email])
+        # message.send()
 
         logger.info("Marking as delivered for song #%s to order #%s" % (song.id, order_id))
         order.delivered = True
         order.save()
     
+@app.task
+def send_new_song_emails():
+    """Send out the daily email to artists with details for the previous
+    day's sales"""
+    # Find all artists with sales made yesterday
+    logger.info("Preparing daily new song list emails")
+    users = User.objects.filter(order__email_notified=False, order__delivered=True, order__refunded=False).distinct()
+    for (user_id,) in users.values_list("id"):
+       logger.debug("Queueing user daily songs email for user #%s" % (user_id,))
+       send_new_song_emails_for_user.apply_async(args=(user_id,))
+
+@app.task
+def send_new_song_emails_for_user(user_id):
+    with transaction.atomic():
+        user = User.objects.get(id=user_id)
+        orders = models.Order.objects.select_for_update().filter(email_notified=False, delivered=True, refunded=False, purchaser=user).select_related("song__snippet")
+        if orders.count() == 0:
+            logger.info("No orders to notify user #%s about" % (user_id,))
+            return
+        logger.debug("Notify user #%s about new deliveries" % (user_id, ))
+        playlist_url = settings.BASE_URL + reverse("personal-playlist")
+        message = EmailMessage(
+            'spawnsong/email/new-songs.tpl',
+            {'orders': orders, "playlist_url": playlist_url},
+            to=[user.email])
+        message.send()
+        orders.update(email_notified=True)
         
 @app.task
 def send_artist_sales_emails():
