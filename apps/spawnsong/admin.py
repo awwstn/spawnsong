@@ -116,9 +116,9 @@ refund.short_description = "Refund selected orders"
     
 class OrderAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
-    readonly_fields = ("delivered", "refunded")
+    readonly_fields = ("delivered", "refunded","charged", "charge_failed", "charge_error")
     search_fields = ("song__snippet__title", "purchaser_email", "price")
-    list_display = ("song", "purchaser_email", "created_at", "price", "refunded", "delivered")
+    list_display = ("song", "purchaser_email", "created_at", "price", "refunded", "charged", "charge_failed", "delivered")
     list_filter = ("refunded", "delivered")
     ordering = ("-created_at",)
     actions = [refund]
@@ -137,11 +137,11 @@ class OrderAdmin(admin.ModelAdmin):
            'fields': ('purchaser', 'purchaser_email')
        }),
        ('Order Status', {
-           'fields': ('delivered', 'refunded')
+           'fields': ('delivered', 'refunded','charged', 'charge_failed')
        }),
        ('Transaction', {
            'classes': ('collapse',),
-           'fields': ('stripe_transaction_id',)
+           'fields': ('charge_error', 'stripe_transaction_id','stripe_customer_id',)
        }),
     )
 

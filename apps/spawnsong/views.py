@@ -205,12 +205,9 @@ def purchase(request):
 
     # First authorize the charge on the card with stripe
     try:
-        charge = stripe.Charge.create(
-            amount=snippet.price,
-            currency=settings.CURRENCY,
-            capture=False,
+        customer = stripe.Customer.create(
+            email=email,
             card=token,
-            description="Pre-order of '%s' (id %s) by %s" % (snippet.title, snippet.id, snippet.song.artist.get_display_name())
             )
     except stripe.CardError, e:
         logger.info("Card declined for %s buying %s" % (email,snippet.id))
@@ -239,12 +236,9 @@ def purchase(request):
                 purchaser=request.user if request.user.is_authenticated() else None,
                 purchaser_email=email,
                 price=snippet.price,
-                stripe_transaction_id=charge.id)
+                stripe_customer_id=customer.id)
 
             order.maybe_queue_delivery()
-
-            # Capture the charge (actually charge the user)
-            charge = charge.capture(amount=snippet.price)
     except:
         logger.exception("Failed to capture charge")
         return HttpResponseRedirect(snippet.get_absolute_url() + "?paymenterror=" + urllib.quote("Sorry, there was an error processing your card"))
@@ -270,7 +264,7 @@ class RegistrationView(SimpleRegistrationView):
 
 @login_required
 def personal_playlist(request):
-    orders = models.Order.objects.filter(purchaser=request.user, refunded=False).select_related("song__snippet").order_by("-created_at")
+    orders = models.Order.objects.available_or_upcoming(request.user).select_related("song__snippet").order_by("-created_at")
     # Remove the new song count, we've seen them now
     orders.filter(delivered=True).update(web_notified=True)
     songs = [o.song for o in orders]

@@ -17,6 +17,7 @@ import itertools
 import time
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+import stripe
 
 from sites.spawnsongsite.celery import app
 from . import models
@@ -132,6 +133,9 @@ def deliver_full_song(song_id):
         
 @app.task
 def deliver_full_song_to_order(order_id, redeliver=False):
+    """
+    Complete charge for order
+    """
     logger.debug("Deliver order #%s" % (order_id,))
     with transaction.atomic():
         order_qs = models.Order.objects.select_for_update().filter(refunded=False, pk=order_id)
@@ -147,8 +151,26 @@ def deliver_full_song_to_order(order_id, redeliver=False):
         # message = EmailMessage('spawnsong/email/full-song-delivery.tpl', {'order': order, 'song': order.song}, to=[order.purchaser_email])
         # message.send()
 
-        logger.info("Marking as delivered for song #%s to order #%s" % (song.id, order_id))
-        order.delivered = True
+        try:
+            logger.info("Charge for song #%s to order #%s" % (song.id, order_id))
+            if not order.charged:
+                charge = stripe.Charge.create(
+                    customer=order.stripe_customer_id,
+                    description="Pre-order of '%s' (id %s) by %s" % (song.title, song.id, song.artist.get_display_name()),
+                    amount=order.price,
+                    currency=settings.CURRENCY
+                    )
+                order.stripe_transaction_id = charge.id
+                order.charged = True
+            order.delivered = True
+        except Exception, e:
+            logger.exception("Failed to charge order #%s" % (order_id))
+            order.charge_failed = True
+            order.charge_error = repr(e)
+            
+            message = EmailMessage('spawnsong/email/charge-failed.tpl', {'order': order, 'song': order.song}, to=[order.purchaser_email])
+            message.send()
+            
         order.save()
     
 @app.task

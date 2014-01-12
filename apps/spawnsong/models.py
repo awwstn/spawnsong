@@ -254,10 +254,14 @@ class ArtistPayment(models.Model):
 
 
 class OrderManager(models.Manager):
-    def available(self):
+    def available_to(self, user):
         "All orders that are delivered and not refunded"
-        return self.filter(delivered=True, refunded=False)
-    
+        return self.filter(purchaser=user, delivered=True, refunded=False)
+        
+    def available_or_upcoming(self, user):
+        "All orders that are delivered and not refunded"
+        return self.filter(purchaser=user, refunded=False)
+        
 class Order(models.Model):
     "A pre-order or order for a song"
     artist_payment = models.ForeignKey(ArtistPayment)
@@ -268,14 +272,21 @@ class Order(models.Model):
     refunded = models.BooleanField(default=False)
     delivered = models.BooleanField(default=False)
     
+    
     created_at = models.DateTimeField(default=datetime.datetime.now)
 
-    stripe_transaction_id = models.CharField(max_length=255)
+    stripe_transaction_id = models.CharField(max_length=255, blank=True)
+    stripe_customer_id = models.CharField(max_length=255)
+    charged = models.BooleanField(default=False)
+    charge_failed = models.BooleanField(default=False)
+    charge_error = models.CharField(max_length=255, blank=True)
 
     security_token = models.CharField(max_length=16, default=lambda : uuid.uuid4().hex[:16])
 
     web_notified = models.BooleanField(default=False)
     email_notified = models.BooleanField(default=False)
+
+    objects = OrderManager()
 
     def download_link(self):
         return settings.BASE_URL + reverse("snippet-download-full", args=(self.id, self.purchaser_email, self.security_token))
@@ -286,6 +297,7 @@ class Order(models.Model):
             tasks.deliver_full_song_to_order.delay(self.id)
 
     def refund(self):
+        assert self.charged, "Can't refund an order if it hasn't been charged"
         ch = stripe.Charge.retrieve(self.stripe_transaction_id)
         if not ch.refunded:
             ch.refund()
