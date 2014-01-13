@@ -174,6 +174,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.comments',
     'django.contrib.humanize',
+    'django.contrib.flatpages',
     'endless_pagination',
     'registration',
     'settings_context_processor',

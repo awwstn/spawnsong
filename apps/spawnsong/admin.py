@@ -6,6 +6,8 @@ from django.contrib.auth import admin as auth_admin
 from django.db.models import Sum
 from decimal import Decimal
 from django.contrib.admin.filters import SimpleListFilter
+from django.contrib.flatpages.models import FlatPage
+from django.contrib.flatpages.admin import FlatPageAdmin
 
 from sites.spawnsongsite import admin_site as site
 
@@ -205,3 +207,4 @@ for _site in [site]:
     _site.register(Comment, CommentAdmin)
     
 site.register(auth.models.User, UserAdmin)
+site.register(FlatPage, FlatPageAdmin)

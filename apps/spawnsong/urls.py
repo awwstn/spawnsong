@@ -58,6 +58,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin_site.urls)),
+    (r'', include('django.contrib.flatpages.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()
