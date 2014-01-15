@@ -151,6 +151,7 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'pagination.middleware.PaginationMiddleware',
+    'djangular.middleware.AngularJsonVulnerabilityMiddleware',
 )
 
 ROOT_URLCONF = 'spawnsong.urls'
