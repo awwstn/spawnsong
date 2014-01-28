@@ -39,3 +39,4 @@ mutagen==1.22
 django-mail-templated==0.2.0
 django-secure==1.0
 django-endless-pagination==2.0
+djangular==0.2.5
