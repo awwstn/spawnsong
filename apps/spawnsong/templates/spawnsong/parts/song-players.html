@@ -5,15 +5,14 @@
 {% for song in songs %}
 <div class="song">
   <div class="thumb">
-    {% thumbnail song.snippet_set.first.image "100x100" crop="center" as im %}
+    {% thumbnail song.snippet_set.first.image "140x140" crop="center" as im %}
     <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
     {% endthumbnail %}
   </div>
   <div class="body">
     <div class="genres">{{ song.genres }}</div>
-    <div class="username artist"><a href="{{ snippet.song.artist.get_absolute_url }}">{{ song.artist.get_display_name }}</a></div>
-    <div class="download"><a href="{{ song.get_download_url }}">download</a></div>
-    <h2>{{ song.title }} </h2>
+    <div class="download"><a href="{{ song.get_download_url }}"><i class="fa fa-cloud-download"></i> Download</a></div>
+    <h2><a href="{{ snippet.song.artist.get_absolute_url }}">{{ song.artist.get_display_name }}</a> - {{ song.title }}</h2>
     {% if song.is_complete %}
     <audio class="audioPlayer" width="100%" height="30" controls="controls" preload="metadata">
       <source type="audio/mp3" src="{{ song.complete_audio_mp3.url }}" />

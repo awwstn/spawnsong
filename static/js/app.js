@@ -142,27 +142,27 @@
   // CSS Fixes
   ////
   
-  function SnippetViewCSS(el) {
-  }
+  // function SnippetViewCSS(el) {
+  // }
 
-  SnippetViewCSS.prototype = {
-    ready: function () {
-      var _this = this;
-      setInterval(function () {
-        _this.setHeights();
-      }, 500);
-      this.setHeights();
-    },
-    // Fix up the heights of the page alements after page load
-    setHeights: function () {
-      var playerHeight = $('#playerContainer').height();
-      $('#detailsContainer').css({height: playerHeight + 'px'});
-      if ($('#comments ul').length) {
-        $('#comments ul').css({height: playerHeight-$('#comments ul').position().top-50});
-      }
-    },
+  // SnippetViewCSS.prototype = {
+  //   ready: function () {
+  //     var _this = this;
+  //     setInterval(function () {
+  //       _this.setHeights();
+  //     }, 500);
+  //     this.setHeights();
+  //   },
+  //   // Fix up the heights of the page alements after page load
+  //   setHeights: function () {
+  //     var playerHeight = $('#playerContainer').height();
+  //     $('#detailsContainer').css({height: playerHeight + 'px'});
+  //     if ($('#comments ul').length) {
+  //       $('#comments ul').css({height: playerHeight-$('#comments ul').position().top-50});
+  //     }
+  //   },
 
-  };
+  // };
   
   /////
   // Uploads (used for both snippet and full song upload)
@@ -263,7 +263,7 @@
     '#playerContainer': SnippetPlayer,
     '#personalPlaylistView': PersonalPlaylist,
     '#comments': SnippetComments,
-    '#snippetView': SnippetViewCSS,
+    // '#snippetView': SnippetViewCSS,
     '#uploadForm': UploadForm
   };
 
