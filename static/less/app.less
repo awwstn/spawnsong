@@ -1,14 +1,11 @@
 @import "lib/bootstrap/bootstrap.less";
 //@import "colorthemes/kuler3352921.less";
-@import "colorthemes/colourlovers3187446.less";
+// @import "colorthemes/colourlovers3187446.less";
 // @import "lib/simplex/variables.less";
 // @import "lib/simplex/bootswatch.less";
 @import "lib/prefixer.less";
+@import "theme.less";
 
-@details-bg: lighten(@body-bg, 10%);
-@comments-bg: lighten(@body-bg, 20%);
-@artist-comment-bg: lighten(@comments-bg, 20%);
-@timestamp-color: lighten(@gray,50%);
 @icon-font-path:          "../fonts/";
 
 .transition-transform (@transformArguments, @anotherProperty) {
@@ -30,7 +27,9 @@
 
 .footer {
     .container();
-    color: @gray-light;
+    text-align: center;
+    padding: 30px;
+    color: @black;
 }
 
 html, body {
@@ -238,28 +237,34 @@ html, body {
 // Used on user view and on the homepage
 .snippet-list {
     .make-row();
+    margin-top: 60px;
 
     .snippet {
         .make-sm-column(6);
         .make-md-column(4);
 
-        .thumbnail {
-            // From bootstrap
-            .caption {
-                // From bootstrap
-                .counts {
-                    font-size: 80%;
-                    color: @gray;
-                }
-            }
-
-            .view-snippet {
-                .btn-default();
-                display: block;
-            }
+        img {
+            width: 100%;
+            height: auto;
         }
 
-        
+        .counts {
+            font-size: 80%;
+            color: @gray-light;
+            margin-bottom: 15px;
+            margin-bottom: 20px;
+        }
+         h3 {
+             font-size: 20px;
+         }
+
+        .snippet-inner {
+            text-align: center;
+        }
+
+        .view-snippet {
+            display: block;
+        }
     }
 }
 

@@ -1,0 +1,138 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+            
+@black: #1a1a1a;
+
+// Overall
+@brand-primary: #E80021;
+@body-bg: #efefef;
+@font-family-sans-serif:   'Open Sans', sans-serif;
+@container-large-desktop:      960px;
+@container-desktop:      960px;
+
+@border-radius-base:             2px;
+@border-radius-large:            2px;
+@border-radius-small:            1px;
+
+// Buttons
+@btn-primary-border: transparent;
+
+// Song page
+@details-bg: lighten(@body-bg, 10%);
+@comments-bg: lighten(@body-bg, 20%);
+@artist-comment-bg: lighten(@comments-bg, 20%);
+@timestamp-color: lighten(@gray,50%);
+
+
+// Navbar 
+@navbar-height: 70px;
+@navbar-border-radius: 0;
+@navbar-default-color:  @gray-lighter;
+@navbar-default-bg:     @black;
+
+// Navbar extra styles
+
+.navbar-brand {
+    background-image: data-uri('../images/logo.png');
+    background-repeat: no-repeat;
+    background-position: 17px 18px;
+    width: 220px;
+    height: 100%;
+    text-indent: -9999px;
+}
+
+.navbar {
+    border-bottom: none;
+}
+
+.navbar-nav > li:first-child{
+    border-left: 2px groove #2E2E2E;
+}
+
+.navbar-nav > li {
+    // border-right: 1px solid #2E2E2E;
+    // .box-shadow(-px 0px black 0 4px);
+    border-right: 2px groove #2E2E2E;
+    text-transform: uppercase;
+    
+    .username {
+        text-transform: none;
+    }
+}
+
+// buttons
+
+.btn {
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+// Jumbotron extra styles
+.jumbotron {
+    margin-top: -21px;
+}
+
+.jumbotron-default {
+    text-align: center;
+    background: url('../images/jumbotron-bg-pattern.png');
+    color: #EEE;
+
+    h1 {
+        font-size: 40px;
+        line-height: 130%;
+        font-weight: 600;
+    }
+    
+    p {
+        margin-top: 30px;
+        margin-bottom: 55px;
+        font-weight: 300;
+    }
+
+    .btn {
+        padding: 20px;
+        padding-left: 45px;
+        padding-right: 45px;
+    }
+
+}
+
+.downarrow {
+    width: 0; 
+    height: 0; 
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 15px solid black;
+    margin: auto;
+    margin-top: -30px;
+}
+
+// Snippet list
+.snippet-inner {
+    background-color: white;
+    width: 100%;
+    border-radius: 2px;
+}
+
+.snippet-inner img {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+}
+
+.snippet-inner a:hover {
+    text-decoration: none;
+}
+
+.view-snippet {
+    background-color: @black;
+    font-weight: 600;
+    font-size: 18px;
+    text-transform: none;
+    color: white;
+    margin: none;
+    border-radius: 0 !important;
+    padding: 10px;
+}
+
+.view-snippet:hover {
+    color: @brand-primary;
+}

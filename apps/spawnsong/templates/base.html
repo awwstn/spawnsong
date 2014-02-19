@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     {% compressed_css 'styles' %}
     {% block extrahead %}{% endblock %}
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
   </head>
   <body>
 
@@ -22,9 +23,9 @@
         <div class="navbar-collapse collapse" id="navbar-main">
           
           <ul class="nav navbar-nav">
-            <li><a href="/upload/" >Upload a Song Snippet</a></li>
+            <li><a href="/upload/" ><i class="fa fa-cloud-upload"></i> Upload a Song Snippet</a></li>
             <li>
-              <a href="/personal-playlist/" >Personal Playlist
+              <a href="/personal-playlist/" ><i class="fa fa-bars"></i> Personal Playlist
               {% if new_songs_count %}
               <span class="badge">{{ new_songs_count }}</span>
               {% endif %}
@@ -32,13 +33,17 @@
             </li>
           </ul>
 
-          <p class="navbar-text navbar-right">
-            {% if user.is_authenticated %}
-            {% if user.artist %}<a class="navbar-link" href="{{ user.artist.get_absolute_url }}">{{ user.username }}</a>{% else %}{{ user.username }}{% endif %}
-            <a class="navbar-link" href="/logout/?next=/" >(log out)</a>
-            {% else %}
-            <a href="/login/" class="navbar-link">Log In/Sign Up</a>
-            {% endif %}
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              {% if user.is_authenticated %}
+              <a href="/logout/?next=/" ><i class="fa fa-power-off"></i> Logout
+                {# href="{{ user.artist.get_absolute_url }}" #}
+                {% if user.artist %}<span class="username">{{ user.username }}</span>{% else %}{{ user.username }}{% endif %}
+              </a>
+              {% else %}
+              <a href="/login/" ><i class="fa fa-user"></i> Log In/Sign Up</a>
+              {% endif %}
+            </li>
           </ul>
 
         </div>
