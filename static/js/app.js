@@ -302,14 +302,20 @@
     '#uploadForm': UploadForm
   };
 
-  $(document).ready(function () {
+  function init() {
     for (var selector in views) {
       var el = $(selector);
-      if (el.length) {
-        new views[selector](el).ready(el);
+      if (el.length && !el.data('sp-view')) {
+        el.data('sp-view', new views[selector](el).ready(el));
       }
     }
-  });
+  }
+
+  $(document).ready(init);
+  
+  InstantClick.init();
+  InstantClick.on('change', init);
+
   
 })(window.spawnsong = {});
 

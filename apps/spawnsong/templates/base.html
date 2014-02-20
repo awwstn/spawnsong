@@ -35,7 +35,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li>
               {% if user.is_authenticated %}
-              <a href="/logout/?next=/" ><i class="fa fa-power-off"></i> Logout
+              <a data-no-instant href="/logout/?next=/" ><i class="fa fa-power-off"></i> Logout
                 {# href="{{ user.artist.get_absolute_url }}" #}
                 {% if user.artist %}<span class="username">{{ user.username }}</span>{% else %}{{ user.username }}{% endif %}
               </a>

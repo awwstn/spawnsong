@@ -103,6 +103,7 @@ PIPELINE_JS = {
           'js/vendor/jquery.js',
           'js/vendor/jquery.form.js',
           'js/vendor/underscore.js',
+          'js/vendor/instantclick.js',
           'js/app.js',
           'mediaelement/mediaelement-and-player.js',
           'endless_pagination/js/endless-pagination.js',
@@ -307,7 +308,7 @@ CELERYBEAT_SCHEDULE = {
     },
 }
 
-SONG_PRICE = 500
+SONG_PRICE = 123
 CURRENCY = "USD"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -322,7 +323,8 @@ EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 
 FULL_SONG_FILESIZE_LIMIT = 25 * 1024 * 1024
 
-SNIPPET_LENGTH_LIMIT = 35
+SNIPPET_LENGTH_LIMIT = 42
+SNIPPET_LENGTH_MIN = 23
 
 FILE_UPLOAD_TEMP_DIR = "/tmp"
 

@@ -16,6 +16,7 @@ from django.template.defaultfilters import slugify
 import stripe
 from media.models import Audio
 import celery
+from django.template.defaultfilters import slugify
 
 def upload_to(prefix="uploads"):
     def get_file_path(instance, filename):
@@ -153,6 +154,9 @@ class Snippet(models.Model):
     
     objects = SnippetManager()
 
+    @property
+    def slug(self):
+        return slugify(self.title)
     
     @property
     def audio_mp3(self):
@@ -230,7 +234,7 @@ class Snippet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("snippet", args=(self.id,))
+        return reverse("snippet", args=(self.id, self.slug))
         
     class Meta:
         ordering = ("ordering_score","-created_at", )

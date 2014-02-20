@@ -13,6 +13,7 @@ class MP3FileField(forms.FileField):
     def __init__(self, *args, **kwargs):
         self.max_file_size = kwargs.pop('max_file_size', None)
         self.max_audio_length = kwargs.pop('max_audio_length', None)
+        self.min_audio_length = kwargs.pop('min_audio_length', None)
         self.max_audio_length_display = kwargs.pop('max_audio_length_display', self.max_audio_length)
         super(MP3FileField, self).__init__(*args, **kwargs)
     
@@ -30,7 +31,11 @@ class MP3FileField(forms.FileField):
             audio = MP3(file_path)
     
             if self.max_audio_length and audio.info.length > self.max_audio_length:
-                raise forms.ValidationError("Maximum length for audio is %d seconds (%d seconds uploaded)" % (self.max_audio_length_display,audio.info.length))
+                raise forms.ValidationError("Too short, or too long; gotta make the song more tight.")
+            # ("Maximum length for audio is %d seconds (%d seconds uploaded)" % (self.max_audio_length_display,audio.info.length))
+            if self.min_audio_length and audio.info.length < self.min_audio_length:
+                # raise forms.ValidationError("Minimum length for audio is %d seconds (%d seconds uploaded)" % (self.min_audio_length,audio.info.length))
+                raise forms.ValidationError("Too short, or too long; gotta make the song more tight.")
         except (HeaderNotFoundError, InvalidMPEGHeader):
             raise forms.ValidationError("File is not valid MP3 CBR/VBR format.")
         finally:
@@ -71,7 +76,7 @@ class UploadCompleteSongForm(forms.Form):
         
 class UploadSnippetForm(forms.Form):
     title = forms.CharField(max_length=100)
-    audio = MP3FileField(label="Upload %ss Snippet" % (settings.SNIPPET_LENGTH_LIMIT,), widget=forms.widgets.FileInput, max_audio_length=settings.SNIPPET_LENGTH_LIMIT+1, max_audio_length_display=settings.SNIPPET_LENGTH_LIMIT)
+    audio = MP3FileField(label="Upload %s-%s sec Snippet" % (settings.SNIPPET_LENGTH_MIN, settings.SNIPPET_LENGTH_LIMIT,), widget=forms.widgets.FileInput, max_audio_length=settings.SNIPPET_LENGTH_LIMIT+1, max_audio_length_display=settings.SNIPPET_LENGTH_LIMIT, min_audio_length=settings.SNIPPET_LENGTH_MIN)
     image = forms.ImageField()
     visualisation_effect = forms.ChoiceField(choices=(("pulsate", "Pulsate"), ("none", "None")))
     genres = forms.CharField(max_length=255, help_text="eg #hip-hop #electronic", required=False)

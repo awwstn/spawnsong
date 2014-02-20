@@ -7389,6 +7389,52 @@ td.visible-print {
   margin-bottom: 55px;
   font-weight: 300;
 }
+.jumbotron-competition {
+  text-align: center;
+  background: url('../images/competition-banner.jpg');
+  background-repeat: no-repeat;
+  background-position: right;
+  background-color: black;
+  color: #EEE;
+}
+.jumbotron-competition h1 {
+  font-size: 36px;
+  line-height: 130%;
+  font-weight: 600;
+  text-align: left;
+}
+.jumbotron-competition div.lines {
+  font-size: 19px;
+  text-align: left;
+  margin-top: 30px;
+  margin-bottom: 55px;
+  font-weight: 300;
+}
+.jumbotron-competition div.lines p {
+  color: black;
+  background-color: white;
+  margin-bottom: 5px;
+  padding: 4px;
+  padding-left: 6px !important;
+  display: inline-block;
+  float: left;
+  clear: both;
+}
+.jumbotron-competition div.lines p.highlight {
+  background-color: #d02d3f;
+}
+.jumbotron-competition div.lines p.highlight a {
+  color: white;
+}
+.jumbotron-competition .yeah {
+  float: left;
+  clear: both;
+  margin-top: 30px;
+}
+.jumbotron-competition .yeah i {
+  font-size: 19px;
+  color: white;
+}
 .downarrow {
   width: 0;
   height: 0;

@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import loader, RequestContext
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect
 from django.db.models import Count
 from django.db import transaction
 import models
@@ -67,9 +67,13 @@ def _snippet_details_json(snippet):
         cls=simplejson.encoder.JSONEncoderForHTML)
     
 
-def snippet(request, snippet_id):
+def snippet(request, snippet_id, slug=None):
     snippet = get_object_or_404(
         models.Snippet.objects.visible_to(request.user), pk=snippet_id)
+
+    if snippet.slug != slug:
+        return HttpResponsePermanentRedirect(snippet.get_absolute_url())
+    
     if snippet.state == "processing" or snippet.state == "processing_error":
         return render_to_response(
             "spawnsong/processing_upload.html",
