@@ -1,4 +1,8 @@
 @import "lib/bootstrap/bootstrap.less";
+@import "lib/font-awesome/font-awesome.less";
+// Relative to the where the compiled CSS will be
+@fa-font-path:   "../fonts";
+
 //@import "colorthemes/kuler3352921.less";
 // @import "colorthemes/colourlovers3187446.less";
 // @import "lib/simplex/variables.less";
@@ -7,6 +11,10 @@
 @import "theme.less";
 
 @black: #1a1a1a;
+
+@player-colour: #636466;
+@player-slider: #e6e6e6;
+@player-waves: #c9c9c9;
 
 @icon-font-path:          "../fonts/";
 
@@ -96,6 +104,8 @@ html, body {
         .timestamp {
             color: @timestamp-color;
             float: right;
+            margin-top: 25px;
+            font-size: 11px;
         }
         
         .order-count {
@@ -410,4 +420,149 @@ html, body {
 .flatpage {
     max-width: 800px;
     margin: auto;
+}
+
+
+// Mediaelement styles
+
+.player-waveform {
+    margin-top: 65px;
+}
+
+.mejs-container {
+    margin-bottom: 50px;
+}
+
+.mejs-controls {
+}
+
+
+.mejs-playpause-button {
+    float: left;
+    // min-width: 35px;
+    width: 25%;
+}
+
+.mejs-time-rail {
+    display: none;
+}
+
+
+.mejs-time {
+    float: left;
+    // min-width: 90px;
+    width: 20%;
+    margin-top: 7px;
+}
+
+.mejs-volume-button {
+    float: left;
+    width: 10%;
+    text-align: left;
+}
+
+.mejs-horizontal-volume-slider {
+    float: left;
+    width: 45%;
+    margin-top: 11px;
+}
+
+.mejs-button button {
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: @player-colour;
+    
+    font-size: 30px;
+
+}
+
+// Button icons (2 buttons with 2 states each)
+.mejs-play button:before {
+    content: "\f04b";
+}
+
+.mejs-pause button:before {
+    content: "\f04c";
+}
+
+.mejs-mute button:before {
+    content: "\f028";
+}
+
+.mejs-unmute button:before{
+    content: "\f026";
+}
+
+
+
+.mejs-time {
+    font-size: 13px;
+    font-weight: 600;
+    
+    color: @player-colour;
+}
+
+
+.mejs-horizontal-volume-slider {
+   // width: 40%; 
+}
+
+.mejs-horizontal-volume-current, .mejs-horizontal-volume-total {
+}
+    
+.mejs-horizontal-volume-total {
+    position: relative;
+    width: 100%;
+    border-top: 4px solid @player-slider;
+    border-bottom: 4px solid @player-slider;
+    border-radius: 3px;
+}
+
+.mejs-horizontal-volume-current {
+    position: relative;
+    top: -8px;
+    border-top: 4px solid @player-colour;
+    border-bottom: 4px solid @player-colour;
+    border-radius: 3px;
+}
+
+.mejs-horizontal-volume-handle {
+    position: absolute;
+    border: 9px solid @player-colour;
+    border-radius: 50%;
+    margin-left: -3px;
+    margin-top: -20px;
+    width: 0px;
+    height: 0px;
+}
+
+.player-waveform {
+    width: 100%;
+    border-bottom: 2px solid @player-colour;
+}
+
+.player-waveform img {
+    position: relative;
+}
+
+.player-progress {
+    position:relative;
+    z-index: 999;
+    top: 90px;
+    width: 0; 
+    height: 0; 
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 8px solid @player-colour;
 }

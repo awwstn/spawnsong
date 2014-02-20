@@ -232,7 +232,7 @@ class Snippet(models.Model):
 
     def get_absolute_url(self):
         return reverse("snippet", args=(self.id,))
-
+        
     class Meta:
         ordering = ("ordering_score","-created_at", )
     

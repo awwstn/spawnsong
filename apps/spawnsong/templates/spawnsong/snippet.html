@@ -45,6 +45,7 @@
 
       
       <div class="header">
+        <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
         <h1 class="snippet-title"><a href="{{snippet.get_absolute_url }}">{{ snippet.title }}</a></h1>
         {% if not editable %}
         <h2 class="username artist">by <a href="{{ snippet.song.artist.get_absolute_url }}">{{ snippet.song.artist.get_display_name }}</a></h2>
@@ -52,12 +53,17 @@
         {% if editable and not edit_mode %}
         <a href="?edit" class="edit-link">edit</a>
         {% endif %}
-        <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
         {% if not edit_mode %}
 
 
         {% if snippet.audio_ready %}
-        <audio id="audioPlayer" width="653" height="30" controls="controls" preload="auto">
+        <div class="player-waveform" id="player-waveform">
+          <div class="player-progress" id="player-progress">
+          </div>
+          <img  src="/waveform/500/90/white/201,201,201/{{ snippet.id }}/waveform.png" width="500" height="90">
+        </div>
+        
+        <audio id="audioPlayer" height="30" width="100%" controls="controls" preload="auto">
           <source type="audio/mp3" src="{{ snippet.audio_mp3.url }}" />
           <object width="320" height="240" type="application/x-shockwave-flash" data="{{ STATIC_URL }}mediaelement/flashmediaelement.swf">
             <param name="movie" value="{{ STATIC_URL }}mediaelement/flashmediaelement.swf" />

@@ -91,7 +91,7 @@ PIPELINE_CSS = {
     'styles': {
         'source_filenames': (
           'less/app.less',
-          'mediaelement/mediaelementplayer.css',
+          # 'mediaelement/mediaelementplayer.css',
         ),
         'output_filename': 'css/style.css',
     },

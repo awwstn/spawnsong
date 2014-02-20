@@ -17,6 +17,9 @@ from django.conf import settings
 from registration.backends.simple.views import RegistrationView as SimpleRegistrationView
 from mail_templated import EmailMessage
 from django.core.exceptions import MultipleObjectsReturned
+from PIL import Image, ImageDraw
+import random
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -278,3 +281,46 @@ def personal_playlist(request):
            "songs": songs
         },
         context_instance=RequestContext(request))
+
+
+def waveform_image(request, width, height, background, foreground, snippet_id):
+    snippet = get_object_or_404(models.Snippet, pk=snippet_id)
+
+    segments = snippet.echonest_track_analysis["segments"]
+
+    if "," in background:
+        background = tuple(map(int, background.split(",")))
+    if "," in foreground:
+        foreground = tuple(map(int, foreground.split(",")))
+    
+    width = int(width)
+    height = int(height)
+    
+    im = Image.new("RGB",(width, height), background)
+    draw = ImageDraw.Draw(im)
+    
+    maxvol = max(x["loudness_max"] for x in segments)
+    minvol = min(x["loudness_max"] for x in segments)
+    length = segments[-1]["start"]
+
+    r = random.Random()
+    r.seed(width*height)
+    
+    for (seg, nextSeg) in zip(segments, segments[1:]):
+        t = seg["start"]
+        t2 = nextSeg["start"]
+        mv = seg["loudness_max"]
+        sv = seg["loudness_start"]
+        
+        start = int(round(t/length * width))
+        end = int(round(t2/length * width))
+        for p in range(start,end):
+            v = (r.random() * (mv-sv)) + sv
+            #v = mv
+            h = ((v - minvol) / (maxvol-minvol)) * height
+            draw.rectangle(((p,height-h),(p,height)), foreground)
+            
+    response = HttpResponse(mimetype="image/png")
+    im.save(response, "PNG")
+    response['Cache-Control'] = 'max-age=999999999999'
+    return response

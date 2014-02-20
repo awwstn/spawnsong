@@ -58,10 +58,24 @@
     },
     setupMediaElementPlayer: function ( ) {
       var _this = this;
+      
       $('audio').mediaelementplayer({
         videoHeight: 0,
         features: ['playpause','progress','current','duration', 'volume'],
         success: function (mediaElement, domObject) { 
+
+          $('#player-waveform').click(function (e) {
+            var parentOffset = $(this).parent().offset(); 
+            var relX = e.pageX - parentOffset.left;
+            mediaElement.setCurrentTime((relX / $('#player-waveform').width()) * mediaElement.duration);
+            mediaElement.play();
+          });
+          
+          mediaElement.addEventListener('timeupdate', function(e) {
+            var position = (mediaElement.currentTime/mediaElement.duration) * $('#player-waveform').width();
+            $('#player-progress').css('left', position + "px");
+          });
+          
           mediaElement.addEventListener('playing', function(e) {
             $('#playButtonOverlay').fadeOut();
             if (_this.visualisation === "pulsate") {

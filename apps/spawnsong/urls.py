@@ -52,6 +52,9 @@ urlpatterns = patterns('',
     url(r'^purchase/$', 'spawnsong.views.purchase',name="purchase"),
     url(r'^personal-playlist/$', 'spawnsong.views.personal_playlist',name="personal-playlist"),
     url(r'^download/([^/]+)/([^/]+)/([^/]+)/$', 'spawnsong.views.download_full',name="snippet-download-full"),
+
+    
+    url(r'^waveform/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/waveform.png', 'spawnsong.views.waveform_image',name="waveform_image"),
     
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
