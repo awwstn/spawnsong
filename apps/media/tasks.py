@@ -112,3 +112,5 @@ def request_echonest_data(self, audio_id):
         # print "Saving echonest data"
         audio.save()
     print "Echonest done"
+
+    
