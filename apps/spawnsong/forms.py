@@ -66,6 +66,7 @@ class UploadCompleteSongForm(forms.Form):
             title=self.instance.title + " (complete)", original=self.cleaned_data["complete_audio"])
         self.instance.save()
         self.instance.complete_audio.transcode([settings.FULL_AUDIO_PROFILE])
+        self.instance.complete_audio.request_echonest_data()
         return self.instance
         
 class UploadSnippetForm(forms.Form):

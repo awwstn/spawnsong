@@ -251,23 +251,44 @@
     setupMediaElementPlayer: function ( ) {
       var _this = this;
       var players = [];
-      $('audio').mediaelementplayer({
-        videoHeight: 0,
-        features: ['playpause','progress','current','duration', 'volume'],
-        success: function (mediaElement, domObject) { 
-          players.push(mediaElement);
-          mediaElement.addEventListener('ended', function(e) {
-            var foundMe = false;
-            var nextPlayer = _.find(players, function (player) {
-              if (player === mediaElement) {
-                foundMe = true;
-              } else {
-                return foundMe;
-              }
+      $('audio').each(function () {
+        var audio = $(this);
+        var song = $(this).closest('.song');
+        audio.mediaelementplayer({
+          videoHeight: 0,
+          features: ['playpause','progress','current','duration', 'volume'],
+          success: function (mediaElement, domObject) { 
+            players.push(mediaElement);
+
+            var waveform = song.find('.player-waveform');
+            var progress = song.find('.player-progress');
+            
+            waveform.click(function (e) {
+              var parentOffset = $(this).parent().offset(); 
+              var relX = e.pageX - parentOffset.left;
+              mediaElement.setCurrentTime((relX / waveform.width()) * mediaElement.duration);
+              mediaElement.play();
             });
-            if (nextPlayer) nextPlayer.play();
-          });
-        },
+            
+            mediaElement.addEventListener('timeupdate', function(e) {
+              var position = (mediaElement.currentTime/mediaElement.duration) * waveform.width();
+              progress.css('left', position + "px");
+            });
+            
+            
+            mediaElement.addEventListener('ended', function(e) {
+              var foundMe = false;
+              var nextPlayer = _.find(players, function (player) {
+                if (player === mediaElement) {
+                  foundMe = true;
+                } else {
+                  return foundMe;
+                }
+              });
+              if (nextPlayer) nextPlayer.play();
+            });
+          },
+        });
       });
     }
   };

@@ -21,6 +21,8 @@ import stripe
 
 from sites.spawnsongsite.celery import app
 from . import models
+from media.models import Audio
+from media.tasks import request_echonest_data
 
 logger = get_task_logger("spawnsong.tasks")
 
@@ -44,68 +46,40 @@ def snippet_processing_task(*args, **kwargs):
             return task_fn(self, snippet, *args, **kwargs)
         return _task
     return _decorator
-            
-    
+
+
+def audio_proccessing_task(*args, **kwargs):
+    def _decorator(task_fn):
+        kwargs.setdefault("retries", 3)
+        kwargs["bind"] = True
+        kwargs["name"] = gen_task_name(app, task_fn.__name__, task_fn.__module__)
+        @app.task(*args, **kwargs)
+        def _task(self, audio_id, *args, **kwargs):
+            try:
+                audio = Audio.objects.get(pk=audio_id)
+            except Audio.DoesNotExist:
+                logger.warn("Can't find Audio object to transcode, maybe it's been deleted?")
+                return 
+            return task_fn(self, audio, *args, **kwargs)
+        return _task
+    return _decorator
+
+# Round about hacky way because we changed from snippets owoing
+# echonest data to audio owning it and I don't want to rewrite too
+# much
 @snippet_processing_task()
-def request_echonest_data(self, snippet):
-    print "Echonest!"
-    logger.debug("Transcoding!")
-    try:
-        response = requests.post(
-            "http://developer.echonest.com/api/v4/track/upload",
-            data={"url": snippet.audio.original.url, "api_key": settings.ECHONEST_API_KEY})
+def request_echonest_data_snippet(self, snippet):
+    request_echonest_data(snippet.audio_id)
     
-        echonest_id = response.json()["response"]["track"]["id"]
-    except:
-        logger.error("Bad response from echonest upoad: %s" % (response.text,))
-        self.retry()
-   
-    print "Check response"
-    try:
-        snippet = models.Snippet.objects.get(pk=snippet.pk)
-    except models.Snippet.DoesNotExist:
-        logger.warn("Can't find Snippet object to get echonest data for, maybe it's been deleted?")
-        return 
-    
-    print "Echonest id", echonest_id
-
-    while True:
-        response = None
-        try:
-            response = requests.get(
-                "http://developer.echonest.com/api/v4/track/profile",
-                params={"api_key": settings.ECHONEST_API_KEY, "id": echonest_id, "bucket": "audio_summary"})
-            track = response.json()["response"]["track"]
-        except:
-            logger.error("Bad response from echonest profile: %s" % (response.text,))
-            self.retry()
-            
-        print "Response json", response.json()
-        # print "Got track"
-        if track["status"] == "pending":
-            # Check again in 10 seconds time
-            print "Check again in 10 seconds"
-            time.sleep(10)
-        else:
-            break
-            
-    print "Get track analysis"
-    track_analysis = requests.get(
-            track["audio_summary"]["analysis_url"]).json()
+    # Reload
     with transaction.atomic():
-        # Re-get the snippet usint SELECT FOR UPDATE to avoid race conditions
-        snippet = models.Snippet.objects.select_for_update().get(pk=snippet.pk)
-        # print "About to save echonest %r, %r, %r" % (snippet.state, snippet.audio_mp3, snippet.echonest_track_analysis is None)
-
-        snippet.echonest_track_profile = track
-        snippet.echonest_track_analysis = track_analysis
-        # print "Saving echonest data"
-        snippet.maybe_ready(commit=False)
-        snippet.save()
-        # print "Have saved after echonest %r, %r, %r" % (snippet.state, snippet.audio_mp3, snippet.echonest_track_analysis is None)
+        snippet = models.Snippet.objects.select_for_update().get(pk=snippet.id)
+        snippet.maybe_ready()
+    
 
 @snippet_processing_task()
 def complete_snippet_processing(self, snippet):
+    print "Maybe ready?"
     snippet.maybe_ready()
     
 @snippet_processing_task()

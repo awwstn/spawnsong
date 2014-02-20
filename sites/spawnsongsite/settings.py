@@ -151,8 +151,7 @@ MIDDLEWARE_CLASSES = (
     'lockdown.middleware.LockdownMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'pagination.middleware.PaginationMiddleware',
-    'djangular.middleware.AngularJsonVulnerabilityMiddleware',
+    'pagination.middleware.PaginationMiddleware'
 )
 
 ROOT_URLCONF = 'spawnsong.urls'
@@ -334,7 +333,7 @@ SECURE_SSL_REDIRECT = True
 # SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_FRAME_DENY = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
+#SECURE_BROWSER_XSS_FILTER = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 

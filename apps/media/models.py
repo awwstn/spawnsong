@@ -6,6 +6,7 @@ import datetime
 from storages.backends import s3boto
 import uuid
 from django.db import transaction
+from jsonfield import JSONField
 
 class PrivateDownloadStorage(s3boto.S3BotoStorage):
     def __init__(self, *args, **kwargs):
@@ -44,6 +45,9 @@ class Audio(models.Model):
     title = models.CharField(max_length=255, blank=True, default="NO TITLE")
     created_at = models.DateTimeField(default=datetime.datetime.now)
     original = models.FileField(null=True, upload_to=upload_to("audio/original"), storage=protected_storage)
+    
+    echonest_track_profile = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
+    echonest_track_analysis = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
 
     @property
     def url(self):
@@ -61,6 +65,10 @@ class Audio(models.Model):
         except AudioFormat.DoesNotExist:
             return None
         return audioformat
+        
+    def request_echonest_data(self):
+        "Kick of transcoding tasks"
+        return tasks.request_echonest_data.apply_async(args=(self.id,))
         
     def transcode(self, profiles=settings.AUDIO_PROFILES_DEFAULT):
         "Kick of transcoding tasks"

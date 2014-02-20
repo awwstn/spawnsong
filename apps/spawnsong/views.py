@@ -20,6 +20,7 @@ from django.core.exceptions import MultipleObjectsReturned
 from PIL import Image, ImageDraw
 import random
 import math
+from media.models import Audio
 
 logger = logging.getLogger(__name__)
 
@@ -196,6 +197,20 @@ def user(request, username):
         },
         context_instance=RequestContext(request))
 
+def search(request):
+    query = request.GET.get("q","")
+    snippets = models.Snippet.objects \
+      .visible_to(request.user) \
+      .select_related('song') \
+      .filter(Q(state="published") | Q(state="ready")) \
+      .filter(Q(title__icontains=query) | Q(song__artist__user__username__icontains=query) | Q(genres__icontains=query))
+    return render_to_response(
+        "spawnsong/search.html",
+        {
+           "snippets": snippets
+        },
+        context_instance=RequestContext(request))
+
 def purchase(request):
     token = request.POST["token"]
     email = request.POST["email"]
@@ -283,10 +298,10 @@ def personal_playlist(request):
         context_instance=RequestContext(request))
 
 
-def waveform_image(request, width, height, background, foreground, snippet_id):
-    snippet = get_object_or_404(models.Snippet, pk=snippet_id)
+def waveform_image(request, width, height, background, foreground, audio_id):
+    audio = get_object_or_404(Audio, pk=audio_id)
 
-    segments = snippet.echonest_track_analysis["segments"]
+    segments = audio.echonest_track_analysis["segments"]
 
     if "," in background:
         background = tuple(map(int, background.split(",")))

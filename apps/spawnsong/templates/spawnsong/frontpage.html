@@ -10,14 +10,15 @@
       <h1>Spawnsong let's you listen to songs in their infancy, before they're even finished.</h1>
       <p>Dig the clip, a dolla 23 to tip, and Oh Baby! You've got a song coming.</p>
       <p><a href="/upload/" class="btn btn-primary btn-lg" role="button">Upload a Song Snippet</a></p>
-      
     </div>
 
   </div>
   <div class="downarrow"></div>
 </div>
-  
+
 <div class="container">
+  {% include "spawnsong/parts/searchbox.html" %}
+  
   {% include "spawnsong/parts/snippet-list.html" %}
 </div>
 {% endblock content %}

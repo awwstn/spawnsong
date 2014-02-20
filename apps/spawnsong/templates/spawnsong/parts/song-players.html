@@ -14,6 +14,12 @@
     <div class="download"><a href="{{ song.get_download_url }}"><i class="fa fa-cloud-download"></i> Download</a></div>
     <h2><a href="{{ snippet.song.artist.get_absolute_url }}">{{ song.artist.get_display_name }}</a> - {{ song.title }}</h2>
     {% if song.is_complete %}
+    <div class="player-waveform">
+      <div class="player-progress">
+      </div>
+      <img  src="/waveform/750/60/white/201,201,201/{{ song.complete_audio.id }}/waveform.png" width="750" height="60">
+    </div>
+    
     <audio class="audioPlayer" width="100%" height="30" controls="controls" preload="metadata">
       <source type="audio/mp3" src="{{ song.complete_audio_mp3.url }}" />
       <object width="320" height="240" type="application/x-shockwave-flash" data="{{ STATIC_URL }}mediaelement/flashmediaelement.swf">

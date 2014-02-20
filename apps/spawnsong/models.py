@@ -143,9 +143,6 @@ class Snippet(models.Model):
 
     audio = models.ForeignKey(Audio, null=True)
     
-    echonest_track_profile = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
-    echonest_track_analysis = JSONField(blank=True, default=None, help_text="Data received from Echonest about the snippet, used to find the beat locations for the visualisation")
-
     visualisation_effect = models.CharField(max_length=20, choices=(("pulsate", "Pulsate"), ("none", "None")), default="pulsate")
 
     ordering_score = models.IntegerField(default=0, help_text="Score used to order snippets on front page, calcualted from number of orders at the moment")
@@ -155,6 +152,7 @@ class Snippet(models.Model):
     processing_error = models.CharField(max_length=255, null=True, help_text="Error message to display to user if we're in processing_error state")
     
     objects = SnippetManager()
+
     
     @property
     def audio_mp3(self):
@@ -178,12 +176,12 @@ class Snippet(models.Model):
         return bool(self.audio_mp3)
 
     def beat_locations(self):
-        return self.echonest_track_analysis and [x["start"] for x in self.echonest_track_analysis["beats"]]
+        return self.audio and self.audio.echonest_track_analysis and [x["start"] for x in self.audio.echonest_track_analysis["beats"]]
 
     def maybe_ready(self, commit=True):
         "Move to ready state if the needed info has been retrieved"
         assert self.state == "processing" 
-        if self.audio_mp3 and self.echonest_track_analysis:
+        if self.audio_mp3 and self.audio.echonest_track_analysis:
             self.mark_ready(commit=commit)
 
     def set_processing_error(self, error="Failed to process audio, it may be in an unsupported format", commit=True):
@@ -196,7 +194,7 @@ class Snippet(models.Model):
     def mark_ready(self, commit=True):
        assert self.state == "processing" 
        assert self.audio_mp3, "Audio should be present before the snippet is marked as ready"
-       assert self.echonest_track_analysis is not None, "Echonest data should be present before snippet is marked as ready"
+       assert self.audio.echonest_track_analysis is not None, "Echonest data should be present before snippet is marked as ready"
        self.state = "ready"
        
        if commit:
@@ -213,15 +211,16 @@ class Snippet(models.Model):
         assert self.state in ["processing_error","initial"]
         self.state = "processing"
         
+        if commit:
+            self.save()
+        
         celery.group([
             self.audio.transcode_subtask([settings.SNIPPET_AUDIO_PROFILE]),
-            tasks.request_echonest_data.s(self.id)
+            tasks.request_echonest_data_snippet.s(self.id)
             ]).apply_async(
                 link=tasks.complete_snippet_processing.si(self.id),
                 link_error=tasks.fail_snippet_processing.si(self.id))
         
-        if commit:
-            self.save()
 
     @property
     def price(self):

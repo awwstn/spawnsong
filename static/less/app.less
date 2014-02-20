@@ -56,6 +56,10 @@ html, body {
     padding-top: 30px;
     padding-bottom: 30px;
     background: white;
+
+    h1 {
+        margin-bottom: 65px;
+    }
     
     .image-container {
         width: 100%;
@@ -311,6 +315,8 @@ html, body {
         .make-sm-column(6);
         .make-md-column(4);
 
+        margin-bottom: 30px;
+
         img {
             width: 100%;
             height: auto;
@@ -425,22 +431,18 @@ html, body {
 
 // Mediaelement styles
 
-.player-waveform {
-    margin-top: 65px;
-}
-
 .mejs-container {
     margin-bottom: 50px;
 }
 
 .mejs-controls {
+    text-align: right;
 }
 
 
 .mejs-playpause-button {
     float: left;
-    // min-width: 35px;
-    width: 25%;
+    width: 35px;
 }
 
 .mejs-time-rail {
@@ -449,21 +451,22 @@ html, body {
 
 
 .mejs-time {
-    float: left;
-    // min-width: 90px;
-    width: 20%;
-    margin-top: 7px;
+    display: inline-block;
+    width: 90px;
+    margin-top: -15px;
+    vertical-align: middle;
+    text-align: left;
 }
 
 .mejs-volume-button {
-    float: left;
-    width: 10%;
+    display: inline-block;
+    width: 50px;
     text-align: left;
 }
 
 .mejs-horizontal-volume-slider {
-    float: left;
-    width: 45%;
+    display: inline-block;
+    width: 40%;
     margin-top: 11px;
 }
 
@@ -565,4 +568,21 @@ html, body {
     border-left: 4px solid transparent;
     border-right: 4px solid transparent;
     border-bottom: 8px solid @player-colour;
+}
+
+.song .player-progress {
+    top: 60px;
+}
+
+.song .mejs-container {
+    margin-bottom: 15px;
+}
+
+
+.searchbox {
+    margin-top: 30px;
+
+    input {
+       height: 42px !important;
+    }
 }

@@ -56,11 +56,12 @@
         {% if not edit_mode %}
 
 
+        {% block player %}
         {% if snippet.audio_ready %}
         <div class="player-waveform" id="player-waveform">
           <div class="player-progress" id="player-progress">
           </div>
-          <img  src="/waveform/500/90/white/201,201,201/{{ snippet.id }}/waveform.png" width="500" height="90">
+          <img  src="/waveform/500/90/white/201,201,201/{{ snippet.audio.id }}/waveform.png" width="500" height="90">
         </div>
         
         <audio id="audioPlayer" height="30" width="100%" controls="controls" preload="auto">
@@ -75,6 +76,7 @@
         {% else %}
         Processing...
         {% endif %}
+        {% endblock player %}
         
         {% block orderButton %}
         <div class="order-container">
