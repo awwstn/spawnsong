@@ -3582,7 +3582,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 .navbar {
   position: relative;
-  min-height: 70px;
+  min-height: 66px;
   margin-bottom: 20px;
   border: 1px solid transparent;
 }
@@ -3723,7 +3723,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 .navbar-brand {
   float: left;
-  padding: 25px 15px;
+  padding: 23px 15px;
   font-size: 18px;
   line-height: 20px;
 }
@@ -3741,8 +3741,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
   float: right;
   margin-right: 15px;
   padding: 9px 10px;
-  margin-top: 18px;
-  margin-bottom: 18px;
+  margin-top: 16px;
+  margin-bottom: 16px;
   background-color: transparent;
   background-image: none;
   border: 1px solid transparent;
@@ -3763,7 +3763,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-nav {
-  margin: 12.5px -15px;
+  margin: 11.5px -15px;
 }
 .navbar-nav > li > a {
   padding-top: 10px;
@@ -3801,8 +3801,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
     float: left;
   }
   .navbar-nav > li > a {
-    padding-top: 25px;
-    padding-bottom: 25px;
+    padding-top: 23px;
+    padding-bottom: 23px;
   }
   .navbar-nav.navbar-right:last-child {
     margin-right: -15px;
@@ -3826,8 +3826,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
   border-bottom: 1px solid transparent;
   -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(255, 255, 255, 0.1);
-  margin-top: 18px;
-  margin-bottom: 18px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 @media (min-width: 768px) {
   .navbar-form .form-group {
@@ -3889,20 +3889,20 @@ textarea.input-group-sm > .input-group-btn > .btn {
   right: 0;
 }
 .navbar-btn {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.navbar-btn.btn-sm {
   margin-top: 18px;
   margin-bottom: 18px;
 }
-.navbar-btn.btn-sm {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
 .navbar-btn.btn-xs {
-  margin-top: 24px;
-  margin-bottom: 24px;
+  margin-top: 22px;
+  margin-bottom: 22px;
 }
 .navbar-text {
-  margin-top: 25px;
-  margin-bottom: 25px;
+  margin-top: 23px;
+  margin-bottom: 23px;
 }
 @media (min-width: 996px) {
   .navbar-text {
@@ -7349,7 +7349,7 @@ td.visible-print {
 .navbar-brand {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAAgCAYAAAC7OlJnAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDpGOTdGMTE3NDA3MjA2ODExODA4M0VCODNDNjJCRDdDMSIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo5ODVGNDc3RTkwM0UxMUUzQjU1OEM5NUYxODM2QTJENSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo5ODVGNDc3RDkwM0UxMUUzQjU1OEM5NUYxODM2QTJENSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChXaW5kb3dzKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjNCMjgwRUE2OTc5OEUzMTE4NDM5QTJGQTdDQzBCRDVCIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkY5N0YxMTc0MDcyMDY4MTE4MDgzRUI4M0M2MkJEN0MxIi8+IDwvcmRmOkRlc2NyaXB0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');
   background-repeat: no-repeat;
-  background-position: 17px 18px;
+  background-position: 17px 14px;
   width: 220px;
   height: 100%;
   text-indent: -9999px;
@@ -7396,6 +7396,7 @@ td.visible-print {
   background-position: right;
   background-color: black;
   color: #EEE;
+  padding-top: 20px;
 }
 .jumbotron-competition h1 {
   font-size: 36px;
@@ -7579,7 +7580,7 @@ body {
   clear: both;
 }
 .snippet-view h2 {
-  margin-bottom: 65px;
+  margin-bottom: 28px;
 }
 .snippet-view .image-container {
   width: 100%;
