@@ -317,7 +317,7 @@ CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
 
 BROKER_URL = 'django://'
 
-FFMPEG_EXECUTABLE = "vendor/ffmpeg/bin/ffmpeg"
+FFMPEG_EXECUTABLE = "/app/.heroku/vendor/ffmpeg/bin/ffmpeg"
 
 EMAIL_BACKEND = 'django_mailgun.MailgunBackend'
 
