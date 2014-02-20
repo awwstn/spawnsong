@@ -22,6 +22,7 @@ BASE_URL = "http://spawnsong.com"
 
 MANAGERS = ADMINS
 
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -383,3 +384,5 @@ AUDIO_PROFILES = {
         "command": FFMPEG_EXECUTABLE + " -i {input} -acodec libmp3lame -ab 192k {output}"
     }
 }
+
+CRISPY_FAIL_SILENTLY = not DEBUG

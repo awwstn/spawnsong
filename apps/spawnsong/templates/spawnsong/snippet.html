@@ -13,24 +13,26 @@
 
 
 <div class="container">
-  {% if paymentsuccess %}
-  <div class="alert alert-success">
-    <b>{% if snippet.is_complete %}Order{% else %}Pre Order{% endif %} Successful!</b>
-    {% if snippet.is_complete %}
-    Thanks for your order, the song will be emailed to you soon!
-    {% else %}
-    Thanks for your pre-order, the finished song will be sent to you when it's ready!
-    {% endif %}
-  </div>
-  {% endif %}
-  {% if paymenterror %}
-  <div class="alert alert-danger">
-    <b>{% if snippet.is_complete %}Order{% else %}Pre Order{% endif %} failed</b> {{ paymenterror }}
-  </div>
-  {% endif %}
   
   
   <div class="snippet-view" id="snippetView">
+
+    {% if paymentsuccess %}
+    <div class="alert alert-success">
+      <b>{% if snippet.is_complete %}Order{% else %}Pre Order{% endif %} Successful!</b>
+      {% if snippet.is_complete %}
+      Thanks for your order, the song will be emailed to you soon!
+      {% else %}
+      Thanks for your pre-order, the finished song will be sent to you when it's ready!
+      {% endif %}
+    </div>
+    {% endif %}
+    {% if paymenterror %}
+    <div class="alert alert-danger">
+      <b>{% if snippet.is_complete %}Order{% else %}Pre Order{% endif %} failed</b> {{ paymenterror }}
+    </div>
+    {% endif %}
+    
     <div class="col-lg-6" id="playerContainer">
       <div class="image-container" id="playerImageContainer">
         <div class="overlay" id="playButtonOverlay">&nbsp;</div>

@@ -1,13 +1,16 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
             
-@black: #1a1a1a;
 
 // Overall
-@brand-primary: #E80021;
+@brand-primary: #D02D3F;
 @body-bg: #efefef;
 @font-family-sans-serif:   'Open Sans', sans-serif;
+
 @container-large-desktop:      960px;
 @container-desktop:      960px;
+
+// The point at which there isn't space for the complete nav bar
+@grid-float-breakpoint: 996px;
 
 @border-radius-base:             2px;
 @border-radius-large:            2px;
@@ -28,6 +31,13 @@
 @navbar-border-radius: 0;
 @navbar-default-color:  @gray-lighter;
 @navbar-default-bg:     @black;
+
+
+.btn-primary {
+    padding: 10px;
+    padding-left: 45px;
+    padding-right: 45px;
+}
 
 // Navbar extra styles
 
@@ -88,11 +98,6 @@
         font-weight: 300;
     }
 
-    .btn {
-        padding: 20px;
-        padding-left: 45px;
-        padding-right: 45px;
-    }
 
 }
 

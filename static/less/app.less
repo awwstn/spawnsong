@@ -6,6 +6,8 @@
 @import "lib/prefixer.less";
 @import "theme.less";
 
+@black: #1a1a1a;
+
 @icon-font-path:          "../fonts/";
 
 .transition-transform (@transformArguments, @anotherProperty) {
@@ -207,39 +209,86 @@ html, body {
 }
 
 
-.upload-view {
+.form-view {
     .make-row();
+}    
+
+.form-inner {
+    .make-md-column(8);
+    .make-md-column-offset(2);
     
-    .upload {
-        .make-md-column(6);
-        .make-md-column-offset(3);
-        .panel();
+    @media (min-width: @screen-md-min) {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        padding-left: 55px;
+        padding-right: 55px;
+    }
+
+    .panel-heading {
+        text-align: center;
+        .tools, a {
+            color: @gray-light;
+        }
+    }
+
+    .form-actions {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 30px;
+        font-weight: normal;
+        margin-left: -40px;
+        margin-right: -40px;
+        margin-bottom: 30px;
+    }
+    
+    .asteriskField {
+        display: none;
+    }
+
+    .fileinput {
+        border: 0;
+        outline: none;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    input {
+        border-radius: 3px;
     }
 }
 
 
 .accounts-view {
-    .make-row();
     
-    .accounts-form {
-        .make-md-column(6);
-        .make-md-column-offset(3);
-        .panel();
-
-        .twitter {
-            display: block;
-            width: 100%;
-            text-align: center;
-        }
+    .twitter {
+        display: block;
+        width: 100%;
+        text-align: center;
     }
 
     .or {
-        font-size: 30px;
-        font-weight: bold;
+        font-size: 18px;
+        font-weight: normal;
         clear: both;
         width: 100%;
         text-align: center;
-        margin: 20px;
+        color: @brand-primary;
+        margin-top: 30px;
+        margin-bottom: 10px;
+
+        &:before, &:after {
+            display: inline-block;
+            content: '';
+            width: 54px;
+            margin-left: 12px;
+            margin-right: 12px;
+            vertical-align: middle;
+            border-bottom: 2px solid @gray-light;
+        }
     }
 }
 
@@ -283,8 +332,8 @@ html, body {
     .action {
         .btn();
         .btn-primary();
-        .make-xs-column(12);
-        .make-sm-column(3);
+        display: block;
+        margin: auto;
     }
 
     .status {
