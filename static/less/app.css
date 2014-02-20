@@ -7578,7 +7578,7 @@ body {
 .snippet-view:after {
   clear: both;
 }
-.snippet-view h1 {
+.snippet-view h2 {
   margin-bottom: 65px;
 }
 .snippet-view .image-container {
