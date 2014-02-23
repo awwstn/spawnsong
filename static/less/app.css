@@ -7605,11 +7605,11 @@ body {
   -moz-transition: -moz-transform 0.1s;
   -o-transition: -o-transform 0.1s;
   transition: transform 0.1s;
-  -webkit-transform: scale(1.01);
-  -moz-transform: scale(1.01);
-  -ms-transform: scale(1.01);
-  -o-transform: scale(1.01);
-  transform: scale(1.01);
+  -webkit-transform: scale(1.015);
+  -moz-transform: scale(1.015);
+  -ms-transform: scale(1.015);
+  -o-transform: scale(1.015);
+  transform: scale(1.015);
 }
 .snippet-view .overlay {
   z-index: 1;
@@ -8242,6 +8242,15 @@ fieldset[disabled] .form-actions-with-progress .action.active {
   margin-top: -20px;
   width: 0px;
   height: 0px;
+}
+.player-repeat {
+  width: 9%;
+  display: block;
+  float: right;
+  font-size: 30px;
+  border: 0;
+  background: transparent;
+  color: #636466;
 }
 .player-waveform {
   width: 100%;

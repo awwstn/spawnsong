@@ -60,11 +60,17 @@
     },
     setupMediaElementPlayer: function ( ) {
       var _this = this;
+      var repeatTimes = 0;
       
       $('audio').mediaelementplayer({
         videoHeight: 0,
         features: ['playpause','progress','current','duration', 'volume'],
         success: function (mediaElement, domObject) { 
+
+          $('#player-repeat').click(function (e) {
+            repeatTimes = parseInt(prompt("How many times do you want to repeat?", 1),10) || 1;
+            mediaElement.play();
+          });
 
           $('#player-waveform').click(function (e) {
             var parentOffset = $(this).parent().offset(); 
@@ -83,6 +89,18 @@
             if (_this.visualisation === "pulsate") {
               _this.runVisualisation(mediaElement);
             }
+          });
+
+          mediaElement.addEventListener('ended', function(e) {
+            repeatTimes--;
+            if (repeatTimes > 0) {
+              mediaElement.setCurrentTime(0);
+              mediaElement.play();
+            }
+          });
+
+          mediaElement.addEventListener('pause', function(e) {
+            // repeatTimes = 0;
           });
 
           $('#playerImageContainer').click(function () {

@@ -58,21 +58,26 @@
 
         {% block player %}
         {% if snippet.audio_ready %}
-        <div class="player-waveform" id="player-waveform">
-          <div class="player-progress" id="player-progress">
+        <div class="player">
+          <div class="player-waveform" id="player-waveform">
+            <div class="player-progress" id="player-progress">
+            </div>
+            <img  src="/waveform/500/90/white/201,201,201/{{ snippet.audio.id }}/waveform.png" width="500" height="90">
           </div>
-          <img  src="/waveform/500/90/white/201,201,201/{{ snippet.audio.id }}/waveform.png" width="500" height="90">
+          
+          <button id="player-repeat" class="player-repeat fa fa-repeat"><span class="sr-only">Repeat</span></button>
+          
+          <audio id="audioPlayer" height="30" width="90%" controls="controls" preload="auto">
+            <source type="audio/mp3" src="{{ snippet.audio_mp3.url }}" />
+            <object width="320" height="240" type="application/x-shockwave-flash" data="{{ STATIC_URL }}mediaelement/flashmediaelement.swf">
+              <param name="movie" value="{{ STATIC_URL }}mediaelement/flashmediaelement.swf" />
+              <param name="flashvars" value="controls=true&file={{ snippet.audio_mp3.url }}" />
+              <!-- Image as a last resort -->
+              Sorry, audio playback is not support on your browser.
+            </object>
+          </audio>
+
         </div>
-        
-        <audio id="audioPlayer" height="30" width="100%" controls="controls" preload="auto">
-          <source type="audio/mp3" src="{{ snippet.audio_mp3.url }}" />
-          <object width="320" height="240" type="application/x-shockwave-flash" data="{{ STATIC_URL }}mediaelement/flashmediaelement.swf">
-            <param name="movie" value="{{ STATIC_URL }}mediaelement/flashmediaelement.swf" />
-            <param name="flashvars" value="controls=true&file={{ snippet.audio_mp3.url }}" />
-            <!-- Image as a last resort -->
-            Sorry, audio playback is not support on your browser.
-          </object>
-        </audio>
         {% else %}
         Processing...
         {% endif %}
