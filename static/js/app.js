@@ -25,6 +25,8 @@
         // Use the token to create the charge with a server-side script.
       }
     });
+
+    this.showCheckout = _.debounce(this.showCheckout, 1000, true);
   }
 
   SnippetOrders.prototype = {
