@@ -26,7 +26,7 @@
       }
     });
 
-    this.showCheckout = _.debounce(this.showCheckout, 1000, true);
+    this.showCheckout = _.debounce(this.showCheckout, 5000, true);
   }
 
   SnippetOrders.prototype = {
