@@ -8277,3 +8277,7 @@ fieldset[disabled] .form-actions-with-progress .action.active {
 .searchbox input {
   height: 42px !important;
 }
+.sortby {
+  float: right;
+  clear: both;
+}

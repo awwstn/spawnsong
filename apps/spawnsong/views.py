@@ -46,10 +46,15 @@ def get_client_ip(request):
 
 def frontpage(request):
     snippets = models.Snippet.objects.visible_to(request.user).filter(state="published")
+
+    if request.GET.get("sort",None) == "new":
+        snippets = snippets.order_by("-created_at")
+    
     return render_to_response(
         "spawnsong/frontpage.html",
         {
-           "snippets": snippets
+           "snippets": snippets,
+           "sort": request.GET.get("sort", None)
         },
         context_instance=RequestContext(request))
 

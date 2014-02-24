@@ -38,6 +38,14 @@
 
 <div class="container">
   {% include "spawnsong/parts/searchbox.html" %}
+
+  <div class="sortby">
+    {% if sort == "new" %}
+    <a href="?sort=popular">Sort by popular</a>
+    {% else %}
+    <a href="?sort=new">Sort by new</a>
+    {% endif %}
+  </div>
   
   {% include "spawnsong/parts/snippet-list.html" %}
 </div>
