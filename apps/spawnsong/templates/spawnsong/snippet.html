@@ -47,9 +47,7 @@
       <div class="header">
         <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
         <h1 class="snippet-title"><a href="{{snippet.get_absolute_url }}">{{ snippet.title }}</a></h1>
-        {% if not editable %}
         <h2 class="username artist">by <a href="{{ snippet.song.artist.get_absolute_url }}">{{ snippet.song.artist.get_display_name }}</a></h2>
-        {% endif %}
         {% if editable and not edit_mode %}
         <a href="?edit" class="edit-link">edit</a>
         {% endif %}
@@ -144,11 +142,14 @@
       </li>
       {% endfor %}
     </ul>
+    
+    {% if prompt_first_artist_comment %}
+    <div class="alert alert-success">Be sure to comment and give a rough estimate as to when the song will be finished"
+"e.g. 'by the end of the month', 'in a few days'</div>
+    {% endif %}
+    
     <div class="newcomment">
       <h1>Leave a Comment</h1>
-      {% if prompt_first_artist_comment %}
-      <div class="artist-comment-prompt">Why not add a comment to let people know when the song will be ready?</div>
-      {% endif %}
       {% if user.is_authenticated %}
       <form action="." method="post" onsubmit="spawnsong.snippet.post_comment(); return false">
         {% csrf_token %}

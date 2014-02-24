@@ -7550,6 +7550,11 @@ td.visible-print {
     width: 960px;
   }
 }
+.contactus {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+}
 html,
 body {
   height: 100%;
@@ -7660,15 +7665,6 @@ body {
   padding-top: 40px;
   padding-bottom: 20px;
   font-size: 30px;
-}
-.comments .artist-comment-prompt {
-  position: absolute;
-  width: 70%;
-  bottom: 110%;
-  padding: 5px;
-  left: 10%;
-  border: 1px solid;
-  border-radius: 8px;
 }
 .comments > ul {
   padding-left: 0;
