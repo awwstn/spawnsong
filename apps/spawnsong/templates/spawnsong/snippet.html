@@ -130,9 +130,9 @@
     <ul>
       {% for comment in snippet.comment_set.all %}
       <li class="comment {% if comment.user == snippet.song.artist.user %}artist-comment{% endif %} row">
-        <div class="col-xs-1">
-          <div class="avatar"></div>
-        </div>
+        <!-- <div class="col-xs-1"> -->
+        <!--   <div class="avatar"></div> -->
+        <!-- </div> -->
         <div class="col-xs-11">
           <div class="username">{{ comment.user.username }}</div>
           <!-- <div class="timestamp">{{ comment.created_at|naturaltime }}</div> -->
