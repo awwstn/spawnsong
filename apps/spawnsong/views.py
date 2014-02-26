@@ -93,7 +93,7 @@ def snippet(request, snippet_id, slug=None):
     deleteable = not models.Order.objects.filter(song=snippet.song).exists()
     if edit_mode:
         if request.method == "POST":
-            if "delete" in request.POST and not deleteable:
+            if "delete" in request.POST and deleteable:
                 snippet.delete()
                 return HttpResponseRedirect("/")
             form = forms.EditSnippetForm(request.POST, request.FILES, instance=snippet)
@@ -109,7 +109,7 @@ def snippet(request, snippet_id, slug=None):
         # Has a comment been posted?
         if request.method == "POST" and request.POST["badger"] == "":
             comment = request.POST["comment"]
-            models.Comment.objects.create(user=request.user, snippet=snippet, content=comment, ip_address=get_client_ip(request))
+            models.Comment.objects.get_or_create(user=request.user, snippet=snippet, content=comment, ip_address=get_client_ip(request))
 
                                     
     return render_to_response(
