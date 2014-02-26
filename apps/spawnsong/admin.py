@@ -189,7 +189,7 @@ class ArtistPaymentAdmin(admin.ModelAdmin):
         return obj.order_set.count()
     
     def total_amount(self, obj):
-        return "$%0.2f" % (obj.order_set.aggregate(Sum('price'))["price__sum"]/Decimal("100"))
+        return "$%0.2f" % ((obj.order_set.aggregate(Sum('price'))["price__sum"] or 0)/Decimal("100"))
 
     def has_add_permission(self, request):
         return False
