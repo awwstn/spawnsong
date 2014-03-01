@@ -324,6 +324,7 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ("created_at",)
+        unique_together = (("user", "snippet", "content"),)
         
     def __unicode__(self):
         return u"%s: %s" % (self.user, self.content)
