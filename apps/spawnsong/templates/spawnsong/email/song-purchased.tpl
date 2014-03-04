@@ -1,5 +1,5 @@
 {% block subject %}
-Your song "{{song.title}}" has been {% if is_preoder %}pre-{% endif %}ordered on Songspawn.com!
+Your song "{{song.title}}" has been {% if is_preoder %}pre-{% endif %}ordered on Spawnsong.com!
 {% endblock %}
 
 {% block body %}

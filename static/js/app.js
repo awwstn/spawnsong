@@ -37,7 +37,7 @@
       var _this = this;
 
       this.handler.open({
-        name: 'Songspawn',
+        name: 'Spawnsong',
         description: 'Pre Order "' + this.title + '"',
         email: this.userEmail,
         amount: this.price

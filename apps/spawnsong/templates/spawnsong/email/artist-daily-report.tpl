@@ -5,7 +5,7 @@ Your Spawnsong.com orders for yesterday
 {% block body %}
 Hello!
 
-Your song(s) recieved orders from users on Songspawn.com yesterday.
+Your song(s) recieved orders from users on Spawnsong.com yesterday.
 
 The followin songs received orders:
 {% for song in songs %}
@@ -20,7 +20,7 @@ Hello!
 </p>
 
 <p>
-Your song(s) recieved orders from users on Songspawn.com yesterday.
+Your song(s) recieved orders from users on Spawnsong.com yesterday.
 </p>
 
 <p>
