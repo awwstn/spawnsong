@@ -11,7 +11,9 @@
   </div>
   <div class="body">
     <div class="genres">{{ song.genres }}</div>
+    {% if song.is_complete %}
     <div class="download"><a href="{{ song.get_download_url }}"><i class="fa fa-cloud-download"></i> Download</a></div>
+    {% endif %}
     <h2><a href="{{ snippet.song.artist.get_absolute_url }}">{{ song.artist.get_display_name }}</a> - {{ song.title }}</h2>
     {% if song.is_complete %}
     <div class="player-waveform">
