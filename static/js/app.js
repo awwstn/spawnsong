@@ -333,8 +333,8 @@
 
   $(document).ready(init);
   
-  InstantClick.init();
-  InstantClick.on('change', init);
+  // InstantClick.init();
+  // InstantClick.on('change', init);
 
   
 })(window.spawnsong = {});
