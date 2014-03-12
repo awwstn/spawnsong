@@ -129,7 +129,7 @@ def snippet(request, snippet_id, slug=None):
         context_instance=RequestContext(request))
 
 @login_required
-def upload_full(request, snippet_id):
+def upload_full(request, snippet_id, slug=None):
     is_xhr = 'xhr' in request.POST
     snippet = get_object_or_404(
         models.Snippet.objects.visible_to(request.user), pk=snippet_id, song__artist__user=request.user)
