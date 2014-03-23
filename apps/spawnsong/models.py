@@ -300,10 +300,10 @@ class Order(models.Model):
             tasks.deliver_full_song_to_order.delay(self.id)
 
     def refund(self):
-        assert self.charged, "Can't refund an order if it hasn't been charged"
-        ch = stripe.Charge.retrieve(self.stripe_transaction_id)
-        if not ch.refunded:
-            ch.refund()
+        if self.charged:
+          ch = stripe.Charge.retrieve(self.stripe_transaction_id)
+          if not ch.refunded:
+              ch.refund()
         self.refunded = True
         self.save()
             
