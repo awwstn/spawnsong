@@ -49,10 +49,10 @@ class SnippetInline(admin.StackedInline):
            'classes': ('collapse',),
            'fields': ('audio',)
        }),
-       ('Echonest', {
-           'classes': ('collapse',),
-           'fields': ('echonest_track_profile', 'echonest_track_analysis')
-       }),
+       # ('Echonest', {
+       #     'classes': ('collapse',),
+       #     'fields': ('echonest_track_profile', 'echonest_track_analysis')
+       # }),
     )
     
     def has_add_permission(self, request):
