@@ -237,7 +237,7 @@ class Snippet(models.Model):
         return reverse("snippet", args=(self.id, self.slug))
         
     class Meta:
-        ordering = ("ordering_score","-created_at", )
+        ordering = ("-ordering_score","-created_at", )
     
 
 class ArtistPayment(models.Model):
