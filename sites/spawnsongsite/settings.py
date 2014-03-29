@@ -104,6 +104,7 @@ PIPELINE_JS = {
           'js/vendor/jquery.form.js',
           'js/vendor/underscore.js',
           'js/vendor/instantclick.js',
+          'js/vendor/bootstrap.js',
           'js/app.js',
           'mediaelement/mediaelement-and-player.js',
           'endless_pagination/js/endless-pagination.js',
