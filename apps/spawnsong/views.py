@@ -50,8 +50,12 @@ def frontpage(request):
     if request.GET.get("sort",None) == "new":
         snippets = snippets.order_by("-created_at")
     
+    if request.is_ajax():
+        template = "spawnsong/parts/snipept-list.html"
+    else:
+        template = "spawnsong/frontpage.html"
     return render_to_response(
-        "spawnsong/frontpage.html",
+        template,
         {
            "snippets": snippets,
            "sort": request.GET.get("sort", None)
