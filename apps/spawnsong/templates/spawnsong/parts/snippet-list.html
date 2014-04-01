@@ -1,6 +1,7 @@
 {% load thumbnail %}
-{% load pagination_tags %}
-{% autopaginate snippets 20 %}
+{% load endless %}
+{% paginate snippets %}
+
 
 <div class="snippet-list">
   {% for snippet in snippets %}
@@ -24,4 +25,5 @@
   {% endfor %}
 </div>
 
-{% paginate %}
+
+{% show_more %}

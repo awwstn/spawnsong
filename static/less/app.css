@@ -7883,6 +7883,10 @@ body {
 }
 .snippet-list .snippet h3 {
   font-size: 20px;
+  height: 20px;
+  overflow: hidden;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .snippet-list .snippet .snippet-inner {
   text-align: center;
