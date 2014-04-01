@@ -51,7 +51,7 @@ def frontpage(request):
         snippets = snippets.order_by("-created_at")
     
     if request.is_ajax():
-        template = "spawnsong/parts/snipept-list.html"
+        template = "spawnsong/parts/snippet-list.html"
     else:
         template = "spawnsong/frontpage.html"
     return render_to_response(
