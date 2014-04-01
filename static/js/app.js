@@ -313,13 +313,29 @@
     }
   };
 
+  ////
+  // frontpage
+  //
+  
+  function SnippetList(el) {
+  }
+
+  SnippetList.prototype = {
+    ready: function () {
+      $.endlessPaginate({
+        paginateOnScroll: true,
+      });
+    }
+  };
+
   var views = {
     '#order': SnippetOrders,
     '#playerContainer': SnippetPlayer,
     '#personalPlaylistView': PersonalPlaylist,
     '#comments': SnippetComments,
     // '#snippetView': SnippetViewCSS,
-    '#uploadForm': UploadForm
+    '#uploadForm': UploadForm,
+    '#snippetList': SnippetList
   };
 
   function init() {
