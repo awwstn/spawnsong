@@ -205,7 +205,7 @@ def user(request, username):
         "spawnsong/user.html",
         {
            "artist": artist,
-           "user": artist.user,
+           "user": request.user,
            "snippets": snippets
         },
         context_instance=RequestContext(request))
