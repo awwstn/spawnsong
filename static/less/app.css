@@ -7928,6 +7928,11 @@ body {
   -o-transition: transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
 }
+.snippet-list .snippet .play:after {
+  font-family: FontAwesome;
+  content: "\f04b";
+  margin-left: 60px;
+}
 .form-actions-with-progress {
   margin-left: -15px;
   margin-right: -15px;

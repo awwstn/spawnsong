@@ -17,7 +17,7 @@
           {% if snippet.song.artist.user == user %}
             <a href="{{ snippet.get_absolute_url }}?edit" class="btn view-snippet" role="button">{% if snippet.state == "ready" %}Publish{% else %}Edit{% endif %}</a>
           {% endif %}
-          <a href="{{ snippet.get_absolute_url }}" class="btn view-snippet" role="button">Listen Now</a>
+          <a href="{{ snippet.get_absolute_url }}" class="btn view-snippet play" role="button">Listen Now</a>
         </div>
       </div>
       <a href="{{ snippet.get_absolute_url }}">
