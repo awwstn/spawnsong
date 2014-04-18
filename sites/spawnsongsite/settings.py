@@ -359,7 +359,6 @@ except ImportError:
 
     AWS_ACCESS_KEY=os.getenv("AWS_ACCESS_KEY")
     AWS_SECRET_ACCESS_KEY=os.getenv("AWS_SECRET_ACCESS_KEY")
-    AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
     
     MAILGUN_ACCESS_KEY = os.getenv("MAILGUN_ACCESS_KEY")
     MAILGUN_SERVER_NAME = os.getenv("MAILGUN_SERVER_NAME")
@@ -374,6 +373,8 @@ except ImportError:
 
 import stripe
 stripe.api_key = STRIPE_SECRET_KEY
+
+AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
 
 # Down here so that FFMPEG_EXECUTABLE can be replaced in local_settings
 AUDIO_PROFILES = {
