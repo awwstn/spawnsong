@@ -85,7 +85,7 @@
         <div class="order-container">
           <button {% if edit_mode %}disabled{% endif %} class="btn btn-primary {% if snippet.is_complete %}pre-order{% else %}order{% endif %}" id="order">
             <i class="fa fa-shopping-cart"></i>
-            {% if not snippet.is_complete%}Pre {% endif %}Order
+            {% if not snippet.is_complete%}Pre Order{% else %}Song is out, order now!{% endif %}
           </button>
           {% if not snippet.is_complete and editable %}
           <div><a href="{{ snippet.get_absolute_url }}upload-full/" class="upload-full-link">(upload full song)</a></div>
