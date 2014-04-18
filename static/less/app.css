@@ -7550,6 +7550,14 @@ td.visible-print {
     width: 960px;
   }
 }
+.terms {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+}
+.terms a {
+  margin-right: 30px;
+}
 .contactus {
   position: fixed;
   right: 10px;
