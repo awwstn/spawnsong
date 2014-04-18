@@ -7878,18 +7878,19 @@ body {
 .snippet-list .snippet .counts {
   font-size: 80%;
   color: #999999;
-  margin-bottom: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 .snippet-list .snippet h3 {
   font-size: 20px;
-  height: 20px;
+  height: 25px;
+  margin-top: 20px;
   overflow: hidden;
   padding-left: 10px;
   padding-right: 10px;
 }
 .snippet-list .snippet .snippet-inner {
   text-align: center;
+  padding-bottom: 20px;
 }
 .snippet-list .snippet .view-snippet {
   display: block;
