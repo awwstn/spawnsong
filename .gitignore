@@ -6,5 +6,6 @@ local_settings.py
 collected_statics
 test.db
 .ropeproject
+development_database.sqlite
 
 .DS_Store

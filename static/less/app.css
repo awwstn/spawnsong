@@ -7373,6 +7373,7 @@ td.visible-print {
 }
 .jumbotron {
   margin-top: -21px;
+  padding-bottom: 30px;
 }
 .jumbotron-default {
   text-align: center;
@@ -7399,13 +7400,13 @@ td.visible-print {
   padding-top: 10px;
 }
 .jumbotron-competition h1 {
-  font-size: 36px;
+  font-size: 33px;
   line-height: 130%;
   font-weight: 600;
   text-align: left;
 }
 .jumbotron-competition div.lines {
-  font-size: 19px;
+  font-size: 16px;
   text-align: left;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -7549,6 +7550,14 @@ td.visible-print {
   .footer {
     width: 960px;
   }
+}
+.terms {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+}
+.terms a {
+  margin-right: 30px;
 }
 .contactus {
   position: fixed;
