@@ -7373,6 +7373,7 @@ td.visible-print {
 }
 .jumbotron {
   margin-top: -21px;
+  padding-bottom: 30px;
 }
 .jumbotron-default {
   text-align: center;
