@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -15,7 +16,7 @@ import stripe
 import urllib
 import logging
 from django.conf import settings
-from registration.backends.simple.views import RegistrationView as SimpleRegistrationView
+from registration.backends.default.views import RegistrationView as DefaultRegistrationView
 from mail_templated import EmailMessage
 from django.core.exceptions import MultipleObjectsReturned
 from PIL import Image, ImageDraw
@@ -290,9 +291,8 @@ def purchase(request):
     
     return HttpResponseRedirect(snippet.get_absolute_url() + "?paymentsuccess")
 
-class RegistrationView(SimpleRegistrationView):
-    def get_success_url(self, request, user):
-        return ('/', (), {})
+class RegistrationView(DefaultRegistrationView):
+    pass
 
 @login_required
 def personal_playlist(request):
@@ -359,8 +359,9 @@ def edit_user_profile(request):
     if request.method == 'POST':
         form = forms.UserProfileForm(request.POST, instance=request.user)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('edit-user-profile'))
+            form.save(request)
+            logout(request)
+            return HttpResponseRedirect(reverse('registration_complete'))
     else:
         form = forms.UserProfileForm(instance=request.user)
     html = loader.render_to_string(

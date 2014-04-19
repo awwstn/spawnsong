@@ -41,7 +41,7 @@ urlpatterns = patterns('',
         views.RegistrationView.as_view(),
         name='registration_register'),
         
-    (r'^accounts/', include('registration.auth_urls')),
+    (r'^accounts/', include('registration.backends.default.urls')),
                     
     # Overwise use these lines for username/password auth
     url(r'^login/$', 'django.contrib.auth.views.login',name="login"),

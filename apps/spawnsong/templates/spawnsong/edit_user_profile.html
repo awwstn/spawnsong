@@ -8,6 +8,14 @@
 <div class="container">
   <div class="form-view" id="uploadView">
     <div class="form-inner panel">
+
+      {% if request.GET.order %}
+        <div class="alert alert-danger alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <strong>Please specify your email to be able to place orders!</strong>
+        </div>
+      {% endif %}
+
       <div class="panel-heading">
         <h1>Edit your profile</h1>
       </div>
