@@ -7884,6 +7884,14 @@ body {
   width: 100%;
   height: auto;
 }
+.snippet-list .snippet .message {
+  position: relative;
+  font-size: 80%;
+  height: 18px;
+  margin-top: -18px;
+  color: #999999;
+  background-color: #efefef;
+}
 .snippet-list .snippet .counts {
   font-size: 80%;
   color: #999999;
