@@ -391,11 +391,8 @@ html, body {
                 -ms-transform: translateY(100%);
                 -o-transform: translateY(100%);
                 transform: translateY(100%);
-                -webkit-transition: transform 0.3s ease-in;
-                -moz-transition: transform 0.3s ease-in;
-                -ms-transition: transform 0.3s ease-in;
-                -o-transition: transform 0.3s ease-in;
-                transition: transform 0.3s ease-in;
+                
+                .transition-transform(0.3s);
             }
             &:hover .buttons {
                 -webkit-transform: translateY(0);
@@ -403,11 +400,8 @@ html, body {
                 -ms-transform: translateY(0);
                 -o-transform: translateY(0);
                 transform: translateY(0);
-                -webkit-transition: transform 0.3s ease-out;
-                -moz-transition: transform 0.3s ease-out;
-                -ms-transition: transform 0.3s ease-out;
-                -o-transition: transform 0.3s ease-out;
-                transition: transform 0.3s ease-out;
+
+                .transition-transform(0.3s);
             }
         }
         .play:after {

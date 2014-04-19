@@ -7941,11 +7941,10 @@ body {
   -ms-transform: translateY(100%);
   -o-transform: translateY(100%);
   transform: translateY(100%);
-  -webkit-transition: transform 0.3s ease-in;
-  -moz-transition: transform 0.3s ease-in;
-  -ms-transition: transform 0.3s ease-in;
-  -o-transition: transform 0.3s ease-in;
-  transition: transform 0.3s ease-in;
+  -webkit-transition: -webkit-transform 0.3s;
+  -moz-transition: -moz-transform 0.3s;
+  -o-transition: -o-transform 0.3s;
+  transition: transform 0.3s;
 }
 .snippet-list .snippet .cover:hover .buttons {
   -webkit-transform: translateY(0);
@@ -7953,11 +7952,10 @@ body {
   -ms-transform: translateY(0);
   -o-transform: translateY(0);
   transform: translateY(0);
-  -webkit-transition: transform 0.3s ease-out;
-  -moz-transition: transform 0.3s ease-out;
-  -ms-transition: transform 0.3s ease-out;
-  -o-transition: transform 0.3s ease-out;
-  transition: transform 0.3s ease-out;
+  -webkit-transition: -webkit-transform 0.3s;
+  -moz-transition: -moz-transform 0.3s;
+  -o-transition: -o-transform 0.3s;
+  transition: transform 0.3s;
 }
 .snippet-list .snippet .play:after {
   font-family: FontAwesome;
