@@ -45,6 +45,18 @@
     }
   };
 
+  function LoginToOrder(el) {
+      this.orderEl = el;
+  }
+  LoginToOrder.prototype = {
+    ready: function () {
+      this.orderEl.click(_.bind(this.goToLogin, this));
+    },
+    goToLogin: function () {
+      window.location = this.orderEl.attr('data-location');
+    }
+  };
+
   ////
   // Player
   ////
@@ -330,6 +342,7 @@
 
   var views = {
     '#order': SnippetOrders,
+    '#loginToOrder': LoginToOrder,
     '#playerContainer': SnippetPlayer,
     '#personalPlaylistView': PersonalPlaylist,
     '#comments': SnippetComments,
