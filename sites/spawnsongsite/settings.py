@@ -192,6 +192,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'pagination',
     'kombu.transport.django',
+    'avatar',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'media',
@@ -215,6 +216,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 TEMPLATE_VISIBLE_SETTINGS = (
     'STRIPE_PUBLIC_KEY',
+    'AVATAR_SIZE',
     )
 
 try:
@@ -240,6 +242,10 @@ FACEBOOK_EXTENDED_PERMISSIONS = ['publish_stream']
 LOGIN_URL          = '/login/'
 
 LOGIN_REDIRECT_URL = '/'
+
+AVATAR_GRAVATAR_BACKUP = False
+AVATAR_DEFAULT_URL = '/images/user.png'
+AVATAR_SIZE = 96 # This should match the size in css.
 
 
 AWS_STORAGE_BUCKET_NAME = "spawnsong"
