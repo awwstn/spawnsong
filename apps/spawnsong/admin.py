@@ -48,7 +48,7 @@ class SnippetInline(admin.StackedInline):
     raw_id_fields = ("audio",)
     fieldsets = (
        (None, {
-           'fields': ('title', 'state', 'created_at', 'image', 'visualisation_effect','processing_error'),
+           'fields': ('title', 'message', 'state', 'created_at', 'image', 'visualisation_effect','processing_error'),
        }),
        ('Audio Data', {
            'classes': ('collapse',),
