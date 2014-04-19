@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 import models
@@ -108,3 +109,8 @@ class UploadSnippetForm(forms.Form):
             visualisation_effect=self.cleaned_data["visualisation_effect"])
         snippet.process_uploaded_audio()
         return snippet
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('email',)

@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import loader, RequestContext
 from django.http import HttpResponseRedirect, HttpResponse, HttpResponsePermanentRedirect
@@ -352,3 +353,20 @@ def waveform_image(request, width, height, background, foreground, audio_id):
     im.save(response, "PNG")
     response['Cache-Control'] = 'max-age=999999999999'
     return response
+
+@login_required
+def edit_user_profile(request):
+    if request.method == 'POST':
+        form = forms.UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('edit-user-profile'))
+    else:
+        form = forms.UserProfileForm(instance=request.user)
+    html = loader.render_to_string(
+        "spawnsong/edit_user_profile.html",
+        {
+            "form": form
+        },
+        context_instance=RequestContext(request))
+    return HttpResponse(html)
