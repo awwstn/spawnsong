@@ -132,6 +132,7 @@ class UserProfileForm(forms.ModelForm):
         result = super(UserProfileForm, self).save(*args, **kwargs)
 
         # Send email confirmation message.
+        RegistrationProfile.objects.filter(user=user).delete()
         registration_profile = RegistrationProfile.objects.create_profile(user)
         if Site._meta.installed:
             site = Site.objects.get_current()
