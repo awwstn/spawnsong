@@ -7493,6 +7493,11 @@ td.visible-print {
   font-weight: 600;
   font-size: 20px;
 }
+.snippet-view .genre {
+  color: #767676;
+  font-size: 15px;
+  text-decoration: none;
+}
 .snippet-view .order-container {
   background: #efefef;
   border-top: 1px solid #c9c9c9;
@@ -7599,6 +7604,10 @@ body {
 }
 .snippet-view h2 {
   margin-bottom: 28px;
+}
+.snippet-view .genre {
+  margin-top: 8px;
+  float: right;
 }
 .snippet-view .image-container {
   width: 100%;
