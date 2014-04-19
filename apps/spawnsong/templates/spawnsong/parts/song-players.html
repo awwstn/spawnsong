@@ -33,7 +33,8 @@
     {% else %}
     <p>(Pre Ordered)</p>
     {% endif %}
-    <div class="genres">{{ song.genres }}</div>
+    {# This may need some perfomance improvement in future #}
+    <div class="genres">{{ song.snippet_set.first.genres }}</div>
     <div class="clearfix"></div>
   </div>
 </div>
