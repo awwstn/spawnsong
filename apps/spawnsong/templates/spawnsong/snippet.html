@@ -2,6 +2,7 @@
 {% load thumbnail %}
 {% load humanize %}
 {% load crispy_forms_tags %}
+{% load avatar_tags %}
 
 {% block title %}{{ snippet.title }} by {{ user.username }} | Spawnsong{% endblock %}
 
@@ -130,14 +131,12 @@
     <ul>
       {% for comment in snippet.comment_set.all %}
       <li class="comment {% if comment.user == snippet.song.artist.user %}artist-comment{% endif %} row">
-        <!-- <div class="col-xs-1"> -->
-        <!--   <div class="avatar"></div> -->
-        <!-- </div> -->
-        <div class="col-xs-11">
+        <div class="col-xs-12">
+          <div class="avatar">{% avatar comment.user AVATAR_SIZE %}</div>
           <div class="username">{{ comment.user.username }}</div>
           <!-- <div class="timestamp">{{ comment.created_at|naturaltime }}</div> -->
-           <div class="text">{{ comment.content }}</div>
-           <div class="timestamp">{{ comment.created_at|date:'F j Y' }} &mdash; {{ comment.created_at|date:'f a'}}</div>
+          <div class="text">{{ comment.content }}</div>
+          <div class="timestamp">{{ comment.created_at|date:'F j Y' }} &mdash; {{ comment.created_at|date:'f a'}}</div>
         </div>
       </li>
       {% endfor %}
