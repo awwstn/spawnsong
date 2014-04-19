@@ -7887,21 +7887,60 @@ body {
 .snippet-list .snippet .counts {
   font-size: 80%;
   color: #999999;
-  margin-bottom: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 .snippet-list .snippet h3 {
   font-size: 20px;
-  height: 20px;
+  height: 25px;
+  margin-top: 20px;
   overflow: hidden;
   padding-left: 10px;
   padding-right: 10px;
 }
 .snippet-list .snippet .snippet-inner {
   text-align: center;
+  padding-bottom: 20px;
 }
 .snippet-list .snippet .view-snippet {
   display: block;
+}
+.snippet-list .snippet .cover {
+  position: relative;
+  overflow: hidden;
+}
+.snippet-list .snippet .cover .buttons {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  background-color: #000000;
+  opacity: 0.8;
+  -webkit-transform: translateY(100%);
+  -moz-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  -o-transform: translateY(100%);
+  transform: translateY(100%);
+  -webkit-transition: transform 0.3s ease-in;
+  -moz-transition: transform 0.3s ease-in;
+  -ms-transition: transform 0.3s ease-in;
+  -o-transition: transform 0.3s ease-in;
+  transition: transform 0.3s ease-in;
+}
+.snippet-list .snippet .cover:hover .buttons {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+  -webkit-transition: transform 0.3s ease-out;
+  -moz-transition: transform 0.3s ease-out;
+  -ms-transition: transform 0.3s ease-out;
+  -o-transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+}
+.snippet-list .snippet .play:after {
+  font-family: FontAwesome;
+  content: "\f04b";
+  margin-left: 60px;
 }
 .form-actions-with-progress {
   margin-left: -15px;

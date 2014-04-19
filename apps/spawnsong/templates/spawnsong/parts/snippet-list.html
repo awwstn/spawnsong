@@ -7,19 +7,25 @@
   {% for snippet in snippets %}
   <div class="snippet">
     <div class="snippet-inner">
+      <div class="cover">
+        <a href="{{ snippet.get_absolute_url }}">
+          {% thumbnail snippet.image "300x300" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+          {% endthumbnail %}
+        </a>
+        <div class="buttons">
+          {% if snippet.song.artist.user == user %}
+            <a href="{{ snippet.get_absolute_url }}?edit" class="btn view-snippet" role="button">{% if snippet.state == "ready" %}Publish{% else %}Edit{% endif %}</a>
+          {% endif %}
+          <a href="{{ snippet.get_absolute_url }}" class="btn view-snippet play" role="button">Listen Now</a>
+        </div>
+      </div>
       <a href="{{ snippet.get_absolute_url }}">
-        {% thumbnail snippet.image "300x300" crop="center" as im %}
-        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-        {% endthumbnail %}
-      <h3>{{ snippet.title }}{% if snippet.state == "ready" %}<small>(unpublished)</small>{% endif %}</h3>
+        <h3>{{ snippet.title }}{% if snippet.state == "ready" %}<small>(unpublished)</small>{% endif %}</h3>
       </a>
       <p class="counts">
         {{ snippet.order_count }} pre-orders, {{ snippet.comment_count }} comments
       </p>
-      <a href="{{ snippet.get_absolute_url }}" class="btn view-snippet" role="button">Listen Now</a>
-      {% if snippet.song.artist.user == user %}
-      <a href="{{ snippet.get_absolute_url }}?edit" class="btn view-snippet" role="button">{% if snippet.state == "ready" %}Publish{% else %}Edit{% endif %}</a>
-      {% endif %}
     </div>
   </div>
   {% endfor %}

@@ -336,12 +336,12 @@ html, body {
         .counts {
             font-size: 80%;
             color: @gray-light;
-            margin-bottom: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 0px;
         }
          h3 {
              font-size: 20px;
-             height: 20px;
+             height: 25px;
+             margin-top: 20px;
              overflow: hidden;
              padding-left: 10px;
              padding-right: 10px;
@@ -349,10 +349,51 @@ html, body {
 
         .snippet-inner {
             text-align: center;
+            padding-bottom: 20px;
         }
 
         .view-snippet {
             display: block;
+        }
+
+        .cover {
+            position: relative;
+            overflow: hidden;
+            .buttons {
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+                background-color: #000000;
+                opacity: 0.8;
+
+                -webkit-transform: translateY(100%);
+                -moz-transform: translateY(100%);
+                -ms-transform: translateY(100%);
+                -o-transform: translateY(100%);
+                transform: translateY(100%);
+                -webkit-transition: transform 0.3s ease-in;
+                -moz-transition: transform 0.3s ease-in;
+                -ms-transition: transform 0.3s ease-in;
+                -o-transition: transform 0.3s ease-in;
+                transition: transform 0.3s ease-in;
+            }
+            &:hover .buttons {
+                -webkit-transform: translateY(0);
+                -moz-transform: translateY(0);
+                -ms-transform: translateY(0);
+                -o-transform: translateY(0);
+                transform: translateY(0);
+                -webkit-transition: transform 0.3s ease-out;
+                -moz-transition: transform 0.3s ease-out;
+                -ms-transition: transform 0.3s ease-out;
+                -o-transition: transform 0.3s ease-out;
+                transition: transform 0.3s ease-out;
+            }
+        }
+        .play:after {
+            font-family: FontAwesome;
+            content: "\f04b";
+            margin-left: 60px;
         }
     }
 }
