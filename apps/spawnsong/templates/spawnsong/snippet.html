@@ -48,6 +48,7 @@
       <div class="header">
         <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
         <h1 class="snippet-title"><a href="{{snippet.get_absolute_url }}">{{ snippet.title }}</a></h1>
+        <div class="genre">{{ snippet.genres }}</div>
         <h2 class="username artist">by <a href="{{ snippet.song.artist.get_absolute_url }}">{{ snippet.song.artist.get_display_name }}</a></h2>
         {% if editable and not edit_mode %}
         <a href="?edit" class="edit-link">edit</a>

@@ -7493,6 +7493,11 @@ td.visible-print {
   font-weight: 600;
   font-size: 20px;
 }
+.snippet-view .genre {
+  color: #767676;
+  font-size: 15px;
+  text-decoration: none;
+}
 .snippet-view .order-container {
   background: #efefef;
   border-top: 1px solid #c9c9c9;
@@ -7599,6 +7604,10 @@ body {
 }
 .snippet-view h2 {
   margin-bottom: 28px;
+}
+.snippet-view .genre {
+  margin-top: 8px;
+  float: right;
 }
 .snippet-view .image-container {
   width: 100%;
@@ -7911,6 +7920,12 @@ body {
   color: #999999;
   margin-bottom: 0px;
 }
+.snippet-list .snippet .genre {
+  font-size: 90%;
+  color: #999999;
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
 .snippet-list .snippet h3 {
   font-size: 20px;
   height: 25px;
@@ -8212,7 +8227,7 @@ fieldset[disabled] .form-actions-with-progress .action.active {
   color: #999999;
 }
 .playlist .song .body .genres {
-  float: right;
+  float: left;
   color: #555555;
 }
 .playlist .song .body h2,
