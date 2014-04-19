@@ -10,7 +10,6 @@
     {% endthumbnail %}
   </div>
   <div class="body">
-    <div class="genres">{{ song.genres }}</div>
     {% if song.is_complete %}
     <div class="download"><a href="{{ song.get_download_url }}"><i class="fa fa-cloud-download"></i> Download</a></div>
     {% endif %}
@@ -34,6 +33,7 @@
     {% else %}
     <p>(Pre Ordered)</p>
     {% endif %}
+    <div class="genres">{{ song.genres }}</div>
     <div class="clearfix"></div>
   </div>
 </div>

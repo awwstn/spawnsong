@@ -8227,7 +8227,7 @@ fieldset[disabled] .form-actions-with-progress .action.active {
   color: #999999;
 }
 .playlist .song .body .genres {
-  float: right;
+  float: left;
   color: #555555;
 }
 .playlist .song .body h2,
