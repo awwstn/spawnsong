@@ -60,7 +60,8 @@ class EditSnippetForm(forms.ModelForm):
         fields = ("title", "image", "genres", "visualisation_effect")
 
 class UploadCompleteSongForm(forms.Form):
-    complete_audio = MP3FileField(label="Upload Complete Song", widget=forms.widgets.FileInput, max_file_size=settings.FULL_SONG_FILESIZE_LIMIT)
+    complete_audio = MP3FileField(label="Upload Complete Song", widget=forms.widgets.FileInput, max_file_size=settings.FULL_SONG_FILESIZE_LIMIT,
+                                  help_text="The song file should be in mp3 format.")
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance")
@@ -76,7 +77,8 @@ class UploadCompleteSongForm(forms.Form):
         
 class UploadSnippetForm(forms.Form):
     title = forms.CharField(max_length=100)
-    audio = MP3FileField(label="Upload %s-%s sec Snippet" % (settings.SNIPPET_LENGTH_MIN, settings.SNIPPET_LENGTH_LIMIT,), widget=forms.widgets.FileInput, max_audio_length=settings.SNIPPET_LENGTH_LIMIT+1, max_audio_length_display=settings.SNIPPET_LENGTH_LIMIT, min_audio_length=settings.SNIPPET_LENGTH_MIN)
+    audio = MP3FileField(label="Upload %s-%s sec Snippet" % (settings.SNIPPET_LENGTH_MIN, settings.SNIPPET_LENGTH_LIMIT,), widget=forms.widgets.FileInput, max_audio_length=settings.SNIPPET_LENGTH_LIMIT+1, max_audio_length_display=settings.SNIPPET_LENGTH_LIMIT, min_audio_length=settings.SNIPPET_LENGTH_MIN,
+                         help_text="The song file should be in mp3 format.")
     image = forms.ImageField()
     visualisation_effect = forms.ChoiceField(choices=(("pulsate", "Pulsate"), ("none", "None")))
     genres = forms.CharField(max_length=255, help_text="eg #hip-hop #electronic", required=False)
