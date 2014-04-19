@@ -46,7 +46,7 @@ urlpatterns = patterns('',
     # Overwise use these lines for username/password auth
     url(r'^login/$', 'django.contrib.auth.views.login',name="login"),
     url(r'^logout/$', 'django.contrib.auth.views.logout',name="logout"),
-    
+
     url(r'^s/([^/]+)/([^/]+)/$', 'spawnsong.views.snippet',name="snippet"),
     url(r'^s/([^/]+)/$', 'spawnsong.views.snippet',name="snippet"),
     url(r'^s/([^/]+)/upload-full/$', 'spawnsong.views.upload_full',name="snippet-upload-full"),
@@ -57,6 +57,7 @@ urlpatterns = patterns('',
     url(r'^purchase/$', 'spawnsong.views.purchase',name="purchase"),
     url(r'^personal-playlist/$', 'spawnsong.views.personal_playlist',name="personal-playlist"),
     url(r'^download/([^/]+)/([^/]+)/([^/]+)/$', 'spawnsong.views.download_full',name="snippet-download-full"),
+    url(r'^profile/$', 'spawnsong.views.edit_user_profile', name="edit-user-profile"),
 
     
     url(r'^waveform/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/waveform.png', 'spawnsong.views.waveform_image',name="waveform_image"),
