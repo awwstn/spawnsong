@@ -34,7 +34,7 @@
     <p>(Pre Ordered)</p>
     {% endif %}
     {# This may need some perfomance improvement in future #}
-    <div class="genres">{{ song.snippet_set.first.genres }}</div>
+    <div class="genres">{{ song.snippet_set.first.genres|lower }}</div>
     <div class="clearfix"></div>
   </div>
 </div>

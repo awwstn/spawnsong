@@ -48,7 +48,7 @@
       <div class="header">
         <span class="timestamp">{{ snippet.created_at|naturaltime}}</span>
         <h1 class="snippet-title"><a href="{{snippet.get_absolute_url }}">{{ snippet.title }}</a></h1>
-        <div class="genre">{{ snippet.genres }}</div>
+        <div class="genre">{{ snippet.genres|lower }}</div>
         <h2 class="username artist">by <a href="{{ snippet.song.artist.get_absolute_url }}">{{ snippet.song.artist.get_display_name }}</a></h2>
         {% if editable and not edit_mode %}
         <a href="?edit" class="edit-link">edit</a>
@@ -99,7 +99,6 @@
               {% if not snippet.is_complete%}Pre Order{% else %}Song is out, order now!{% endif %}
             </button>
             {% if snippet.is_complete %}
-              <div class="release-date">Released on {{ snippet.song.completed_at|date:'SHORT_DATE_FORMAT' }}</div>
             {% elif editable %}
               <div><a href="{{ snippet.get_absolute_url }}upload-full/" class="upload-full-link">(upload full song)</a></div>
             {% endif %}
@@ -112,6 +111,9 @@
               </form>
             {% endif %}
             {% if order_count > 0 %}<div class="order-count">{{ order_count }} {% if not snippet.is_complete%}pre {% endif %}order{% if order_count > 1 %}s{% endif %}</div>{% endif %}
+            {% if snippet.is_complete %}
+              <div class="release-date">Released on {{ snippet.song.completed_at|date:'SHORT_DATE_FORMAT' }}</div>
+            {% endif %}
           </div>
         {% endblock %}
 
