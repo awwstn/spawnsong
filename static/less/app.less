@@ -386,21 +386,11 @@ html, body {
                 background-color: #000000;
                 opacity: 0.8;
 
-                -webkit-transform: translateY(100%);
-                -moz-transform: translateY(100%);
-                -ms-transform: translateY(100%);
-                -o-transform: translateY(100%);
-                transform: translateY(100%);
-                
+                .transform(translateY(100%));
                 .transition-transform(0.3s);
             }
             &:hover .buttons {
-                -webkit-transform: translateY(0);
-                -moz-transform: translateY(0);
-                -ms-transform: translateY(0);
-                -o-transform: translateY(0);
-                transform: translateY(0);
-
+                .transform(translateY(0));
                 .transition-transform(0.3s);
             }
         }
