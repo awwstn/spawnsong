@@ -1,13 +1,18 @@
-from django import forms
-from django.contrib.auth.models import User
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-import models
-from mutagen.mp3 import MP3, HeaderNotFoundError, InvalidMPEGHeader
-from django.conf import settings
 import os
 import re
+
+from django import forms
+from django.contrib.auth.models import User
+from django.contrib.sites.models import Site, RequestSite
+from django.conf import settings
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from mutagen.mp3 import MP3, HeaderNotFoundError, InvalidMPEGHeader
+from registration.models import RegistrationProfile
+
 import media.models
+import models
 
 # Based on http://stackoverflow.com/a/5785711/65130
 class MP3FileField(forms.FileField):
@@ -110,8 +115,28 @@ class UploadSnippetForm(forms.Form):
         snippet.process_uploaded_audio()
         return snippet
 
+
 class UserProfileForm(forms.ModelForm):
-    email = forms.EmailField(label='Email address', required=True)
+    email = forms.EmailField(label='Email address', required=True, help_text='You should confirm your email address after it\'s changed.')
+
     class Meta:
         model = User
         fields = ('email',)
+
+    def save(self, request, *args, **kwargs):
+        # Disable the user account until he confirm his email.
+        # When more fields added, there is should be added a check that email
+        # address is actually changed.
+        user = self.instance
+        user.is_active = False
+        result = super(UserProfileForm, self).save(*args, **kwargs)
+
+        # Send email confirmation message.
+        registration_profile = RegistrationProfile.objects.create_profile(user)
+        if Site._meta.installed:
+            site = Site.objects.get_current()
+        else:
+            site = RequestSite(request)
+        registration_profile.send_activation_email(site)
+
+        return result

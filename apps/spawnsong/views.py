@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -358,8 +359,9 @@ def edit_user_profile(request):
     if request.method == 'POST':
         form = forms.UserProfileForm(request.POST, instance=request.user)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('edit-user-profile'))
+            form.save(request)
+            logout(request)
+            return HttpResponseRedirect(reverse('registration_complete'))
     else:
         form = forms.UserProfileForm(instance=request.user)
     html = loader.render_to_string(

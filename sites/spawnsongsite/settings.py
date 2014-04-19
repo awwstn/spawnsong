@@ -243,6 +243,13 @@ LOGIN_URL          = '/login/'
 
 LOGIN_REDIRECT_URL = '/'
 
+# If social account is inactive this probably means that the user set/changed
+# his email address and should confirm it.
+SOCIAL_AUTH_INACTIVE_USER_URL = '/accounts/register/complete/'
+# This redirection is set for Twitter users. If more backends added then this
+# should be improved to not bother users from another social networks.
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/profile/'
+
 AVATAR_GRAVATAR_BACKUP = False
 AVATAR_DEFAULT_URL = '/images/user.png'
 AVATAR_SIZE = 96 # This should match the size in css.
