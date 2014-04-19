@@ -191,16 +191,24 @@ html, body {
                 font-size: 13px;
                 margin-top: 5px;
                 margin-bottom: 10px;
+                padding-left: 120px;
             }
             .avatar {
-                background-image: data-uri('../images/user.png');
-                width: 57px;
-                height: 57px;
                 margin-top: 10px;
+                float: left;
+                img {
+                    width: 96px;
+                    height: 96px;
+                    max-width: 100%;
+                }
             }
             .username {
+                margin-top: 10px;
+                padding-left: 120px;
+                line-height: 1;
             }
             .text {
+                padding-left: 120px;
                 font-weight: 300;
                 font-size: 13px;
             }
@@ -337,15 +345,23 @@ html, body {
             height: auto;
         }
 
+        .message {
+            position: relative;
+            font-size: 80%;
+            height: 18px;
+            margin-top: -18px;
+            color: @gray-light;
+            background-color: @body-bg;
+        }
         .counts {
             font-size: 80%;
             color: @gray-light;
-            margin-bottom: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 0px;
         }
          h3 {
              font-size: 20px;
-             height: 20px;
+             height: 25px;
+             margin-top: 20px;
              overflow: hidden;
              padding-left: 10px;
              padding-right: 10px;
@@ -353,10 +369,35 @@ html, body {
 
         .snippet-inner {
             text-align: center;
+            padding-bottom: 20px;
         }
 
         .view-snippet {
             display: block;
+        }
+
+        .cover {
+            position: relative;
+            overflow: hidden;
+            .buttons {
+                position: absolute;
+                width: 100%;
+                bottom: 0;
+                background-color: #000000;
+                opacity: 0.8;
+
+                .transform(translateY(100%));
+                .transition-transform(0.3s);
+            }
+            &:hover .buttons {
+                .transform(translateY(0));
+                .transition-transform(0.3s);
+            }
+        }
+        .play:after {
+            font-family: FontAwesome;
+            content: "\f04b";
+            margin-left: 60px;
         }
     }
 }

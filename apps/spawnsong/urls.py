@@ -13,6 +13,8 @@ urlpatterns = patterns('',
 
     # For social auth (facebook, twitter etc) uncomment this line
     url(r'', include('social_auth.urls')),
+
+    url(r'^avatar/', include('avatar.urls')),
     
 
     url(r'^password/change/$',
