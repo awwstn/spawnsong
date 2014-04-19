@@ -82,25 +82,28 @@
         {% endblock player %}
         
         {% block orderButton %}
-        <div class="order-container">
-          <button {% if edit_mode %}disabled{% endif %} class="btn btn-primary {% if snippet.is_complete %}pre-order{% else %}order{% endif %}" id="order">
-            <i class="fa fa-shopping-cart"></i>
-            {% if not snippet.is_complete%}Pre {% endif %}Order
-          </button>
-          {% if not snippet.is_complete and editable %}
-          <div><a href="{{ snippet.get_absolute_url }}upload-full/" class="upload-full-link">(upload full song)</a></div>
-          {% endif %}
-          {% endblock %}
-          <form id="orderForm" style="display: none" method="post" action="/purchase/">
-            {% csrf_token %}
-            <input name="email">
-            <input name="token">
-            <input name="snippet_id" value="{{ snippet.id }}">
-          </form>
-          {% if order_count > 0 %}<div class="order-count">{{ order_count }} {% if not snippet.is_complete%}pre {% endif %}order{% if order_count > 1 %}s{% endif %}</div>{% endif %}
-        </div>
-        {% endif %}
-        
+          <div class="order-container">
+            <button {% if edit_mode %}disabled{% endif %} class="btn btn-primary {% if snippet.is_complete %}pre-order{% else %}order{% endif %}" id="order">
+              <i class="fa fa-shopping-cart"></i>
+              {% if not snippet.is_complete%}Pre Order{% else %}Song is out, order now!{% endif %}
+            </button>
+            {% if snippet.is_complete %}
+              <div class="release-date">Released on {{ snippet.song.completed_at|date:'SHORT_DATE_FORMAT' }}</div>
+            {% elif editable %}
+              <div><a href="{{ snippet.get_absolute_url }}upload-full/" class="upload-full-link">(upload full song)</a></div>
+            {% endif %}
+            <form id="orderForm" style="display: none" method="post" action="/purchase/">
+              {% csrf_token %}
+              <input name="email">
+              <input name="token">
+              <input name="snippet_id" value="{{ snippet.id }}">
+            </form>
+            {% if order_count > 0 %}<div class="order-count">{{ order_count }} {% if not snippet.is_complete%}pre {% endif %}order{% if order_count > 1 %}s{% endif %}</div>{% endif %}
+          </div>
+        {% endblock %}
+
+        {% endif %}{# if not edit_mode #}
+
       </div>
       {% block commentsArea %}
       {% if edit_mode %}

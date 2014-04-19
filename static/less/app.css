@@ -7662,8 +7662,12 @@ body {
 .snippet-view .order-container {
   width: 100%;
   text-align: center;
-  padding: 30px;
+  padding: 30px 20px;
   margin-top: 20px;
+}
+.snippet-view .order-container .release-date {
+  margin: 15px 0 -15px 0;
+  text-align: right;
 }
 .comments {
   margin-top: 30px;
