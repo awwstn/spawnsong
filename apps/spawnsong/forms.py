@@ -114,4 +114,4 @@ class UserProfileForm(forms.ModelForm):
     email = forms.EmailField(label='Email address', required=True)
     class Meta:
         model = User
-        fields = ()
+        fields = ('email',)
