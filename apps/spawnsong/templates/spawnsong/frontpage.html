@@ -36,6 +36,12 @@
 </div>
 
 <div class="container">
+  {% if not request.user.email %}
+    <div class="alert alert-warning alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      Please <a href="{% url 'edit-user-profile' %}">add an e-mail address</a> to your account.
+    </div>
+  {% endif %}
   {% include "spawnsong/parts/searchbox.html" %}
 
   <div class="sortby">
