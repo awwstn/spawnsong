@@ -192,6 +192,7 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'pagination',
     'kombu.transport.django',
+    'avatar',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'media',
@@ -215,6 +216,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 TEMPLATE_VISIBLE_SETTINGS = (
     'STRIPE_PUBLIC_KEY',
+    'AVATAR_SIZE',
     )
 
 try:
@@ -240,6 +242,17 @@ FACEBOOK_EXTENDED_PERMISSIONS = ['publish_stream']
 LOGIN_URL          = '/login/'
 
 LOGIN_REDIRECT_URL = '/'
+
+# If social account is inactive this probably means that the user set/changed
+# his email address and should confirm it.
+SOCIAL_AUTH_INACTIVE_USER_URL = '/accounts/register/complete/'
+# This redirection is set for Twitter users. If more backends added then this
+# should be improved to not bother users from another social networks.
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/profile/'
+
+AVATAR_GRAVATAR_BACKUP = False
+AVATAR_DEFAULT_URL = '/images/user.png'
+AVATAR_SIZE = 96 # This should match the size in css.
 
 
 AWS_STORAGE_BUCKET_NAME = "spawnsong"
@@ -359,7 +372,6 @@ except ImportError:
 
     AWS_ACCESS_KEY=os.getenv("AWS_ACCESS_KEY")
     AWS_SECRET_ACCESS_KEY=os.getenv("AWS_SECRET_ACCESS_KEY")
-    AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
     
     MAILGUN_ACCESS_KEY = os.getenv("MAILGUN_ACCESS_KEY")
     MAILGUN_SERVER_NAME = os.getenv("MAILGUN_SERVER_NAME")
@@ -374,6 +386,8 @@ except ImportError:
 
 import stripe
 stripe.api_key = STRIPE_SECRET_KEY
+
+AWS_ACCESS_KEY_ID = AWS_ACCESS_KEY
 
 # Down here so that FFMPEG_EXECUTABLE can be replaced in local_settings
 AUDIO_PROFILES = {

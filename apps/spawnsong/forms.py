@@ -1,12 +1,18 @@
-from django import forms
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-import models
-from mutagen.mp3 import MP3, HeaderNotFoundError, InvalidMPEGHeader
-from django.conf import settings
 import os
 import re
+
+from django import forms
+from django.contrib.auth.models import User
+from django.contrib.sites.models import Site, RequestSite
+from django.conf import settings
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from mutagen.mp3 import MP3, HeaderNotFoundError, InvalidMPEGHeader
+from registration.models import RegistrationProfile
+
 import media.models
+import models
 
 # Based on http://stackoverflow.com/a/5785711/65130
 class MP3FileField(forms.FileField):
@@ -60,7 +66,8 @@ class EditSnippetForm(forms.ModelForm):
         fields = ("title", "image", "genres", "visualisation_effect")
 
 class UploadCompleteSongForm(forms.Form):
-    complete_audio = MP3FileField(label="Upload Complete Song", widget=forms.widgets.FileInput, max_file_size=settings.FULL_SONG_FILESIZE_LIMIT)
+    complete_audio = MP3FileField(label="Upload Complete Song", widget=forms.widgets.FileInput, max_file_size=settings.FULL_SONG_FILESIZE_LIMIT,
+                                  help_text="The song file should be in mp3 format.")
 
     def __init__(self, *args, **kwargs):
         self.instance = kwargs.pop("instance")
@@ -76,7 +83,8 @@ class UploadCompleteSongForm(forms.Form):
         
 class UploadSnippetForm(forms.Form):
     title = forms.CharField(max_length=100)
-    audio = MP3FileField(label="Upload %s-%s sec Snippet" % (settings.SNIPPET_LENGTH_MIN, settings.SNIPPET_LENGTH_LIMIT,), widget=forms.widgets.FileInput, max_audio_length=settings.SNIPPET_LENGTH_LIMIT+1, max_audio_length_display=settings.SNIPPET_LENGTH_LIMIT, min_audio_length=settings.SNIPPET_LENGTH_MIN)
+    audio = MP3FileField(label="Upload %s-%s sec Snippet" % (settings.SNIPPET_LENGTH_MIN, settings.SNIPPET_LENGTH_LIMIT,), widget=forms.widgets.FileInput, max_audio_length=settings.SNIPPET_LENGTH_LIMIT+1, max_audio_length_display=settings.SNIPPET_LENGTH_LIMIT, min_audio_length=settings.SNIPPET_LENGTH_MIN,
+                         help_text="The song file should be in mp3 format.")
     image = forms.ImageField()
     visualisation_effect = forms.ChoiceField(choices=(("pulsate", "Pulsate"), ("none", "None")))
     genres = forms.CharField(max_length=255, help_text="eg #hip-hop #electronic", required=False)
@@ -106,3 +114,30 @@ class UploadSnippetForm(forms.Form):
             visualisation_effect=self.cleaned_data["visualisation_effect"])
         snippet.process_uploaded_audio()
         return snippet
+
+
+class UserProfileForm(forms.ModelForm):
+    email = forms.EmailField(label='Email address', required=True, help_text='You should confirm your email address after it\'s changed.')
+
+    class Meta:
+        model = User
+        fields = ('email',)
+
+    def save(self, request, *args, **kwargs):
+        # Disable the user account until he confirm his email.
+        # When more fields added, there is should be added a check that email
+        # address is actually changed.
+        user = self.instance
+        user.is_active = False
+        result = super(UserProfileForm, self).save(*args, **kwargs)
+
+        # Send email confirmation message.
+        RegistrationProfile.objects.filter(user=user).delete()
+        registration_profile = RegistrationProfile.objects.create_profile(user)
+        if Site._meta.installed:
+            site = Site.objects.get_current()
+        else:
+            site = RequestSite(request)
+        registration_profile.send_activation_email(site)
+
+        return result

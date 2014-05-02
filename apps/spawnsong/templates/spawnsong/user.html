@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load humanize %}
 
-{% block title %}{{ user.username }} | Spawnsong{% endblock %}
+{% block title %}{{ artist.user.username }} | Spawnsong{% endblock %}
 
 {% block content %}
 <div class="container">
 
-  <h1>{{ user.username }}'s songs</h1>
+  <h1>{{ artist.user.username }}'s songs</h1>
   
   {% include "spawnsong/parts/snippet-list.html" %}
 </div>

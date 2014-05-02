@@ -36,6 +36,7 @@ Thirs Party Components
  - Heroku for hosting
  - Upload storage on Amazon S3
  - File conversion using ffmpeg running on Heroku (use the Linux 64 binary) and run in another process via Celery
+   On Ubuntu you'll probably need to install libavcodec-extra-53 which provides libmp3lame audio codec.
  - Echonest for beat locations
  - Mailgun fo rmail delivery
  - Memcachier for caching

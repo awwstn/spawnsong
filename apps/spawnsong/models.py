@@ -128,6 +128,7 @@ class Snippet(models.Model):
     """
     song = models.ForeignKey(Song)
     title = models.CharField(max_length=255)
+    message = models.CharField(max_length=255, blank=True, help_text='Special message to display above the cover image')
     state = models.CharField(
         max_length=20,
         choices=(

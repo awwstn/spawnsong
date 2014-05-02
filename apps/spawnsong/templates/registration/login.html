@@ -8,6 +8,14 @@
 <div class="container">
   <div class="form-view accounts-view">
     <div class="form-inner panel">
+
+      {% if request.GET.order %}
+        <div class="alert alert-danger alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <strong>Please make an account to place an order!</strong>
+        </div>
+      {% endif %}
+
       <!-- <div class="panel-heading"> -->
       <!--   <h1>Sign in with Twitter</h1> -->
       <!-- </div> -->
