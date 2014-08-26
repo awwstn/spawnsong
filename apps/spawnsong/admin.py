@@ -222,6 +222,11 @@ class AvatarInline(admin.StackedInline):
 class UserAdmin(auth_admin.UserAdmin):
     inlines = (AvatarInline,)
 
+    def __init__(self, *args, **kwargs):
+        super(UserAdmin, self).__init__(*args, **kwargs)
+        self.list_filter += ('date_joined',)
+        self.list_display += ('date_joined',)
+
 for _site in [site]:
     _site.register(Song, SongAdmin)
     _site.register(Order, OrderAdmin)
