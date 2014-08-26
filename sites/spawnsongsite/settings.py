@@ -123,8 +123,8 @@ PIPELINE_MIMETYPES = (
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 
-# PIPELINE_ENABLED = False
-# PIPELINE_DISABLE_WRAPPER = True
+PIPELINE_ENABLED = True
+#PIPELINE_DISABLE_WRAPPER = True
 
 # If we are on heroku we want to re-define the location of the less binary.
 HEROKU_LESSC = os.path.join(PATH_TO_HERE, '/app/.heroku/python/bin/lessc')
@@ -186,13 +186,14 @@ INSTALLED_APPS = (
     'pipeline',
     'storages',
     'south',
-    'gunicorn',
+    #'gunicorn',
     'crispy_forms',
     'djcelery',
     'sorl.thumbnail',
     'pagination',
     'kombu.transport.django',
     'avatar',
+    'django_extensions',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'media',
