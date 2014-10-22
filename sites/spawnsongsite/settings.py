@@ -371,19 +371,19 @@ except ImportError:
     import dj_database_url
     DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
 
-    AWS_ACCESS_KEY=os.getenv("AWS_ACCESS_KEY")
-    AWS_SECRET_ACCESS_KEY=os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_ACCESS_KEY=os.environ.get("AWS_ACCESS_KEY")
+    AWS_SECRET_ACCESS_KEY=os.environ.get("AWS_SECRET_ACCESS_KEY")
     
-    MAILGUN_ACCESS_KEY = os.getenv("MAILGUN_ACCESS_KEY")
-    MAILGUN_SERVER_NAME = os.getenv("MAILGUN_SERVER_NAME")
+    MAILGUN_ACCESS_KEY = os.environ.get("MAILGUN_ACCESS_KEY")
+    MAILGUN_SERVER_NAME = os.environ.get("MAILGUN_SERVER_NAME")
     
-    ECHONEST_API_KEY = os.getenv("ECHONEST_API_KEY")
+    ECHONEST_API_KEY = os.environ.get("ECHONEST_API_KEY")
     
-    TWITTER_CONSUMER_KEY         = os.getenv("TWITTER_CONSUMER_KEY")
-    TWITTER_CONSUMER_SECRET      = os.getenv("TWITTER_CONSUMER_SECRET")
+    TWITTER_CONSUMER_KEY         = os.environ.get("TWITTER_CONSUMER_KEY")
+    TWITTER_CONSUMER_SECRET      = os.environ.get("TWITTER_CONSUMER_SECRET")
 
-    STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")
-    STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+    STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY")
+    STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 
 import stripe
 stripe.api_key = STRIPE_SECRET_KEY
