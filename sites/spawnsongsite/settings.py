@@ -194,6 +194,7 @@ INSTALLED_APPS = (
     'kombu.transport.django',
     'avatar',
     'django_extensions',
+     'raven.contrib.django.raven_compat',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'media',
