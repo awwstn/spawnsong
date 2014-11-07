@@ -289,15 +289,20 @@ LOGGING = {
             'stream': sys.stdout,
             # 'formatter': 'standard'
         },
+        'stderr': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard',
+        },
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['stderr'],
             'level': 'ERROR',
             'propagate': True,
         },
         'spawnsong.tasks': {
-            'handlers': ['mail_admins'],
+            'handlers': ['stderr'],
             'level': 'ERROR',
             'propagate': True,
         },
